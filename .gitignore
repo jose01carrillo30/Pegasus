@@ -1,1 +1,5 @@
 *.exe
+
+# CMake
+cmake-build-*/
+CMakeLists.txt

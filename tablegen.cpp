@@ -22,8 +22,10 @@ enum {
 #define rankOf(sq) (sq >> 3) // sq / 8
 #define fileOf(sq) (sq & 7) // sq % 7
 
-// As we've made standard:
-typedef unsigned long long ULL;
+//// As we've made standard:
+//typedef unsigned long long ULL;
+#include "board_object.h"
+//note that ULL typedef has been moved since different places were using different definitions
 
 // Declare the empty diagonal and antidiagonal lookup tables:
 ULL diagonalMasks[16];
@@ -92,7 +94,8 @@ ULL diagonalAttackMask(short sq) {
   return diagonalMasks[diags[sq]] ^ antiDiagonalMasks[antidiags[sq]];
 }
 
-int main() {
+//TODO: renamed and run from "actual_main_here.cpp"
+int mainRename_tablegen() {
   initDiagonalMasks();
   // ULL tempBoard = 9251592102432489103L;
   // printBitboard(tempBoard);

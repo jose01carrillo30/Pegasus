@@ -1,24 +1,10 @@
 #include <iostream>
-#include <cstdint>
+//#include <cstdint>
 
 using namespace std;
 
-typedef uint64_t ULL; // ensures ULL is 64 bits
-
-enum : unsigned char {WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK};
-
-
-class Board {
-    public:
-        ULL bitboards[12]; //2 colors each with 6 types of pieces
-        bool CWK, CWQ, CBK, CBQ; // castle rights
-        short kings; // king locations: kings = WK*64 + BK
-        short EP; // en passant column / position?
-        short materialWhite, materialBlack; // material scores for white and black
-        short movesSinceLastCapture; // 50 move rule
-        ULL hashCode; //TODO: should this really be a field of Board?
-};
-
+//typedef and board struct moved to header file
+#include "board_object.h"
 
 //TODO: there has to be a better way than this:
 const string pieceRepresentation = "PNBRQKpnbrqk";
@@ -54,6 +40,8 @@ void printBoard(Board* board) {
 
 Board* createFromFenn(string fenn) {
     /** TODO: */
+    //TODO
+    return nullptr;
 }
 
 #define NUM_TEST_BOARDS 5
@@ -70,10 +58,11 @@ Board** createSomeBoards() {
 
 ULL createHash(Board* board) {
     /** TODO: Hashes 84 bits of board info into 64 bits */
-    return board->bitboards[WP]; //TODO: temporary. test by literally returing the white pawn layout as the hash
+    return board->bitboards[WP]; //TODO: temporary. test by literally returning the white pawn layout as the hash
 }
 
-int main() {
+//TODO: renamed and run from "actual_main_here.cpp"
+int mainRename_hash_test_main() {
 
     //TODO: replace this with the FEN string
     Board STARTING_BOARD = Board();
@@ -101,7 +90,7 @@ int main() {
     STARTING_BOARD.kings = 64*3 + 59; // king locations: kings = WK*64 + BK // doesn't matter for hashing
     STARTING_BOARD.EP = 0; // Assuming 0 means no en passant
     // materialWhite, materialBlack; // doesn't matter for hashing
-    STARTING_BOARD.movesSinceLastCapture = 0; // I don't think this matters for hashing really, only really useful when close to 50 
+    STARTING_BOARD.movesSinceLastCapture = 0; // I don't think this matters for hashing really, only really useful when close to 50
     STARTING_BOARD.hashCode = createHash(&STARTING_BOARD);
     }
 
@@ -118,6 +107,6 @@ int main() {
         printBoard(testBoards[i]);
     }
 
-
+    return 0;
 }
 
