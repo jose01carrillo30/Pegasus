@@ -37,6 +37,9 @@ namespace hash_test_main_namespace{
 namespace tablegen_namespace{
     #include "tablegen.cpp"
 }
+namespace tL_test_main_namespace{
+    #include "tL_test_main.cpp"
+}
 
 //TODO: here is where you put the method call/main method/testing code along with a seperator
 int main(){
@@ -44,13 +47,15 @@ int main(){
 
     //------------------------------------------------------------------------------------------------------------------
     print_seperator("Code from hash_test_main.cpp main() here");
-
     hash_test_main_namespace::mainRename_hash_test_main();
 
     //------------------------------------------------------------------------------------------------------------------
     print_seperator("Code from tablegen.cpp main() here");
-
     tablegen_namespace::mainRename_tablegen();
+
+    //------------------------------------------------------------------------------------------------------------------
+    print_seperator("Code from tL_test_main main() here");
+    tL_test_main_namespace::mainRename_tL_test_main();
 }
 
 

@@ -66,6 +66,6 @@ namespace MoveRepresentation{
 //
 //        return results;
 //    }
-}
+};
 
 #endif //PEGASUS_STUFF_MOVE_REPRESENTATION_H

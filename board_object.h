@@ -6,6 +6,8 @@
 #define PEGASUS_BOARD_OBJECT_H
 
 #include <cstdint>
+#include <string>
+#include <iostream>
 
 typedef uint64_t ULL; // ensures ULL is 64 bits
 
@@ -20,5 +22,20 @@ struct Board {
     short movesSinceLastCapture; // 50 move rule
     ULL hashCode;
 };
+
+// Helper method which prints the bits of a single 64 bit number
+static void printBits(ULL toPrint){
+    std::string ans;
+    ULL mask = 1u;
+    for(int i = 63; i >= 0; i--){
+//        ans += std::to_string((toPrint >> i) & mask) + " ";
+        std::cout << std::to_string((toPrint >> i) & mask) + " ";
+        if(i % 8 == 0){
+//            ans += "\n";
+            std::cout << "\n";
+        }
+    }
+//    return ans;
+}
 
 #endif //PEGASUS_BOARD_OBJECT_H
