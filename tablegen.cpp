@@ -75,7 +75,7 @@ void printBitboard(ULL board) {
  * We'll discuss this further and which one we'd like to use, but since I know we're
  * probably using the rank-file mapping as above, I've decided to keep things this way.
  * At least for now. */
-/* void printBitboard(ULL board) {
+/* void printBitboardU(ULL board) {
   // Iterate through all 64 bits:
   for (int i = 0; i < 64; i++) {
     // Make sure to change rows after every 8 squares:
@@ -98,8 +98,8 @@ ULL diagonalAttackMask(short sq) {
 int mainRename_tablegen() {
   initDiagonalMasks();
   // ULL tempBoard = 9251592102432489103L;
-  // printBitboard(tempBoard);
+  // printBitboardU(tempBoard);
   ULL tempBoard = diagonalAttackMask(D3);
-  printBitboard(tempBoard);
+    printBitboard(tempBoard);
   return 0;
 }
