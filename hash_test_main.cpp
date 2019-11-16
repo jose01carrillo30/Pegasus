@@ -1,5 +1,6 @@
 #include <iostream>
-//#include <cstdint>
+#include <stdlib.h>
+#include <string>
 
 using namespace std;
 
@@ -7,21 +8,30 @@ using namespace std;
 #include "board_object.h"
 #include "utilityMethods.h"
 
+int randomPosition() {
+    //return rand() % 120;
+    return 21 + 10*(rand()%8) + (rand()%8);
+}
 
 #define NUM_TEST_BOARDS 5
+/** Method to generate boards to be tested */
 board::Board** createSomeBoards() {
-    /** Method to generate boards to be tested */
     board::Board** boards = new board::Board*[NUM_TEST_BOARDS];
-    for(int i = 0; i < NUM_TEST_BOARDS; i++)
+    for(int boardNum = 0; boardNum < NUM_TEST_BOARDS; boardNum++)
     {
-        boards[i] = new board::Board();
-        boards[i]->hashCode = i*i;
+        cout << "creating board..." << endl;
+        boards[boardNum] = new board::Board(false, true);
+        // Generate random board
+        const string pieces = "ppppPPPPnnNNbbBBrrRRppppPPPPqQkK";
+        for (size_t i = 0; i < pieces.length(); i++)
+            boards[boardNum]->chessboard[randomPosition()] = pieces[i];
+
     }
     return boards;
 }
 
-ULL createHash(board::Board* board) {
-    /** TODO: Hashes 84 bits of board info into 64 bits */
+uint64_t createHash(board::Board* board) {
+    /** TODO: Hashes into 64 bits */
     return 69420; //TODO: temporary
 }
 

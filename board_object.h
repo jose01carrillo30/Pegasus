@@ -20,33 +20,56 @@ namespace board
             short movesSinceLastCapture; // 50 move rule
             uint64_t hashCode;
 
-            // Constructor for the starting position board
-            Board() {
-                const unsigned char startChessboard[] = {
-                    INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                    INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                    INVALID, BR,      BN,      BB,      BQ,      BK,      BB,      BN,      BR,      INVALID,
-                    INVALID, BP,      BP,      BP,      BP,      BP,      BP,      BP,      BP,      INVALID,
-                    INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                    INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                    INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                    INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                    INVALID, WP,      WP,      WP,      WP,      WP,      WP,      WP,      WP,      INVALID,
-                    INVALID, WR,      WN,      WB,      WQ,      WK,      WB,      WN,      WR,      INVALID,
-                    INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                    INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                };
-                // idk if there is a better way to do this
-                // initialize chessboard to startChessboard
-                for (size_t i = 0; i < 120; i++) {
-                    chessboard[i] = startChessboard[i];
+            /** 
+             * Creates a new board. Set startingPosition to true to initialize Board to the starting position (all members initialized)
+             * Set empty to true to initialize Board as empty (chessboard[] only initialized) 
+             */
+            Board(bool startingPosition=false, bool empty=false) {
+                if (startingPosition) {
+                    const unsigned char startChessboard[] = {
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                        INVALID, BR,      BN,      BB,      BQ,      BK,      BB,      BN,      BR,      INVALID,
+                        INVALID, BP,      BP,      BP,      BP,      BP,      BP,      BP,      BP,      INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, WP,      WP,      WP,      WP,      WP,      WP,      WP,      WP,      INVALID,
+                        INVALID, WR,      WN,      WB,      WQ,      WK,      WB,      WN,      WR,      INVALID,
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                    };
+                    // idk if there is a better way to do this
+                    // initialize chessboard to startChessboard
+                    for (size_t i = 0; i < 120; i++) {
+                        chessboard[i] = startChessboard[i];
+                    }
+                    CWK = true; CWQ = true; CBK = true; CBQ = true;
+                    EP = 0; //TODO: is this an appropriate value for no enpasant?
+                    materialBlack = 
+                    materialWhite = materialBlack;
+                    movesSinceLastCapture = 0;
+                    // hashCode = this->hash(); //TODO: 
+                } else if (empty) {
+                    const unsigned char startChessboard[] = {
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
+                    };
+                    for (size_t i = 0; i < 120; i++) {
+                        chessboard[i] = startChessboard[i];
+                    }
                 }
-                CWK = true; CWQ = true; CBK = true; CBQ = true;
-                EP = 0; //TODO: is this an appropriate value for no enpasant?
-                materialBlack = 
-                materialWhite = materialBlack;
-                movesSinceLastCapture = 0;
-                // hashCode = this->hash(); //TODO: 
             }
     };
 }
