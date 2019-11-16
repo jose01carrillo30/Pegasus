@@ -6,7 +6,11 @@
 
 #include <string>
 #include <iostream>
+
+// Because of the weird namespacing, all includes for main files must be added here
 #include "board_object_DEPRECIATED.h"
+#include "board_object.h"
+#include "utilityMethods.h"
 
 using namespace std;
 

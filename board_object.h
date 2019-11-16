@@ -9,7 +9,7 @@
 
 namespace board
 {
-    enum : unsigned char {EMPTY, INVALID, WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK};
+    enum : unsigned char {EMPTY='.', INVALID='x', WP='P', WN='N', WB='B', WR='R', WQ='Q', WK='K', BP='p', BN='n', BB='b', BR='r', BQ='q', BK='k'};
 
     class Board {
         public:
@@ -25,14 +25,14 @@ namespace board
                 const unsigned char startChessboard[] = {
                     INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
                     INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                    INVALID, BR,      BN,      BB,      BK,      BQ,      BB,      BN,      BR,      INVALID,
+                    INVALID, BR,      BN,      BB,      BQ,      BK,      BB,      BN,      BR,      INVALID,
                     INVALID, BP,      BP,      BP,      BP,      BP,      BP,      BP,      BP,      INVALID,
                     INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
                     INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
                     INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
                     INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
                     INVALID, WP,      WP,      WP,      WP,      WP,      WP,      WP,      WP,      INVALID,
-                    INVALID, WR,      WN,      WB,      WK,      WQ,      WB,      WN,      WR,      INVALID,
+                    INVALID, WR,      WN,      WB,      WQ,      WK,      WB,      WN,      WR,      INVALID,
                     INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
                     INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
                 };

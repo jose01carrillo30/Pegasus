@@ -1,6 +1,7 @@
 *.exe
 *.o
 Makefile
+.vscode/
 
 # CMake
 cmake-build-*/
