@@ -9,9 +9,9 @@ using namespace std;
 //TODO: there has to be a better way than this:
 const string pieceRepresentation = "PNBRQKpnbrqk";
 
-void printBoard(Board* board) {
+void printBoard(BitBoard* board) {
     /**TODO: outputs nice visual given board*/
-    cout << "Board: " << board->hashCode << endl;
+    cout << "BitBoard: " << board->hashCode << endl;
 
     //pring bitboards
     /* //Useful for debuggging 
@@ -38,25 +38,25 @@ void printBoard(Board* board) {
     }
 }
 
-Board* createFromFenn(string fenn) {
+BitBoard* createFromFenn(string fenn) {
     /** TODO: */
     //TODO
     return nullptr;
 }
 
 #define NUM_TEST_BOARDS 5
-Board** createSomeBoards() {
+BitBoard** createSomeBoards() {
     /** Method to generate boards to be tested */
-    Board** boards = new Board*[NUM_TEST_BOARDS];
+    BitBoard** boards = new BitBoard*[NUM_TEST_BOARDS];
     for(int i = 0; i < NUM_TEST_BOARDS; i++)
     {
-        boards[i] = new Board();
+        boards[i] = new BitBoard();
         boards[i]->hashCode = i*i;
     }
     return boards;
 }
 
-ULL createHash(Board* board) {
+ULL createHash(BitBoard* board) {
     /** TODO: Hashes 84 bits of board info into 64 bits */
     return board->bitboards[WP]; //TODO: temporary. test by literally returning the white pawn layout as the hash
 }
@@ -65,7 +65,7 @@ ULL createHash(Board* board) {
 int mainRename_hash_test_main() {
 
     //TODO: replace this with the FEN string
-    Board STARTING_BOARD = Board();
+    BitBoard STARTING_BOARD = BitBoard();
     {
     STARTING_BOARD.CWK = true;
     STARTING_BOARD.CWQ = true;
@@ -100,7 +100,7 @@ int mainRename_hash_test_main() {
 
     printBoard(&STARTING_BOARD);
 
-    Board** testBoards = createSomeBoards();
+    BitBoard** testBoards = createSomeBoards();
 
     // print all boards
     for(int i=0; i < NUM_TEST_BOARDS; i++) {

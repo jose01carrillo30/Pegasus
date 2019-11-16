@@ -6,7 +6,7 @@
 #define PEGASUS_STUFF_KING_MOVE_GEN_H
 
 #include <string>
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 #include "utilityMethods.h"
 #include "move_representation.h"
 
@@ -28,7 +28,7 @@ namespace kingMoveGeneration{
     const ULL rightBoardWipe = leftBoardWipe >> 4u;
 
     //returns a bitboard of possible moves, adds a UL representation of every possible move
-    static ULL generateKingMoves(int8_t kingPos, Board board, bool isWhite, UL* toPutMoves){
+    static ULL generateKingMoves(int8_t kingPos, BitBoard board, bool isWhite, UL* toPutMoves){
         //generate the ally/enemy boards
         ULL allyBoard;
         ULL enemyBoard;
@@ -161,7 +161,7 @@ namespace kingMoveGeneration{
         std::cout << "\n";
 
         //TODO: Init Me
-        Board testBoard;
+        BitBoard testBoard;
 
         std::cout << "6:\n";
         utility::printBitboard(generateKingMoves(9, testBoard, true, nullptr));

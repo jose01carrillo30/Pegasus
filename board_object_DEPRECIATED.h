@@ -15,7 +15,7 @@ typedef uint64_t ULL; // ensures ULL is 64 bits
 
 enum : unsigned char {WP, WN, WB, WR, WQ, WK, BP, BN, BB, BR, BQ, BK};
 
-struct Board {
+struct BitBoard {
     ULL bitboards[12];
     bool CWK, CWQ, CBK, CBQ; // castle rights
     short kings; // king locations: kings = WK*64 + BK

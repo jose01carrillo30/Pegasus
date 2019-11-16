@@ -5,7 +5,7 @@
 #ifndef PEGASUS_STUFF_UTILITYMETHODS_H
 #define PEGASUS_STUFF_UTILITYMETHODS_H
 
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 #include <iostream>
 
 namespace utility{
