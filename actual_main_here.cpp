@@ -42,20 +42,51 @@ namespace tL_test_main_namespace{
 }
 
 //TODO: here is where you put the method call/main method/testing code along with a seperator
-int main(){
+int main(int argc, char *argv[]) {
+    string USAGE_ERROR = "Usage: " + string(argv[0]) + " [main_method_name.cpp]";
+
+    bool run_all; // all main methods will execute if true
+    string input_main = ""; // which main is the user calling
+    switch (argc) {
+    case 1: // user did not specify a main to run
+        run_all = true;
+        break;
+    case 2: // user gave a main to run
+        run_all = false;
+        input_main = string(argv[1]);
+        break;
+    default: // user is confused
+        cout << USAGE_ERROR << endl;
+        return 1;
+        break;
+    }
+
+    bool has_run = false;
     // GIANT main method so that the project would actually compile and run lol - Troy
 
     //------------------------------------------------------------------------------------------------------------------
-    print_seperator("Code from hash_test_main.cpp main() here");
-    hash_test_main_namespace::mainRename_hash_test_main();
-
+    if (run_all || input_main == "hash_test_main.cpp") {
+        print_seperator("Code from hash_test_main.cpp main() here");
+        hash_test_main_namespace::mainRename_hash_test_main();
+        has_run = true;
+    }
     //------------------------------------------------------------------------------------------------------------------
-    print_seperator("Code from tablegen.cpp main() here");
-    tablegen_namespace::mainRename_tablegen();
-
+    if (run_all || input_main == "tablegen.cpp") {
+        print_seperator("Code from tablegen.cpp main() here");
+        tablegen_namespace::mainRename_tablegen();
+        has_run = true;
+    }
     //------------------------------------------------------------------------------------------------------------------
-    print_seperator("Code from tL_test_main main() here");
-    tL_test_main_namespace::mainRename_tL_test_main();
+    if (run_all || input_main == "tL_test_main.cpp") {
+        print_seperator("Code from tL_test_main.cpp main() here");
+        tL_test_main_namespace::mainRename_tL_test_main();
+        has_run = true;
+    }
+    if (! has_run) { // input_main did not match any known main()
+        cout << USAGE_ERROR << endl;
+        return 1;
+    }
+    return 0;
 }
 
 
