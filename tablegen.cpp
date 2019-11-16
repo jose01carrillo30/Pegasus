@@ -24,7 +24,7 @@ enum {
 
 //// As we've made standard:
 //typedef unsigned long long ULL;
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 //note that ULL typedef has been moved since different places were using different definitions
 
 // Declare the empty diagonal and antidiagonal lookup tables:

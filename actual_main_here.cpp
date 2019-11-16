@@ -6,7 +6,7 @@
 
 #include <string>
 #include <iostream>
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 
 using namespace std;
 

@@ -4,7 +4,7 @@
 using namespace std;
 
 //typedef and board struct moved to header file
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 
 //TODO: there has to be a better way than this:
 const string pieceRepresentation = "PNBRQKpnbrqk";

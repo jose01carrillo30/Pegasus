@@ -5,7 +5,7 @@
 #include <iostream>
 #include "move_representation.h"
 #include "king_move_gen.h"
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 
 class test{
     private:
