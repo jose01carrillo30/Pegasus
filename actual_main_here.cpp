@@ -9,8 +9,16 @@
 
 // Because of the weird namespacing, all includes for main files must be added here
 #include "board_object_DEPRECIATED.h"
+
+//hash_test_main.cpp includes
+#include <stdlib.h>
+#include <string>
+#include <queue>
+#include <map>
+#include <ctime>
 #include "board_object.h"
 #include "utilityMethods.h"
+
 
 using namespace std;
 
