@@ -40,6 +40,83 @@ void printBoard(Board* board) {
 
 Board* createFromFenn(string fenn) {
     /** TODO: */
+    
+    
+    int boardIndex = 0;
+
+    for (char c : fenn){
+
+        switch(c) {
+
+            case 'P':
+                
+
+            case 'p':
+
+            case 'R':
+
+            case 'r':
+
+            case 'N':
+
+            case 'n':
+
+            case 'B':
+
+            case 'b':
+
+            case 'Q':
+
+            case 'q':
+
+            case 'K':
+
+            case 'k':
+
+            case '/':
+
+            case '1':
+                boardIndex++;
+                break;
+
+            case '2':
+                boardIndex+=2;
+                break;
+
+            case '3':
+                boardIndex+=3;
+                break;
+
+            case '4':
+                boardIndex+=4;
+                break;
+
+            case '5':
+                boardIndex+=5;
+                break;
+
+            case '6':
+                boardIndex+=6;
+                break;
+
+            case '7':
+                boardIndex+=7;
+                break;
+
+            case '8':
+                boardIndex+=8;
+                break;
+
+            default:
+                cout << "Invalid character in FEN string" << endl;
+
+        }
+
+    }
+    
+    
+    
+
     //TODO
     return nullptr;
 }
