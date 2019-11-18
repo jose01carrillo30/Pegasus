@@ -1,43 +1,22 @@
-#include <iostream>
-//#include <cstdint>
+/*
+ * Can't include anything here for some reason to do with the namespacing done in actual_main_here,
+ * so all includes have been moved to actual_main_here.cpp
+ */
 
 using namespace std;
 
-//typedef and board struct moved to header file
-#include "board_object.h"
-
-//TODO: there has to be a better way than this:
-const string pieceRepresentation = "PNBRQKpnbrqk";
-
-void printBoard(Board* board) {
-    /**TODO: outputs nice visual given board*/
-    cout << "Board: " << board->hashCode << endl;
-
-    //pring bitboards
-    /* //Useful for debuggging 
-    for (int pieceType = 0; pieceType < 12; pieceType++)
-    { 
-        cout << pieceRepresentation[pieceType] << " : " << board->bitboards[pieceType] << endl; 
-    } */
-
-    // print grid
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            char toPrint = '.';
-            for (int pieceType = 0; pieceType < 12; pieceType++)
-            {
-                //cout << "mask for "<<i<<", "<<j<<" : " << ((ULL(1)) << (8*i + j)) << endl;
-                if(board->bitboards[pieceType] & ( ULL(1) << (8*i + j)))
-                    toPrint = pieceRepresentation[pieceType];
-            }
-            cout << toPrint;
-        }
-        cout << endl;
-    }
+int randomPosition() {
+    return 21 + 10*(rand()%8) + (rand()%8);
 }
 
+class CompareHashes {
+public:
+    bool operator() (board::Board* b1, board::Board* b2) {
+        return b1->hashCode < b2->hashCode;
+    }
+};
+
+<<<<<<< HEAD
 Board* createFromFenn(string fenn) {
     /** TODO: */
     
@@ -119,70 +98,64 @@ Board* createFromFenn(string fenn) {
 
     //TODO
     return nullptr;
+=======
+uint64_t createHash(board::Board* board) {
+    /** TODO: Hashes into 64 bits */
+    return 420 * rand() % uint64_t(69420000); //TODO: temporary
+>>>>>>> f5381579583c0a29f44c3547ba68f7ed319bdb51
 }
 
-#define NUM_TEST_BOARDS 5
-Board** createSomeBoards() {
-    /** Method to generate boards to be tested */
-    Board** boards = new Board*[NUM_TEST_BOARDS];
-    for(int i = 0; i < NUM_TEST_BOARDS; i++)
+typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
+
+#define NUM_TEST_BOARDS 3000000
+/** Method to generate boards to be tested */
+board_queue createSomeBoards() {
+//void createSomeBoards() {
+    //board::Board** boards = new board::Board*[NUM_TEST_BOARDS];
+    board_queue boards;
+
+    for(uint64_t boardNum = 0; boardNum < NUM_TEST_BOARDS; boardNum++)
     {
-        boards[i] = new Board();
-        boards[i]->hashCode = i*i;
+        board::Board* nextBoard = new board::Board(false, true); //TODO: stop leak
+        // Generate random board
+        const string pieces = "ppppPPPPnnNNbbBBrrRRppppPPPPqQkK";
+        for (size_t i = 0; i < pieces.length(); i++)
+            nextBoard->chessboard[randomPosition()] = pieces[i];
+        // Generate hash 
+        nextBoard->hashCode = createHash(nextBoard);
+        // store to queue for later
+        boards.push(nextBoard);
     }
-    return boards;
-}
-
-ULL createHash(Board* board) {
-    /** TODO: Hashes 84 bits of board info into 64 bits */
-    return board->bitboards[WP]; //TODO: temporary. test by literally returning the white pawn layout as the hash
+    return boards; //TODO:
 }
 
 //TODO: renamed and run from "actual_main_here.cpp"
 int mainRename_hash_test_main() {
+    srand(time(NULL));
 
-    //TODO: replace this with the FEN string
-    Board STARTING_BOARD = Board();
-    {
-    STARTING_BOARD.CWK = true;
-    STARTING_BOARD.CWQ = true;
-    STARTING_BOARD.CBK = true;
-    STARTING_BOARD.CBQ = true;
-    STARTING_BOARD.bitboards[WP] = 0xff00;
-    STARTING_BOARD.bitboards[BP] = 0xff000000000000;
-    STARTING_BOARD.bitboards[WR] = 0x81;
-    STARTING_BOARD.bitboards[BR] = 0x8100000000000000;
-    STARTING_BOARD.bitboards[WN] = 0x42;
-    STARTING_BOARD.bitboards[BN] = 0x4200000000000000;
-    STARTING_BOARD.bitboards[WB] = 0x24;
-    STARTING_BOARD.bitboards[BB] = 0x2400000000000000;
-    STARTING_BOARD.bitboards[WQ] = 0x8;
-    STARTING_BOARD.bitboards[BQ] = 0x800000000000000;
-    STARTING_BOARD.bitboards[WK] = 0x10;
-    STARTING_BOARD.bitboards[BK] = 0x1000000000000000;
-    STARTING_BOARD.CWK = true;
-    STARTING_BOARD.CWQ = true;
-    STARTING_BOARD.CBK = true;
-    STARTING_BOARD.CBQ = true;
-    STARTING_BOARD.kings = 64*3 + 59; // king locations: kings = WK*64 + BK // doesn't matter for hashing
-    STARTING_BOARD.EP = 0; // Assuming 0 means no en passant
-    // materialWhite, materialBlack; // doesn't matter for hashing
-    STARTING_BOARD.movesSinceLastCapture = 0; // I don't think this matters for hashing really, only really useful when close to 50
-    STARTING_BOARD.hashCode = createHash(&STARTING_BOARD);
+    cout << "Generating " << NUM_TEST_BOARDS << " random boards..." << endl;
+    board_queue testBoards = createSomeBoards();
+
+    cout << "Counting collisions..." << endl;
+    int collisions = 0;
+    board::Board* prev = nullptr;
+    for(int i=0; !testBoards.empty(); i++) {
+        //utility::printBoardArray(testBoards.top());
+        //cout << endl;
+        if (prev && prev->hashCode == testBoards.top()->hashCode) {
+            collisions++;
+            // utility::printBoardArray(testBoards.top());
+            // cout << endl;
+            // utility::printBoardArray(prev);
+            // cout << endl;
+        }
+        delete prev;
+        prev = testBoards.top();
+        testBoards.pop();
     }
-
-    cout << "****************" << endl;
-    cout << "Testing program:" << endl;
-    cout << "****************" << endl;
-
-    printBoard(&STARTING_BOARD);
-
-    Board** testBoards = createSomeBoards();
-
-    // print all boards
-    for(int i=0; i < NUM_TEST_BOARDS; i++) {
-        printBoard(testBoards[i]);
-    }
+    cout << "Collisions/Boards: " << collisions << " / " << NUM_TEST_BOARDS << " ≈ " << collisions / (float) NUM_TEST_BOARDS;
+    //utility::printBoard(testBoards.pop());
+    cout << endl;
 
     return 0;
 }

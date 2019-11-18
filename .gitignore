@@ -1,4 +1,8 @@
 *.exe
+*.o
+*.stackdump
+Makefile
+.vscode/
 
 # CMake
 cmake-build-*/

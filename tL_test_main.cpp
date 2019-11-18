@@ -5,7 +5,7 @@
 #include <iostream>
 #include "move_representation.h"
 #include "king_move_gen.h"
-#include "board_object.h"
+#include "board_object_DEPRECIATED.h"
 
 class test{
     private:
@@ -43,7 +43,7 @@ int mainRename_tL_test_main() {
 //        cout << MoveRepresentation::decodeItem(num3, i) << ", ";
 //    }
 
-    Board reeee = Board();
+    BitBoard reeee = BitBoard();
     ULL *boardsOut = reeee.bitboards;
 
     std::cout << "\n\nHIIIIhjh\n\n";
