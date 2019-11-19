@@ -23,8 +23,8 @@ uint64_t createHash(board::Board* board) {
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
 
-//#define NUM_TEST_BOARDS 3
-#define NUM_TEST_BOARDS 3000000
+#define NUM_TEST_BOARDS 3
+//#define NUM_TEST_BOARDS 3000000
 /** Method to generate boards to be tested */
 board_queue createSomeBoards() {
 //void createSomeBoards() {
@@ -64,7 +64,7 @@ int mainRename_hash_test_main() {
     int collisions = 0;
     board::Board* prev = nullptr;
     for(int i=0; !testBoards.empty(); i++) {
-        //utility::printBoardArray(testBoards.top());
+        utility::printBoardArray(testBoards.top());
         //cout << endl;
         if (prev && prev->hashCode == testBoards.top()->hashCode) {
             collisions++;

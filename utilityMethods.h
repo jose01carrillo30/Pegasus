@@ -25,6 +25,19 @@ namespace utility{
         std::cout << "\n\n";
     }
 
+    /** Is this a valid nonempty piece enum? */
+    bool isPiece(unsigned char spaceEnum) {
+        return spaceEnum < board::EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
+    }
+
+    /** Assuming a valid nonempty piece enum, is the piece white or black? */
+    bool isBlack(unsigned char piece) {
+        return piece % 2; // Assumes black pieces are even enums
+    }
+    bool isWhite(unsigned char piece) {
+        return !isBlack(piece); //Assumes white pieces are odd enums
+    }
+
     //forward declaration so I can put ugly switch statement at the bottom of file
     unsigned char getCharFromEnum(unsigned char enumValue, unsigned char empty='.', unsigned char invalid='x'); 
 
@@ -48,6 +61,9 @@ namespace utility{
             break;
         case 5:
             std::cout << "Material: {White: " << board->materialWhite << " Black: " << board->materialBlack << "}";
+            break;
+        case 6:
+            std::cout << "Space 21 isWhite(): " << isWhite(board->chessboard[21]) <<  " Space 21 isPiece(): " << isPiece(board->chessboard[21]);
             break;
         default:
             break;
