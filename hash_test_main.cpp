@@ -64,7 +64,7 @@ int mainRename_hash_test_main() {
     int collisions = 0;
     board::Board* prev = nullptr;
     for(int i=0; !testBoards.empty(); i++) {
-        utility::printBoardArray(testBoards.top());
+        //utility::printBoardArray(testBoards.top());
         //cout << endl;
         if (prev && prev->hashCode == testBoards.top()->hashCode) {
             collisions++;
