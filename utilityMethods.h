@@ -6,7 +6,7 @@
 #define PEGASUS_STUFF_UTILITYMETHODS_H
 
 #include "board_object_DEPRECIATED.h"
-//#include "board_object.h"
+#include "board_object.h"
 #include <iostream>
 
 namespace utility{
@@ -24,6 +24,9 @@ namespace utility{
         }
         std::cout << "\n\n";
     }
+
+    //forward declaration so I can put ugly switch statement at the bottom of file
+    unsigned char getCharFromEnum(unsigned char enumValue, unsigned char empty='.', unsigned char invalid='x'); 
 
     void printInfo(board::Board* board, int lineNum) {
         switch (lineNum)
@@ -57,7 +60,7 @@ namespace utility{
      */
     void printBoardArray(board::Board* board, bool info=true) {
         for (size_t i = 0; i < 120; i++) {
-            std::cout << board->chessboard[i] << " ";
+            std::cout << getCharFromEnum(board->chessboard[i]) << " ";
             if(i % 10 == 9) {
                 if (info) printInfo(board, i/10 - 2);
                 std::cout << std::endl;
@@ -81,6 +84,62 @@ namespace utility{
         }
         std::cout << "  +-----------------+" << std::endl;
         std::cout << "    a b c d e f g h  " << std::endl;
+    }
+
+    // is there a better way to do this than just a big switch?
+    /**
+     * Gets char respresentation of piece type enum
+     * OPTIONALLY set empty to desired character representation of EMPTY, 
+     * OPTIONALLY set invalid to desired character representation of INVALID, 
+     */
+    unsigned char getCharFromEnum(unsigned char enumValue, unsigned char empty, unsigned char invalid) {
+        switch (enumValue) {
+        case board::EMPTY:
+            return empty;
+            break;
+        case board::INVALID:
+            return invalid;
+            break;
+        case board::WP:
+            return 'P';
+            break;
+        case board::BP:
+            return 'p';
+            break;
+        case board::WR:
+            return 'R';
+            break;
+        case board::BR:
+            return 'r';
+            break;
+        case board::WN:
+            return 'N';
+            break;
+        case board::BN:
+            return 'n';
+            break;
+        case board::WB:
+            return 'B';
+            break;
+        case board::BB:
+            return 'b';
+            break;
+        case board::WQ:
+            return 'Q';
+            break;
+        case board::BQ:
+            return 'q';
+            break;
+        case board::WK:
+            return 'K';
+            break;
+        case board::BK:
+            return 'k';
+            break;
+        default:
+            return '?';
+            break;
+        }
     }
 }
 
