@@ -16,10 +16,9 @@ public:
     }
 };
 
-<<<<<<< HEAD
-Board* createFromFenn(string fenn) {
+board::Board* createFromFenn(string fenn) {
     /** TODO: */
-    
+    board::Board* fennBoard = new board::Board();
     
     int boardIndex = 0;
 
@@ -92,17 +91,11 @@ Board* createFromFenn(string fenn) {
         }
 
     }
-    
-    
-    
+}
 
-    //TODO
-    return nullptr;
-=======
 uint64_t createHash(board::Board* board) {
     /** TODO: Hashes into 64 bits */
     return 420 * rand() % uint64_t(69420000); //TODO: temporary
->>>>>>> f5381579583c0a29f44c3547ba68f7ed319bdb51
 }
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
