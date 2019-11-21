@@ -15,6 +15,7 @@ namespace MoveRepresentation{
     // Array to store the ranges of bits each value takes up, index the UL long like an array (first bit from left is index 0)
     // As normal, range is (start, end] (not including end index)
         //castle: 0: no castle, 1: queen side, 2: king side
+    //TODO: Increase ranges to accomadate the 120 possible spots?
     enum : unsigned char {startPos, endPos, castle, enPassant, capture, promote, pieceThatMoved};
     constexpr const static unsigned short ranges[7][2] = {{28u, 32u}, {24u, 28u}, {22u, 24u}, {18u, 22u}, {15u, 18u}, {12u, 15u}, {9u, 12u}};
 

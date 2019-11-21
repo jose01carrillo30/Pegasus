@@ -2,8 +2,8 @@
 // Created by troyl on 11/8/2019.
 //
 
-#ifndef PEGASUS_STUFF_KING_MOVE_GEN_H
-#define PEGASUS_STUFF_KING_MOVE_GEN_H
+#ifndef PEGASUS_STUFF_KING_MOVE_GEN_H_DEPRECIATED
+#define PEGASUS_STUFF_KING_MOVE_GEN_H_DEPRECIATED
 
 #include <string>
 #include "board_object_DEPRECIATED.h"
@@ -169,4 +169,4 @@ namespace kingMoveGeneration{
     }
 };
 
-#endif //PEGASUS_STUFF_KING_MOVE_GEN_H
+#endif //PEGASUS_STUFF_KING_MOVE_GEN_H_DEPRECIATED

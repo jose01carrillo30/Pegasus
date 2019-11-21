@@ -100,7 +100,8 @@ uint64_t createHash(board::Board* board) {
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
 
-#define NUM_TEST_BOARDS 3000000
+#define NUM_TEST_BOARDS 3
+//#define NUM_TEST_BOARDS 3000000
 /** Method to generate boards to be tested */
 board_queue createSomeBoards() {
 //void createSomeBoards() {
@@ -111,8 +112,15 @@ board_queue createSomeBoards() {
     {
         board::Board* nextBoard = new board::Board(false, true); //TODO: stop leak
         // Generate random board
-        const string pieces = "ppppPPPPnnNNbbBBrrRRppppPPPPqQkK";
-        for (size_t i = 0; i < pieces.length(); i++)
+        const size_t pieces_length = 32; //size of array
+        const unsigned char pieces[pieces_length] = { //first ones have lower priority since they will be overwritten
+            board::BP,board::WP,board::BP,board::WP,board::BP,board::WP,board::BP,board::WP, // 4 pawns each 
+            board::WN,board::BN,board::WN,board::BN, board::BB,board::WB,board::BB,board::WB, // Knights and bishops
+            board::WR,board::BR,board::WR,board::BR, //Rooks
+            board::BP,board::WP,board::BP,board::WP,board::BP,board::WP,board::BP,board::WP, // remaining 4 pawns
+            board::BQ,board::WQ,board::WK,board::BK //queens and kings
+        };
+        for (size_t i = 0; i < pieces_length; i++)
             nextBoard->chessboard[randomPosition()] = pieces[i];
         // Generate hash 
         nextBoard->hashCode = createHash(nextBoard);
@@ -133,7 +141,7 @@ int mainRename_hash_test_main() {
     int collisions = 0;
     board::Board* prev = nullptr;
     for(int i=0; !testBoards.empty(); i++) {
-        //utility::printBoardArray(testBoards.top());
+        utility::printBoardArray(testBoards.top());
         //cout << endl;
         if (prev && prev->hashCode == testBoards.top()->hashCode) {
             collisions++;
