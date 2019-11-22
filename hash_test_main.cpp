@@ -17,41 +17,107 @@ public:
 };
 
 board::Board* createFromFenn(string fenn) {
-    /** TODO: */
-    board::Board* fennBoard = new board::Board();
+    /** TODO: enpassant and move clocks */
+    board::Board* fennBoard = new board::Board(false, true);
+    bool isSpace = false;
+    fennBoard->CWK = false;
+    fennBoard->CBK = false;
+    fennBoard->CWQ = false;
+    fennBoard->CBQ = false;
     
     int boardIndex = 0;
 
     for (char c : fenn){
 
+        while (fennBoard->chessboard[boardIndex] == board::INVALID){
+            boardIndex++;
+        }
+
         switch(c) {
 
             case 'P':
-                
+                fennBoard->chessboard[boardIndex] = board::WP;
+                boardIndex++;
+                break;
 
             case 'p':
+                fennBoard->chessboard[boardIndex] = board::BP;
+                boardIndex++;
+                break;
 
             case 'R':
+                fennBoard->chessboard[boardIndex] = board::WR;
+                boardIndex++;
+                break;
 
             case 'r':
+                fennBoard->chessboard[boardIndex] = board::BR;
+                boardIndex++;
+                break;
 
             case 'N':
+                fennBoard->chessboard[boardIndex] = board::WN;
+                boardIndex++;
+                break;
 
             case 'n':
+                fennBoard->chessboard[boardIndex] = board::BN;
+                boardIndex++;
+                break;
 
             case 'B':
+                fennBoard->chessboard[boardIndex] = board::WB;
+                boardIndex++;
+                break;
 
             case 'b':
+                if (isSpace)
+                    fennBoard->turnWhite = false;
+                else {
+                    fennBoard->chessboard[boardIndex] = board::BB;
+                    boardIndex++;
+                }
+                break;
 
             case 'Q':
+                if(isSpace)
+                    fennBoard->CWQ = true;
+                else{
+                    fennBoard->chessboard[boardIndex] = board::WQ;
+                    boardIndex++;
+                }
+                break;
 
             case 'q':
+                if(isSpace)
+                    fennBoard->CBQ = true;
+                else{
+                    fennBoard->chessboard[boardIndex] = board::BQ;
+                    boardIndex++;
+                }
+                break;
 
             case 'K':
+                if(isSpace)
+                    fennBoard->CWK = true;
+                else{
+                    fennBoard->chessboard[boardIndex] = board::WK;
+                    boardIndex++;
+                }
+                break;
 
             case 'k':
+                if(isSpace)
+                    fennBoard->CBK = true;
+                else{
+                    fennBoard->chessboard[boardIndex] = board::BK;
+                    boardIndex++;
+                }
+                break;
 
             case '/':
+                boardIndex++;
+                break;
 
             case '1':
                 boardIndex++;
@@ -85,8 +151,16 @@ board::Board* createFromFenn(string fenn) {
                 boardIndex+=8;
                 break;
 
+            case ' ':
+                isSpace = true;
+                break;
+
+            case 'w':
+                fennBoard->turnWhite = true;
+                break;
+
             default:
-                cout << "Invalid character in FEN string" << endl;
+                std::cout << "Invalid character in FEN string" << endl;
 
         }
 
