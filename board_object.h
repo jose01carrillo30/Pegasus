@@ -21,6 +21,7 @@ namespace board
             short materialWhite, materialBlack; // material scores for white and black
             short movesSinceLastCapture; // 50 move rule
             uint64_t hashCode;
+            bool turnWhite; // whose turn it is
 
             /** 
              * Creates a new board. Set startingPosition to true to initialize Board to the starting position (all members initialized)
