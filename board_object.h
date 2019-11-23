@@ -20,8 +20,8 @@ namespace board
             short EP; // en passant column / position?
             short materialWhite, materialBlack; // material scores for white and black
             short movesSinceLastCapture; // 50 move rule
-            uint64_t hashCode;
             bool turnWhite; // whose turn it is
+            uint64_t hashCode;
 
             /** 
              * Creates a new board. Set startingPosition to true to initialize Board to the starting position (all members initialized)
@@ -51,7 +51,7 @@ namespace board
                     }
                     CWK = true; CWQ = true; CBK = true; CBQ = true;
                     EP = 0; //TODO: is this an appropriate value for no enpasant?
-                    materialBlack = 
+                    materialBlack = 0; //TODO: what is an appropriate value?
                     materialWhite = materialBlack;
                     movesSinceLastCapture = 0;
                     // hashCode = this->hash(); //TODO: 

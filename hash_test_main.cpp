@@ -174,8 +174,7 @@ board::Board* createFromFenn(string fenn) {
 
 uint64_t randomHash() {
     /** Random number generator. Baseline to compare hashing to */
-    //return rand() % numeric_limits<uint64_t>::max(); // Uniform random distribution of numbers within bounds
-    return distribution(generator);
+    return distribution(generator); // random 64-bit number
 }
 uint64_t createHash(board::Board* board) {
     /** Hashes into 64 bits */
@@ -199,19 +198,22 @@ uint64_t createHash(board::Board* board) {
         uint64_t section = 0;
         short cursor = 21 + 20*i; // set cursor to start of section. 21 is first space, 20*i is 2*i-th row
         for (short j = 0; j < 16; j++) {
-            section += board->chessboard[cursor] << (4*j); // add 4 bits of the space at cursor to section, no overlap
-            if (j % 8 == 7) cursor += 2; // skip padding between rows
+            //cout << utility::getCharFromEnum(board->chessboard[cursor]) << " c:" << cursor << " j:" << j << endl;
+            //utility::printBinary(uint64_t(board->chessboard[cursor]) << (4*j));
+            section += uint64_t(board->chessboard[cursor++]) << (4*j); // add 4 bits of the space at cursor to section, no overlap
+            //utility::printBinary(section);
+            if (j % 8 == 7) cursor += 2; // skip invalids between rows
         }
 
         /* heart of the hash function here */
-        hash ^= 199*section; //TODO: this is not sufficient by any measure. Find a much better hash function.
+        hash ^= 199*section; //TODO: this is not a good enough hash. 7% collisions at 10 million random boards.
     }
     return hash;
 }
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
 
-//#define NUM_TEST_BOARDS 3
+//#define NUM_TEST_BOARDS 1
 #define NUM_TEST_BOARDS 1000000
 /** Method to generate boards to be tested */
 board_queue createSomeBoards() {
@@ -233,6 +235,15 @@ board_queue createSomeBoards() {
         };
         for (size_t i = 0; i < pieces_length; i++)
             nextBoard->chessboard[randomPosition()] = pieces[i];
+
+        // Initialize values (just so they are not garbage that will interfere with hashing)
+        nextBoard->CBK = false;
+        nextBoard->CBQ = false;
+        nextBoard->CWK = false;
+        nextBoard->CWQ = false;
+        nextBoard->EP = 0;
+        nextBoard->movesSinceLastCapture = distribution(generator) % 51; //random number from 0 to 50
+        nextBoard->turnWhite = distribution(generator) % 2; // random boolean, probably overkill
         // Generate hash 
         nextBoard->hashCode = createHash(nextBoard); //Change which of these is commented out to select them
         //nextBoard->hashCode = randomHash();

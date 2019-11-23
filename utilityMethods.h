@@ -8,6 +8,7 @@
 #include "board_object_DEPRECIATED.h"
 #include "board_object.h"
 #include <iostream>
+#include <bitset>
 
 namespace utility{
     // A utility function to print out a single bitboard:
@@ -23,6 +24,12 @@ namespace utility{
             std::cout << "\n";
         }
         std::cout << "\n\n";
+    }
+
+    /** Prints binary representation of 64 bit number to cout */
+    void printBinary(uint64_t val) {
+        std::bitset<64> b(val);
+        std::cout << b << std::endl;
     }
 
     /** 
