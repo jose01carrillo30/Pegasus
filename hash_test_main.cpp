@@ -172,7 +172,7 @@ board::Board* createFromFenn(string fenn) {
     }
 }
 
-uint64_t randomHash() {
+uint64_t randomHash(board::Board* board) {
     /** Random number generator. Baseline to compare hashing to */
     return distribution(generator); // random 64-bit number
 }
@@ -213,15 +213,17 @@ uint64_t createHash(board::Board* board) {
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
 
-//#define NUM_TEST_BOARDS 1
-#define NUM_TEST_BOARDS 1000000
-/** Method to generate boards to be tested */
-board_queue createSomeBoards() {
+unsigned int num_test_boards;
+/** 
+ * Method to generate random boards to be tested. 
+ * param customHash is function pointer to method used to hash boards
+ */
+board_queue createSomeBoards(uint64_t (*customHash)(board::Board*)) {
 //void createSomeBoards() {
-    //board::Board** boards = new board::Board*[NUM_TEST_BOARDS];
+    //board::Board** boards = new board::Board*[num_test_boards];
     board_queue boards;
 
-    for(uint64_t boardNum = 0; boardNum < NUM_TEST_BOARDS; boardNum++)
+    for(uint64_t boardNum = 0; boardNum < num_test_boards; boardNum++)
     {
         board::Board* nextBoard = new board::Board(false, true); //TODO: stop leak
         // Generate random board
@@ -245,8 +247,7 @@ board_queue createSomeBoards() {
         nextBoard->movesSinceLastCapture = distribution(generator) % 51; //random number from 0 to 50
         nextBoard->turnWhite = distribution(generator) % 2; // random boolean, probably overkill
         // Generate hash 
-        nextBoard->hashCode = createHash(nextBoard); //Change which of these is commented out to select them
-        //nextBoard->hashCode = randomHash();
+        nextBoard->hashCode = customHash(nextBoard);
         // store to queue for later
         boards.push(nextBoard);
     }
@@ -256,15 +257,43 @@ board_queue createSomeBoards() {
 //TODO: renamed and run from "actual_main_here.cpp"
 int mainRename_hash_test_main() {
 
-    cout << "Generating " << utility::toCommaString(NUM_TEST_BOARDS) << " random boards..." << endl;
-    board_queue testBoards = createSomeBoards();
+    /* User selects which hash method to use */
+    uint64_t (*hashFunction)(board::Board*) = nullptr; // 
+    while (hashFunction == nullptr)  {
+        cout << "Hash method? (type number of choice)" << endl
+        << "1) randomHash()" << endl
+        << "2) createHash()" << endl
+        << ">";
+        short response;
+        cin >> response;
+        switch (response)
+        {
+        case 1:
+            hashFunction = &randomHash;
+            break;
+        case 2:
+            hashFunction = &createHash;
+            break;
+        default:
+            cout << "invalid response. Please enter only the number of a given option." << endl;
+            break;
+        }
+    }
+    cout << "Please enter number of boards to test:" << endl
+    << ">";
+    cin >> num_test_boards;
+
+    cout << "Generating " << utility::toCommaString(num_test_boards) << " boards..." << endl;
+
+    //Create testboards using the selected function
+    board_queue testBoards = createSomeBoards(hashFunction);
 
     //TODO: would be nice if collision counting was more efficient
     cout << "Counting collisions..." << endl;
     int collisions = 0;
     board::Board* prev = nullptr;
     for(int i=0; !testBoards.empty(); i++) {
-        if (NUM_TEST_BOARDS < 10) { // only show boards if very small batch
+        if (num_test_boards < 10) { // only show boards if very small batch
             utility::printBoardArray(testBoards.top());
             cout << endl;
         }
@@ -276,7 +305,7 @@ int mainRename_hash_test_main() {
         prev = testBoards.top();
         testBoards.pop();
     }
-    cout << "Collisions/Boards: " << collisions << " / " << NUM_TEST_BOARDS << " ≈ " << collisions / (float) NUM_TEST_BOARDS;
+    cout << "Collisions/Boards: " << collisions << " / " << num_test_boards << " ≈ " << collisions / (float) num_test_boards;
     //utility::printBoard(testBoards.pop());
     cout << endl;
 
