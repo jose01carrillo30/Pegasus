@@ -5,8 +5,13 @@
 
 using namespace std;
 
+/** Initialize 64-bit RNG */
+random_device rd; //seed
+default_random_engine generator(rd());
+uniform_int_distribution<uint64_t> distribution(0,0xFFFFFFFFFFFFFFFF); // Distribution on which to apply the generator
+
 int randomPosition() {
-    return 21 + 10*(rand()%8) + (rand()%8);
+    return 21 + 10*(distribution(generator)%8) + (distribution(generator)%8);
 }
 
 class CompareHashes {
@@ -167,15 +172,27 @@ board::Board* createFromFenn(string fenn) {
     }
 }
 
+uint64_t randomHash() {
+    /** Random number generator. Baseline to compare hashing to */
+    //return rand() % numeric_limits<uint64_t>::max(); // Uniform random distribution of numbers within bounds
+    return distribution(generator);
+}
 uint64_t createHash(board::Board* board) {
     /** TODO: Hashes into 64 bits */
-    return 420 * rand() % uint64_t(69420000); //TODO: temporary
+    return 420; //TODO: temporary
+    for (size_t r = 0; r < 8; r++) { // Loop over valid spaces
+        size_t R = 10*r; // row offset
+        for (size_t c = 0; c < 8; c++) { 
+            //board->chessboard[21 + R + c]
+        }
+
+    }
 }
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
 
-#define NUM_TEST_BOARDS 3
-//#define NUM_TEST_BOARDS 3000000
+//#define NUM_TEST_BOARDS 3
+#define NUM_TEST_BOARDS 10000000
 /** Method to generate boards to be tested */
 board_queue createSomeBoards() {
 //void createSomeBoards() {
@@ -197,7 +214,8 @@ board_queue createSomeBoards() {
         for (size_t i = 0; i < pieces_length; i++)
             nextBoard->chessboard[randomPosition()] = pieces[i];
         // Generate hash 
-        nextBoard->hashCode = createHash(nextBoard);
+        //nextBoard->hashCode = createHash(nextBoard); //Change which of these is commented out to select them
+        nextBoard->hashCode = randomHash();
         // store to queue for later
         boards.push(nextBoard);
     }
@@ -206,16 +224,17 @@ board_queue createSomeBoards() {
 
 //TODO: renamed and run from "actual_main_here.cpp"
 int mainRename_hash_test_main() {
-    srand(time(NULL));
 
-    cout << "Generating " << NUM_TEST_BOARDS << " random boards..." << endl;
+    cout << "Generating " << utility::toCommaString(NUM_TEST_BOARDS) << " random boards..." << endl;
     board_queue testBoards = createSomeBoards();
 
     cout << "Counting collisions..." << endl;
     int collisions = 0;
     board::Board* prev = nullptr;
     for(int i=0; !testBoards.empty(); i++) {
-        utility::printBoardArray(testBoards.top());
+        if (NUM_TEST_BOARDS < 10) { // only show boards if very small batch
+            utility::printBoardArray(testBoards.top());
+        }
         //cout << endl;
         if (prev && prev->hashCode == testBoards.top()->hashCode) {
             collisions++;

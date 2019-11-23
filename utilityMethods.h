@@ -25,6 +25,20 @@ namespace utility{
         std::cout << "\n\n";
     }
 
+    /** 
+     * Returns string of uint64_t with comma separation 
+     * Credit to carljalal https://stackoverflow.com/questions/7276826/c-format-number-with-commas
+     */
+    std::string toCommaString(uint64_t num) {
+        std::string numWithCommas = std::to_string(num);
+        int insertPosition = numWithCommas.length() - 3;
+        while (insertPosition > 0) {
+            numWithCommas.insert(insertPosition, ",");
+            insertPosition-=3;
+        }
+        return numWithCommas;
+    }
+
     /** Is this a valid nonempty piece enum? */
     bool isPiece(unsigned char spaceEnum) {
         return spaceEnum < board::EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
@@ -45,7 +59,7 @@ namespace utility{
         switch (lineNum)
         {
         case 0:
-            std::cout << "hash code: " << board->hashCode;
+            std::cout << "hash code: " << toCommaString(board->hashCode);
             break;
         case 1:
             std::cout << "white castle rights: {king: " << board->CWK << " queen: " << board->CWQ << "}";
