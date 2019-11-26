@@ -16,6 +16,7 @@
 #include <queue>
 #include <limits>
 #include <random>
+#include <functional>
 #include "board_object.h"
 #include "utilityMethods.h"
 
