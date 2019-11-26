@@ -206,14 +206,17 @@ uint64_t createHash(board::Board* board) {
         }
 
         /* heart of the hash function here */
-        hash ^= 199*section; //TODO: this is not a good enough hash. 7% collisions at 10 million random boards.
+        //hash ^= 199*section; //TODO: this is not a good enough hash. 7% collisions at 10 million random boards.
+        //hash += 5*section; // 7% collions at 10 million random boards
+        //hash ^= section; // still 7% collisions at 10 million random boards?
     }
     return hash;
 }
 
 typedef priority_queue<board::Board*, std::vector<board::Board*>, CompareHashes> board_queue;
 
-unsigned int num_test_boards;
+unsigned int num_test_boards; // how many random boards generated and tested
+unsigned int print_sample_size; // number of sample boards to print 
 /** 
  * Method to generate random boards to be tested. 
  * param customHash is function pointer to method used to hash boards
@@ -283,17 +286,24 @@ int mainRename_hash_test_main() {
     << ">";
     cin >> num_test_boards;
 
+    cout << "Please enter number of samples to print:" << endl
+    << ">";
+    cin >> print_sample_size;
+
     cout << "Generating " << utility::toCommaString(num_test_boards) << " boards..." << endl;
 
     //Create testboards using the selected function
     board_queue testBoards = createSomeBoards(hashFunction);
+
+    int sample_step = num_test_boards / print_sample_size;
 
     //TODO: would be nice if collision counting was more efficient
     cout << "Counting collisions..." << endl;
     int collisions = 0;
     board::Board* prev = nullptr;
     for(int i=0; !testBoards.empty(); i++) {
-        if (num_test_boards < 10) { // only show boards if very small batch
+        if (i % sample_step == 0) { // only show boards from sample
+            cout << "board #" << i << ":" << endl;
             utility::printBoardArray(testBoards.top());
             cout << endl;
         }
