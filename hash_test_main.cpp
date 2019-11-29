@@ -20,6 +20,24 @@ public:
         return b1->hashCode < b2->hashCode;
     }
 };
+bool boardsEqual(board::Board* b1, board::Board* b2) { //TODO: this probably belongs in the board object overriding ==
+    if (b1->CBK != b2->CBK || 
+        b1->CBQ != b2->CBQ || 
+        b1->CWK != b2->CWK || 
+        b1->CWQ != b2->CWQ ||
+        b1->EP != b2->EP ||
+        b1->turnWhite != b2->turnWhite ||
+        b1->movesSinceLastCapture != b2->movesSinceLastCapture) {
+        return false;
+    }
+    for (int i = 0; i < 120; i++) {
+        if (b1->chessboard[i] != b2->chessboard[i]) {
+            return false;
+        }
+    }
+    // else
+    return true;
+}
 
 board::Board* createFromFenn(string fenn) {
     /** TODO: enpassant and move clocks */
@@ -225,6 +243,9 @@ uint64_t createHash(board::Board* board) {
 
         // Okay, lets try something different
         hash += uint_64_hasher(section) + (hash << 32); // This is STILL 7% ?! Perhaps something is wrong with random board generation...
+        /*TODO: Yep, just compared boards directly and found 7% of boards are identical; this means my collision rate is almost certainly significantly
+         * for all of the hash functions above
+         */
 
     }
     return hash;
@@ -279,10 +300,12 @@ int mainRename_hash_test_main() {
 
     /* User selects which hash method to use */
     uint64_t (*hashFunction)(board::Board*) = nullptr; // 
+    bool just_compare_boards = false; //option 3
     while (hashFunction == nullptr)  {
         cout << "Hash method? (type number of choice)" << endl
         << "1) randomHash()" << endl
         << "2) createHash()" << endl
+        << "3) Just compare boards directly" << endl
         << ">";
         short response;
         cin >> response;
@@ -293,6 +316,10 @@ int mainRename_hash_test_main() {
             break;
         case 2:
             hashFunction = &createHash;
+            break;
+        case 3:
+            hashFunction = &createHash; // Assumes working hash function, i.e. that boards share hash iff they are same board
+            just_compare_boards = true;
             break;
         default:
             cout << "invalid response. Please enter only the number of a given option." << endl;
@@ -329,8 +356,17 @@ int mainRename_hash_test_main() {
             cout << endl;
         }
 
-        if (prev && prev->hashCode == testBoards.top()->hashCode) {
-            collisions++;
+        // Condition to be considered collision
+        if (prev) { // only compare if prev != nullptr
+            if (just_compare_boards) {
+                if (boardsEqual(prev, testBoards.top())) { 
+                    collisions++;
+                }
+            } else { // if compare hashes
+                if (prev->hashCode == testBoards.top()->hashCode) {
+                    collisions++;
+                }
+            }
         }
         delete prev;
         prev = testBoards.top();
