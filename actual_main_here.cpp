@@ -53,6 +53,9 @@ namespace tablegen_namespace{
 namespace tL_test_main_namespace{
     #include "tL_test_main.cpp"
 }
+namespace uci_main_namespace{
+    #include "uci_main.cpp"
+}
 
 //TODO: here is where you put the method call/main method/testing code along with a seperator
 int main(int argc, char *argv[]) {
@@ -93,6 +96,12 @@ int main(int argc, char *argv[]) {
     if (run_all || input_main == "tL_test_main.cpp") {
         print_seperator("Code from tL_test_main.cpp main() here");
         tL_test_main_namespace::mainRename_tL_test_main();
+        has_run = true;
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    if (run_all || input_main == "uci_main.cpp") {
+        print_seperator("Code from uci_main.cpp main() here");
+        uci_main_namespace::mainRename_uci_main();
         has_run = true;
     }
     if (! has_run) { // input_main did not match any known main()
