@@ -76,6 +76,7 @@ namespace kingMoveGeneration{
 //                index++;
             }
         }
+        return nullptr; //TODO: added a temporary return so my compiler stops complaining to me
     }
 
     static void test(){
