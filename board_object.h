@@ -15,12 +15,14 @@ namespace board
 
     class Board {
         public:
+            // independent fields, provide necessary information about board
             unsigned char chessboard[120];
             bool CWK, CWQ, CBK, CBQ; // castle rights
             short EP; // en passant column / position?
-            short materialWhite, materialBlack; // material scores for white and black
             short movesSinceLastCapture; // 50 move rule
             bool turnWhite; // whose turn it is
+            // dependent fields, store information about board that is derived from independent fields
+            short materialWhite, materialBlack; // material scores for white and black
             uint64_t hashCode;
 
             /** 
@@ -28,7 +30,7 @@ namespace board
              * Set empty to true to initialize Board as empty (chessboard[] only initialized) 
              */
             Board(bool startingPosition=false, bool empty=false) {
-                if (startingPosition) {
+                if (startingPosition) { //TODO: just use Fenn string converter instead once that is completed
                     const unsigned char startChessboard[] = {
                 //                  A        B        C        D        E        F        G        H
                         INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
@@ -54,6 +56,7 @@ namespace board
                     materialBlack = 0; //TODO: what is an appropriate value?
                     materialWhite = materialBlack;
                     movesSinceLastCapture = 0;
+                    turnWhite = true;
                     // hashCode = this->hash(); //TODO: 
                 } else if (empty) {
                     const unsigned char startChessboard[] = {
@@ -75,6 +78,26 @@ namespace board
                     }
                 }
             }
+
+            /** Equal if all independe fields are equal */
+            bool operator==(const Board& other) const {
+                if (CBK != other.CBK || 
+                    CBQ != other.CBQ || 
+                    CWK != other.CWK || 
+                    CWQ != other.CWQ ||
+                    EP != other.EP ||
+                    turnWhite != other.turnWhite ||
+                    movesSinceLastCapture != other.movesSinceLastCapture) {
+                    return false;
+                }
+                for (int i = 0; i < 120; i++) {
+                    if (chessboard[i] != other.chessboard[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
     };
 }
 

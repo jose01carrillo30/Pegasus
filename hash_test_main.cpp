@@ -25,24 +25,6 @@ namespace hash_test_main_namespace {
             return b1->hashCode < b2->hashCode;
         }
     };
-    bool boardsEqual(board::Board* b1, board::Board* b2) { //TODO: this probably belongs in the board object overriding ==
-        if (b1->CBK != b2->CBK || 
-            b1->CBQ != b2->CBQ || 
-            b1->CWK != b2->CWK || 
-            b1->CWQ != b2->CWQ ||
-            b1->EP != b2->EP ||
-            b1->turnWhite != b2->turnWhite ||
-            b1->movesSinceLastCapture != b2->movesSinceLastCapture) {
-            return false;
-        }
-        for (int i = 0; i < 120; i++) {
-            if (b1->chessboard[i] != b2->chessboard[i]) {
-                return false;
-            }
-        }
-        // else
-        return true;
-    }
 
     uint64_t randomHash(board::Board* board) {
         /** Random number generator. Baseline to compare hashing to */
@@ -53,7 +35,7 @@ namespace hash_test_main_namespace {
     std::hash<uint64_t> uint_64_hasher; // hashes uint64_t into size_t
     std::hash<size_t> size_hasher; // hashes size_t into size_t
 
-    uint64_t createHash(board::Board* board) {
+    uint64_t createHash(board::Board* board) { // TODO: move into board object once we have a sufficient method
         /** Hashes into 64 bits */
         uint64_t hash = 0;
         /* Pack all additional info into 16 bit number */
@@ -96,11 +78,7 @@ namespace hash_test_main_namespace {
             //hash ^= section; // still 7% collisions at 10 million random boards?
 
             // Okay, lets try something different
-            hash += uint_64_hasher(section) + (hash << 32); // This is STILL 7% ?! Perhaps something is wrong with random board generation...
-            /*TODO: Yep, just compared boards directly and found 7% of boards are identical; this means my collision rate is almost certainly significantly
-            * for all of the hash functions above
-            */
-
+            hash += uint_64_hasher(section) + (hash << 32); // This is STILL 7% ?!
         }
         return hash;
     }
@@ -149,7 +127,6 @@ namespace hash_test_main_namespace {
         return boards;
     }
 
-    //TODO: renamed and run from "actual_main_here.cpp"
     int main() {
 
         /* User selects which hash method to use */
@@ -213,7 +190,7 @@ namespace hash_test_main_namespace {
             // Condition to be considered collision
             if (prev) { // only compare if prev != nullptr
                 if (just_compare_boards) {
-                    if (boardsEqual(prev, testBoards.top())) { 
+                    if (prev == testBoards.top()) { 
                         collisions++;
                     }
                 } else { // if compare hashes

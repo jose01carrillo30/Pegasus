@@ -5,6 +5,9 @@
 #include <string>
 #include <iostream>
 
+#include "board_object.h"
+#include "utilityMethods.h"
+
 namespace uci_main_namespace{
 
     const std::string NAME = "Pegasus";
