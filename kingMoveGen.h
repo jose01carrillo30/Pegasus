@@ -15,7 +15,7 @@ namespace kingMoveGeneration{
     const short adjacents[] = {-11, -10, -9, -1, 1, 9, 10, 11};
 
     //returns a pointer to the array of possible moves, adds a UL representation of every possible move
-    static UL* generateKingMoves(int8_t kingPos, board::Board gameBoard, bool isWhite, MoveRepresentation::Move* toPutMoves){
+    static MoveRepresentation::Move* generateKingMoves(int8_t kingPos, board::Board gameBoard, bool isWhite, MoveRepresentation::Move* toPutMoves){
         //index in toPutMoves
         unsigned short index = 0;
 
