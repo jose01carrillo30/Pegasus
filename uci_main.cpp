@@ -10,9 +10,9 @@
 namespace uci_main_namespace{
 
     int main() {
-        std::cout << "Calling init" << std::endl;
+        std::cout << "[uci_main] Calling init" << std::endl;
         uci::init();
-        std::cout << "Calling loop" << std::endl;
+        std::cout << "[uci_main] Calling loop" << std::endl;
         uci::loop();
         return 0;
     }
