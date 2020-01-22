@@ -8,159 +8,22 @@
 #include "board_object.h"
 #include <iostream>
 #include <bitset>
+#include "board_object_DEPRECIATED.h"
 
 namespace utility{
-
-    board::Board* createFromFenn(std::string fenn) {
-        /** TODO: enpassant and move clocks */
-        board::Board* fennBoard = new board::Board(false, true);
-        bool isSpace = false;
-        fennBoard->CWK = false;
-        fennBoard->CBK = false;
-        fennBoard->CWQ = false;
-        fennBoard->CBQ = false;
-        
-        int boardIndex = 0;
-
-        for (char c : fenn){
-
-            while (fennBoard->chessboard[boardIndex] == board::INVALID){
-                boardIndex++;
+    // A utility function to print out a single bitboard:
+    void printBitboard(ULL board) {
+        // Note: this print function is weird because it uses the Little-Endian Rank-File Mapping:
+        // Iterate through all 64 bits:
+        for (int i = 7; i >= 0; i--) {
+            for (int j = 0; j < 8; j++) {
+                // THE CURRENT BIT IS (8i + j)
+                // If the current bit is 1, print "1 ". Otherwise, print "0 ":
+                std::cout << (((board >> (8*i + j)) & 1) ? "1 " : ". ");
             }
-
-            switch(c) {
-
-                case 'P':
-                    fennBoard->chessboard[boardIndex] = board::WP;
-                    boardIndex++;
-                    break;
-
-                case 'p':
-                    fennBoard->chessboard[boardIndex] = board::BP;
-                    boardIndex++;
-                    break;
-
-                case 'R':
-                    fennBoard->chessboard[boardIndex] = board::WR;
-                    boardIndex++;
-                    break;
-
-                case 'r':
-                    fennBoard->chessboard[boardIndex] = board::BR;
-                    boardIndex++;
-                    break;
-
-                case 'N':
-                    fennBoard->chessboard[boardIndex] = board::WN;
-                    boardIndex++;
-                    break;
-
-                case 'n':
-                    fennBoard->chessboard[boardIndex] = board::BN;
-                    boardIndex++;
-                    break;
-
-                case 'B':
-                    fennBoard->chessboard[boardIndex] = board::WB;
-                    boardIndex++;
-                    break;
-
-                case 'b':
-                    if (isSpace)
-                        fennBoard->turnWhite = false;
-                    else {
-                        fennBoard->chessboard[boardIndex] = board::BB;
-                        boardIndex++;
-                    }
-                    break;
-
-                case 'Q':
-                    if(isSpace)
-                        fennBoard->CWQ = true;
-                    else{
-                        fennBoard->chessboard[boardIndex] = board::WQ;
-                        boardIndex++;
-                    }
-                    break;
-
-                case 'q':
-                    if(isSpace)
-                        fennBoard->CBQ = true;
-                    else{
-                        fennBoard->chessboard[boardIndex] = board::BQ;
-                        boardIndex++;
-                    }
-                    break;
-
-                case 'K':
-                    if(isSpace)
-                        fennBoard->CWK = true;
-                    else{
-                        fennBoard->chessboard[boardIndex] = board::WK;
-                        boardIndex++;
-                    }
-                    break;
-
-                case 'k':
-                    if(isSpace)
-                        fennBoard->CBK = true;
-                    else{
-                        fennBoard->chessboard[boardIndex] = board::BK;
-                        boardIndex++;
-                    }
-                    break;
-
-                case '/':
-                    boardIndex++;
-                    break;
-
-                case '1':
-                    boardIndex++;
-                    break;
-
-                case '2':
-                    boardIndex+=2;
-                    break;
-
-                case '3':
-                    boardIndex+=3;
-                    break;
-
-                case '4':
-                    boardIndex+=4;
-                    break;
-
-                case '5':
-                    boardIndex+=5;
-                    break;
-
-                case '6':
-                    boardIndex+=6;
-                    break;
-
-                case '7':
-                    boardIndex+=7;
-                    break;
-
-                case '8':
-                    boardIndex+=8;
-                    break;
-
-                case ' ':
-                    isSpace = true;
-                    break;
-
-                case 'w':
-                    fennBoard->turnWhite = true;
-                    break;
-
-                default:
-                    std::cout << "Invalid character in FEN string" << std::endl;
-
-            }
-
+            std::cout << "\n";
         }
-        return fennBoard;
+        std::cout << "\n\n";
     }
 
     /** Prints binary representation of 64 bit number to cout */
