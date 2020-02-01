@@ -33,14 +33,14 @@ void print_seperator(std::string txt){
 int main(int argc, char *argv[]) {
     std::string USAGE_ERROR = "Usage: " + std::string(argv[0]) + " [main_method_name.cpp]";
 
-    bool run_all; // all main methods will execute if true
+    bool zero_arg; // remember if no arguements given
     std::string input_main = ""; // which main is the user calling
     switch (argc) {
     case 1: // user did not specify a main to run
-        run_all = true;
+        zero_arg = true;
         break;
     case 2: // user gave a main to run
-        run_all = false;
+        zero_arg = false;
         input_main = std::string(argv[1]);
         break;
     default: // user is confused
@@ -53,20 +53,21 @@ int main(int argc, char *argv[]) {
     // GIANT main method so that the project would actually compile and run lol - Troy
 
     //------------------------------------------------------------------------------------------------------------------
-    if (run_all || input_main == "hash_test_main.cpp") {
+    if (input_main == "hash_test_main.cpp") {
         print_seperator("Code from hash_test_main.cpp main() here");
         hash_test_main_namespace::main();
         has_run = true;
     }
     //------------------------------------------------------------------------------------------------------------------
-    if (run_all || input_main == "tL_test_main.cpp") {
+    if (input_main == "tL_test_main.cpp") {
         print_seperator("Code from tL_test_main.cpp main() here");
         tL_test_main_namespace::main();
         has_run = true;
     }
     //------------------------------------------------------------------------------------------------------------------
-    if (run_all || input_main == "uci_main.cpp") {
-        print_seperator("Code from uci_main.cpp main() here");
+    // uci_main is the main method that needs to be called by GUI/user, so it should be the default to run if no are is given. 
+    if (zero_arg || input_main == "uci_main.cpp") {
+        if (!zero_arg) print_seperator("Code from uci_main.cpp main() here");
         uci_main_namespace::main();
         has_run = true;
     }
