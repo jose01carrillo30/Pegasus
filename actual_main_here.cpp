@@ -8,6 +8,7 @@
 #include "hash_test_main.cpp"
 #include "tL_test_main.cpp"
 #include "uci_main.cpp"
+#include "test_moves_main.cpp"
 
 void print_seperator(std::string txt){
     int length_text = txt.length();
@@ -69,6 +70,12 @@ int main(int argc, char *argv[]) {
     if (zero_arg || input_main == "uci_main.cpp") {
         if (!zero_arg) print_seperator("Code from uci_main.cpp main() here");
         uci_main_namespace::main();
+        has_run = true;
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    if (input_main == "test_moves_main.cpp") {
+        if (!zero_arg) print_seperator("Code from test_moves_main.cpp main() here");
+        test_moves_main_namespace::main();
         has_run = true;
     }
     if (! has_run) { // input_main did not match any known main()

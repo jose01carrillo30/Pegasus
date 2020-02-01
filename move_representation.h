@@ -15,16 +15,18 @@ typedef uint32_t Move;
 namespace MoveRepresentation {
 
     // Array to store the ranges of bits each value takes up, index the UL long like an array (first bit from left is index 0)
-    // As normal, range is (start, end] (not including end index)
+    // As normal, range is [start, end) (not including end index)
         //castle: 0: no castle, 1: queen side, 2: king side
-    //TODO: Increase ranges to accomadate the 120 possible spots?
-    enum : unsigned char {startPosIndex, endPosIndex, castleIndex, enPassantIndex, captureIndex, promoteIndex, pieceThatMovedIndex};
-    constexpr const static unsigned short ranges[7][2] = {{28u, 32u}, {24u, 28u}, {22u, 24u}, {18u, 22u}, {15u, 18u}, {12u, 15u}, {9u, 12u}};
+    enum : unsigned char {startPosIndex /*7 bits*/, endPosIndex /*7 bits*/, 
+    castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/, 
+    promoteIndex /*3 bits*/, pieceThatMovedIndex /*3 bits*/};
+    constexpr const static unsigned short ranges[7][2] = {{32u-7u, 32u}, {32u-14u, 32u-7u}, 
+    {32u-16u, 32u-14u}, {16u-4u, 16u}, {16u-7u, 16u-4u}, 
+    {16u-10u, 16u-7u}, {16u-13u, 16u-10u}};
 
     Move encodeMove(short startPosition, short endPosition, short castle, short enPassant, short capturedPiece, short promotedPiece, short piece) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
-        std::cout << numBits << "\n";
 
         // Get result by bit-shifting the inputs into place then or'ing the results
         code |= (startPosition << (numBits - ranges[startPosIndex][1]));
