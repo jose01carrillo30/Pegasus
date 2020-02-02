@@ -33,7 +33,7 @@ namespace MoveRepresentation {
     // As normal, range is [start, end) (not including end index)
         //castle: 0: no castle, 1: queen side, 2: king side
     enum : unsigned char {startPosIndex /*7 bits*/, endPosIndex /*7 bits*/, 
-    castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/, 
+    castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/, // FIXME: 3 bits is not enough to fit piece type/color (board::enum), do we need another enum? Probably we should just increase to 4
     promoteIndex /*3 bits*/, pieceThatMovedIndex /*3 bits*/};
     constexpr const static unsigned short ranges[7][2] = {{32u-7u, 32u}, {32u-14u, 32u-7u}, 
     {32u-16u, 32u-14u}, {16u-4u, 16u}, {16u-7u, 16u-4u}, 
@@ -52,7 +52,7 @@ namespace MoveRepresentation {
      *   promotedPiece: what type of piece a pawn is promoting to; INVALID if none or N/A
      */
     Move encodeMove(short startPosition, short endPosition, short piece, 
-    short capturedPiece=board::EMPTY, short castle=0, short enPassant=0, short promotedPiece=board::INVALID) {
+    short capturedPiece=board::EMPTY, short castle=0u, short enPassant=0u, short promotedPiece=board::INVALID) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
 
@@ -88,18 +88,23 @@ namespace MoveRepresentation {
 
         /*----- set END of move ------*/
         // TODO: assumes promoteIndex stores piece type being promoted to, EMPTY otherwise
-        if (decodeMove(move, promoteIndex) == board::EMPTY) {
+        
+        //FIXME: piece enum is not able to fit in 3 bits, trucated and fails equality.
+        std::cout << "decoded: " << decodeMove(move, promoteIndex) << " invalid: " << board::INVALID << std::endl;
+        
+        if (decodeMove(move, promoteIndex) == board::INVALID) {
             // normal move
             board->chessboard[endPos] = board->chessboard[startPos];
         } else {
             // promotion
+            std::cout << "Promotion." << std::endl;
             board->chessboard[endPos] = decodeMove(move, promoteIndex);
         }
 
-
         /*----- castling ------*/
         // set rook for short castle
-        if (decodeMove(move, castleIndex) == 1/*TODO: change this to desired value for short castle*/) {
+        if (decodeMove(move, castleIndex) == 1) {
+            std::cout << "short castled" << std::endl;
             // is this on black or white's side?
             if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
@@ -109,7 +114,8 @@ namespace MoveRepresentation {
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::WR;
             }
         // set rook for long castle
-        } else if (decodeMove(move, castleIndex) == 2/*TODO: change this to desired value for long castle*/) {
+        } else if (decodeMove(move, castleIndex) == 2) {
+            std::cout << "long castled." << std::endl;
             // is this on black or white's side?
             if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
                 board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;
