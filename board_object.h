@@ -8,8 +8,7 @@
 #include <cstdint>
 
 namespace board {
-    //TODO: Is anyone using the ., x, P, N, etc for their code? I'm going to change it to a standard 0, 1, 2, 3 enum for use with indexing - Troy
-    // I rearranged these into a more useful fashion. White is even, black is odd, and all pieces are less than EMPTY - Jose
+    // White is even, black is odd, and all pieces are less than EMPTY
     enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
 
     class Board {
