@@ -63,7 +63,7 @@ namespace kingMoveGeneration{
         else{
             //left (queen) side castle
             if(gameBoard.CBQ && gameBoard.chessboard[22] == board::EMPTY && gameBoard.chessboard[23] == board::EMPTY && gameBoard.chessboard[24] == board::EMPTY){
-                //TODO: are we doing 64 or 120 for spot indexes?
+                //TODO: are we doing 64 or 120 for spot indexes? A: I think we should use 120 indexing
                 //TODO: check enPassant and promote number
                 toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 23, 1u, 0u, board::EMPTY, board::EMPTY, board::BK);
                 index++;

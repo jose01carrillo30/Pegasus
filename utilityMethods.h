@@ -231,6 +231,7 @@ namespace utility{
     /** 
      * Prints the entire Board's array, including invalid spaces
      * Set info to true to also print all information about Board
+     * Note that this will be vertically mirrored compared to what user (printBoard) would see.
      */
     void printBoardArray(board::Board* board, bool info=true) {
         for (size_t i = 0; i < 120; i++) {
@@ -244,20 +245,30 @@ namespace utility{
     /** 
      * Prints the entire Board in a pretty way
      * Set info to true to also print all information about Board
+     * Set flipped to true to see board from black's perspective
      */
-    void printBoard(board::Board* board, bool info=true) {
+    void printBoard(board::Board* board, bool flipped=false, bool info=false) {
         std::cout << "  +-----------------+" << std::endl;
         for (size_t r = 0; r < 8; r++) {
-            std::cout << 8-r << " | ";
+            // ranks top to bottom go 8->1 normally, reversed when flipped
+            std::cout << (flipped? r+1 : 8-r) << " | ";
             for (size_t c = 0; c < 8; c++) { 
-                std::cout << board->chessboard[21 + 10*r + c] << " ";
+                if (flipped) 
+                    // 21 is starting tile. +10*r means white at top. (7-c) means reverse columns
+                    std::cout << getCharFromEnum(board->chessboard[21 + 10*r + (7-c)]) << " ";
+                else
+                    std::cout << getCharFromEnum(board->chessboard[91 - 10*r + c]) << " ";
             }
             std::cout << "|  ";
             if (info) printInfo(board, r);
             std::cout << std::endl;
         }
         std::cout << "  +-----------------+" << std::endl;
-        std::cout << "    a b c d e f g h  " << std::endl;
+        if (flipped)
+            // columns were reversed so their enumeration needs to be too
+            std::cout << "    h g f e d c b a  " << std::endl;
+        else
+            std::cout << "    a b c d e f g h  " << std::endl;
     }
 
     // is there a better way to do this than just a big switch?

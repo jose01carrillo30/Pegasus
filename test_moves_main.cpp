@@ -15,9 +15,17 @@ namespace test_moves_main_namespace{
         /*---------- Test print/apply move ---------*/
         board::Board testBoard = board::Board(true);
         utility::printBoardArray(&testBoard);
-        Move move2 = MoveRepresentation::encodeMove(27, 46, 0, 0, 0, board::EMPTY, board::WN);
+
+        Move move2 = MoveRepresentation::encodeMove(27, 46);
         MoveRepresentation::applyMove(&testBoard, move2);
         utility::printBoardArray(&testBoard);
+
+        Move move3 = MoveRepresentation::encodeMove(83, 63);
+        MoveRepresentation::applyMove(&testBoard, move3);
+        utility::printBoard(&testBoard, true);
+
+        MoveRepresentation::applyMove(&testBoard, MoveRepresentation::encodeMove(31, 41));
+        utility::printBoard(&testBoard, false, true);
         return 0;
     }
 }

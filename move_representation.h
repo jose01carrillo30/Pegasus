@@ -40,7 +40,8 @@ namespace MoveRepresentation {
     {16u-10u, 16u-7u}, {16u-13u, 16u-10u}};
 
     // TODO: Maybe we could have promoted be just one bit, if piece represents what the piece is at the end of the move?
-    Move encodeMove(short startPosition, short endPosition, short castle, short enPassant, short capturedPiece, short promotedPiece, short piece) {
+    // TODO: better document what each of these parameters are
+    Move encodeMove(short startPosition, short endPosition, short castle=0, short enPassant=0, short capturedPiece=board::EMPTY, short promotedPiece=board::INVALID, short piece=board::INVALID) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
 
