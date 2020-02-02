@@ -23,143 +23,117 @@ namespace utility{
         
         int boardIndex = 0;
 
+        // FIXME: if Davis isn't here to support this code, might not be a bad idea to just re-do it.
         for (char c : fenn){
-
-            while (fennBoard->chessboard[boardIndex] == board::INVALID){
+            while (fennBoard->chessboard[boardIndex] == board::INVALID) {
                 boardIndex++;
             }
-
             switch(c) {
-
                 case 'P':
                     fennBoard->chessboard[boardIndex] = board::WP;
                     boardIndex++;
                     break;
-
                 case 'p':
                     fennBoard->chessboard[boardIndex] = board::BP;
                     boardIndex++;
                     break;
-
                 case 'R':
                     fennBoard->chessboard[boardIndex] = board::WR;
                     boardIndex++;
                     break;
-
                 case 'r':
                     fennBoard->chessboard[boardIndex] = board::BR;
                     boardIndex++;
                     break;
-
                 case 'N':
                     fennBoard->chessboard[boardIndex] = board::WN;
                     boardIndex++;
                     break;
-
                 case 'n':
                     fennBoard->chessboard[boardIndex] = board::BN;
                     boardIndex++;
                     break;
-
                 case 'B':
                     fennBoard->chessboard[boardIndex] = board::WB;
                     boardIndex++;
                     break;
-
                 case 'b':
-                    if (isSpace)
+                    if (isSpace) {
                         fennBoard->turnWhite = false;
-                    else {
+                    } else {
                         fennBoard->chessboard[boardIndex] = board::BB;
                         boardIndex++;
                     }
                     break;
-
                 case 'Q':
-                    if(isSpace)
+                    if (isSpace)
                         fennBoard->CWQ = true;
-                    else{
+                    else {
                         fennBoard->chessboard[boardIndex] = board::WQ;
                         boardIndex++;
                     }
                     break;
 
                 case 'q':
-                    if(isSpace)
+                    if (isSpace) {
                         fennBoard->CBQ = true;
-                    else{
+                    } else {
                         fennBoard->chessboard[boardIndex] = board::BQ;
                         boardIndex++;
                     }
                     break;
-
                 case 'K':
-                    if(isSpace)
+                    if (isSpace) {
                         fennBoard->CWK = true;
-                    else{
+                    } else {
                         fennBoard->chessboard[boardIndex] = board::WK;
                         boardIndex++;
                     }
                     break;
-
                 case 'k':
-                    if(isSpace)
+                    if (isSpace) {
                         fennBoard->CBK = true;
-                    else{
+                    } else {
                         fennBoard->chessboard[boardIndex] = board::BK;
                         boardIndex++;
                     }
                     break;
-
                 case '/':
                     boardIndex++;
                     break;
-
                 case '1':
                     boardIndex++;
                     break;
-
                 case '2':
-                    boardIndex+=2;
+                    boardIndex += 2;
                     break;
-
                 case '3':
-                    boardIndex+=3;
+                    boardIndex += 3;
                     break;
-
                 case '4':
-                    boardIndex+=4;
+                    boardIndex += 4;
                     break;
-
                 case '5':
-                    boardIndex+=5;
+                    boardIndex += 5;
                     break;
-
                 case '6':
-                    boardIndex+=6;
+                    boardIndex += 6;
                     break;
-
                 case '7':
-                    boardIndex+=7;
+                    boardIndex += 7;
                     break;
-
                 case '8':
-                    boardIndex+=8;
+                    boardIndex += 8;
                     break;
-
                 case ' ':
                     isSpace = true;
                     break;
-
                 case 'w':
                     fennBoard->turnWhite = true;
                     break;
-
                 default:
                     std::cout << "Invalid character in FEN string" << std::endl;
-
             }
-
         }
         return fennBoard;
     }
@@ -188,7 +162,6 @@ namespace utility{
     inline bool isPiece(unsigned char spaceEnum) {
         return spaceEnum < board::EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
     }
-
     /** Assuming a valid nonempty piece enum, is the piece white or black? */
     inline bool isBlack(unsigned char piece) {
         return piece % 2; // Assumes black pieces are odd enums

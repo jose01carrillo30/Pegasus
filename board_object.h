@@ -1,7 +1,3 @@
-//
-// Created by troyl on 11/15/2019.
-//
-
 #ifndef PEGASUS_STUFF_BOARD_OBJECT_H
 #define PEGASUS_STUFF_BOARD_OBJECT_H
 
@@ -9,6 +5,7 @@
 
 namespace board {
     // White is even, black is odd, and all pieces are less than EMPTY
+    // For example, WP means White Pawn, BN mean Black kNight
     enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
 
     class Board {
@@ -57,7 +54,7 @@ namespace board {
                     turnWhite = true;
                     // hashCode = this->hash(); //TODO: 
                 } else if (empty) {
-                    const unsigned char startChessboard[] = {
+                    const unsigned char startChessboard[] = { //TODO: replace this mess with FEN imports
                         INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
                         INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
                         INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
@@ -77,7 +74,7 @@ namespace board {
                 }
             }
 
-            /** Equal if all independe fields are equal */
+            /** Boards are equal if all independent fields are equal */
             bool operator==(const Board& other) const {
                 if (CBK != other.CBK || 
                     CBQ != other.CBQ || 

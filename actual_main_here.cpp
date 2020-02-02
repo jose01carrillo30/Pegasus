@@ -1,7 +1,3 @@
-//
-// Created by troyl on 11/6/2019.
-//
-
 #include <string>
 #include <iostream>
 
@@ -30,7 +26,6 @@ void print_seperator(std::string txt){
     std::cout << "\n\n";
 }
 
-//TODO: here is where you put the method call/main method/testing code along with a seperator
 int main(int argc, char *argv[]) {
     std::string USAGE_ERROR = "Usage: " + std::string(argv[0]) + " [main_method_name.cpp]";
 

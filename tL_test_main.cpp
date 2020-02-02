@@ -1,10 +1,7 @@
-//
-// Created by troyl on 11/8/2019.
-//
-
 #include <iostream>
 #include "move_representation.h"
 #include "kingMoveGen.h"
+
 namespace tL_test_main_namespace{
 
     class test{

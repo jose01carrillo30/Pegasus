@@ -1,7 +1,3 @@
-//
-// Created by troyl on 11/6/2019.
-//
-
 #ifndef PEGASUS_STUFF_MOVE_REPRESENTATION_H
 #define PEGASUS_STUFF_MOVE_REPRESENTATION_H
 
@@ -27,6 +23,7 @@ typedef uint32_t Move;
 #define ROOK_W_SHORT_CASTLE_TO 26 // f1
 #define ROOK_W_LONG_CASTLE_TO 24 // d1
 
+//FIXME: this is a awful and long namespace, any reccomendations for something shorter?
 namespace MoveRepresentation {
 
     // Array to store the ranges of bits each value takes up, index the UL long like an array (first bit from left is index 0)
@@ -80,7 +77,7 @@ namespace MoveRepresentation {
 
     /** 
      * Returns true if it was able to apply move to the board, 
-     * Assumes move is valid 
+     * Assumes move is valid.
      */
     bool applyMove(board::Board *board, Move move) {
         // store endpos since we will use it multiple times, and it does not make sense to repeatedly recalculate it
@@ -88,24 +85,21 @@ namespace MoveRepresentation {
         UL startPos = decodeMove(move, startPosIndex);
 
         /*----- set END of move ------*/
-        // TODO: assumes promoteIndex stores piece type being promoted to, EMPTY otherwise
-        
+        // assumes promoteIndex stores piece type being promoted to, EMPTY/INVALID otherwise
         if (decodeMove(move, promoteIndex) == utility::uncolor(board::INVALID)) {
             // normal move
             board->chessboard[endPos] = board->chessboard[startPos];
         } else {
-            // promotion
-            std::cout << "Promotion." << std::endl;
+            // promotion //TODO: test this code
             if (utility::isWhite(board->chessboard[endPos])) // TODO: eww can we just store whose turn it is?
                 board->chessboard[endPos] = utility::recolor(decodeMove(move, promoteIndex));
             else
                 board->chessboard[endPos] = utility::toBlack(utility::recolor(decodeMove(move, promoteIndex)));
         }
 
-        /*----- castling ------*/
+        /*----- castling ------*/ //TODO: test this code
         // set rook for short castle
         if (decodeMove(move, castleIndex) == 1) {
-            std::cout << "short castled" << std::endl;
             // is this on black or white's side?
             if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
@@ -116,7 +110,6 @@ namespace MoveRepresentation {
             }
         // set rook for long castle
         } else if (decodeMove(move, castleIndex) == 2) {
-            std::cout << "long castled." << std::endl;
             // is this on black or white's side?
             if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
                 board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;

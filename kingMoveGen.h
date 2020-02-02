@@ -42,7 +42,7 @@ namespace kingMoveGeneration{
                 }
             }
         }
-        //white
+        // White
         if(isWhite){
             //left (queen/long) side castle
             // TODO: magic numbers (btw we are using 120 index)
@@ -58,7 +58,7 @@ namespace kingMoveGeneration{
 //                index++;
             }
         }
-        //black
+        // Black
         else{
             //left (queen/long) side castle
             if(gameBoard.CBQ && gameBoard.chessboard[22] == board::EMPTY && gameBoard.chessboard[23] == board::EMPTY && gameBoard.chessboard[24] == board::EMPTY){
@@ -73,11 +73,11 @@ namespace kingMoveGeneration{
 //                index++;
             }
         }
-        return nullptr; //TODO: added a temporary return so my compiler stops complaining to me
+        return nullptr; //FIXME: added a temporary return so my compiler stops complaining to me. But this should still return something.
     }
 
     static void test(){
-
+        //TODO:
     }
 };
 
