@@ -28,51 +28,48 @@ namespace kingMoveGeneration{
             if(targetVal != board::INVALID){
                 //white, check for ally piece, can't move onto them
                 if(isWhite && (targetVal < board::WP || targetVal > board::WK)){
-                    //TODO: Note that if we go ahead with making EMPTY the "capturedPiece" default (no capture), then this branch (target...)? x : y is unnecessary
+                    // Assumes no capture is represented by capturedPiece=EMPTY
                     //TODO: check enPassant and promote number
-                    toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, kingPos + adjacent, 0u, 0u, (targetVal != board::EMPTY)? targetVal : board::EMPTY, board::EMPTY, board::WK);
+                    toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, kingPos + adjacent, board::WK, targetVal);
                     index++;
                 }
                 //black, check for ally piece, can't move onto them
                 else if(!isWhite && targetVal < board::BP){
-                    //TODO: Note that if we go ahead with making EMPTY the "capturedPiece" default (no capture), then this branch (target...)? x : y is unnecessary
+                    // Assumes no capture is represented by capturedPiece=EMPTY
                     //TODO: check enPassant and promote number
-                    toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, kingPos + adjacent, 0u, 0u, (targetVal != board::EMPTY)? targetVal : board::EMPTY, board::EMPTY, board::BK);
+                    toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, kingPos + adjacent, board::BK, targetVal);
                     index++;
                 }
             }
         }
         //white
         if(isWhite){
-            //left (queen) side castle
+            //left (queen/long) side castle
+            // TODO: magic numbers (btw we are using 120 index)
             if(gameBoard.CWQ && gameBoard.chessboard[92] == board::EMPTY && gameBoard.chessboard[93] == board::EMPTY && gameBoard.chessboard[94] == board::EMPTY){
-                //TODO: are we doing 64 or 120 for spot indexes?
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 93, 1u, 0u, board::EMPTY, board::EMPTY, board::WK);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 93, board::WK, board::EMPTY, 2u);
                 index++;
             }
-            //right (king) side castle
+            //right (king/short) side castle
             if(gameBoard.CWK && gameBoard.chessboard[96] == board::EMPTY && gameBoard.chessboard[97] == board::EMPTY){
-                //TODO: are we doing 64 or 120 for spot indexes?
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 97, 2u, 0u, board::EMPTY, board::EMPTY, board::WK);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 97, board::WK, board::EMPTY, 1u);
 //                index++;
             }
         }
         //black
         else{
-            //left (queen) side castle
+            //left (queen/long) side castle
             if(gameBoard.CBQ && gameBoard.chessboard[22] == board::EMPTY && gameBoard.chessboard[23] == board::EMPTY && gameBoard.chessboard[24] == board::EMPTY){
-                //TODO: are we doing 64 or 120 for spot indexes? A: I think we should use 120 indexing
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 23, 1u, 0u, board::EMPTY, board::EMPTY, board::BK);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 23, board::BK, board::EMPTY, 2u);
                 index++;
             }
-            //right (king) side castle
+            //right (king/short) side castle
             if(gameBoard.CBK && gameBoard.chessboard[26] == board::EMPTY && gameBoard.chessboard[27] == board::EMPTY){
-                //TODO: are we doing 64 or 120 for spot indexes?
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 27, 2u, 0u, board::EMPTY, board::EMPTY, board::BK);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 27, board::BK, board::EMPTY, 1u);
 //                index++;
             }
         }

@@ -40,8 +40,19 @@ namespace MoveRepresentation {
     {16u-10u, 16u-7u}, {16u-13u, 16u-10u}};
 
     // TODO: Maybe we could have promoted be just one bit, if piece represents what the piece is at the end of the move?
-    // TODO: better document what each of these parameters are
-    Move encodeMove(short startPosition, short endPosition, short castle=0, short enPassant=0, short capturedPiece=board::EMPTY, short promotedPiece=board::INVALID, short piece=board::INVALID) {
+    /**
+     * Creates a new move given the parameters.
+     * Required parameters: 
+     *   <start/end>Position: 120-index of the moving piece (castling is done by a king move)
+     *   piece: what type/color of piece is making move
+     * Optional parameters:
+     *   capturedPiece: what type/color of piece is at the endPosition before move is made
+     *   castle: 0 for none, 1 for short, 2 for long
+     *   enPassant: TODO: ????
+     *   promotedPiece: what type of piece a pawn is promoting to; INVALID if none or N/A
+     */
+    Move encodeMove(short startPosition, short endPosition, short piece, 
+    short capturedPiece=board::EMPTY, short castle=0, short enPassant=0, short promotedPiece=board::INVALID) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
 
