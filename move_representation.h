@@ -25,10 +25,10 @@ typedef uint32_t Move;
 
 //FIXME: this is a awful and long namespace, any reccomendations for something shorter?
 namespace MoveRepresentation {
+    enum : unsigned char {NO_CASTLE, LONG_CASTLE, SHORT_CASTLE};
 
     // Array to store the ranges of bits each value takes up, index the UL long like an array (first bit from left is index 0)
     // As normal, range is [start, end) (not including end index)
-        //castle: 0: no castle, 1: queen side, 2: king side
     enum : unsigned char {startPosIndex /*7 bits*/, endPosIndex /*7 bits*/, 
     castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/,
     promoteIndex /*3 bits*/, pieceThatMovedIndex /*3 bits*/};
@@ -45,12 +45,12 @@ namespace MoveRepresentation {
      *   piece: uncolored piece that is making move
      * Optional parameters:
      *   capturedPiece: the uncolored piece at the endPosition before move is made. Note that if we do 4 bits, we can include the color too.
-     *   castle: 0 for none, 1 for short, 2 for long
+     *   castle: takes castle enum
      *   enPassant: TODO: ???? what are those 4 bits used for??
      *   promotedPiece: uncolored piece a pawn is promoting to; EMPTY if none or N/A
      */
     Move encodeMove(short startPosition, short endPosition, short piece, 
-    short capturedPiece=utility::uncolor(board::EMPTY), short castle=0u, short enPassant=0u, short promotedPiece=utility::uncolor(board::EMPTY)) {
+    short capturedPiece=utility::uncolor(board::EMPTY), short castle=NO_CASTLE, short enPassant=0u, short promotedPiece=utility::uncolor(board::EMPTY)) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
 
@@ -99,7 +99,7 @@ namespace MoveRepresentation {
 
         /*----- castling ------*/ //TODO: test this code
         // set rook for short castle
-        if (decodeMove(move, castleIndex) == 1) {
+        if (decodeMove(move, castleIndex) == SHORT_CASTLE) {
             // is this on black or white's side?
             if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
@@ -109,7 +109,7 @@ namespace MoveRepresentation {
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::WR;
             }
         // set rook for long castle
-        } else if (decodeMove(move, castleIndex) == 2) {
+        } else if (decodeMove(move, castleIndex) == LONG_CASTLE) {
             // is this on black or white's side?
             if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
                 board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;
