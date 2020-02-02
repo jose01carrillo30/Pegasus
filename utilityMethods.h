@@ -11,6 +11,7 @@
 
 namespace utility{
 
+    // FIXME:
     board::Board* createFromFenn(std::string fenn) {
         /** TODO: enpassant and move clocks */
         board::Board* fennBoard = new board::Board(false, true);
@@ -184,17 +185,39 @@ namespace utility{
     }
 
     /** Is this a valid nonempty piece enum? */
-    bool isPiece(unsigned char spaceEnum) {
+    inline bool isPiece(unsigned char spaceEnum) {
         return spaceEnum < board::EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
     }
 
     /** Assuming a valid nonempty piece enum, is the piece white or black? */
-    bool isBlack(unsigned char piece) {
-        return piece % 2; // Assumes black pieces are even enums
+    inline bool isBlack(unsigned char piece) {
+        return piece % 2; // Assumes black pieces are odd enums
     }
-    bool isWhite(unsigned char piece) {
-        return !isBlack(piece); //Assumes white pieces are odd enums
+    /** Assuming a valid nonempty piece enum, is the piece white or black? */
+    inline bool isWhite(unsigned char piece) {
+        return !isBlack(piece); //Assumes white pieces are even enums
     }
+    /** Converts the piece to white, if not already. Note this also converts INVALID to EMPTY. */
+    inline unsigned char toWhite(unsigned char piece) {
+        // just overwrite LSB.
+        return piece & !1u; //Assumes white pieces are even enums
+    }
+    /** Converts the piece to black, if not already. Note this also converts EMPTY to INVALID. */
+    inline unsigned char toBlack(unsigned char piece) {
+        // just overwrite LSB.
+        return piece | 1u; //Assumes balck pieces are odd enums
+    }
+    /** Converts the piece to non-colored enum, as used by Move. */
+    inline unsigned char uncolor(unsigned char piece) {
+        // just strip LSB.
+        return piece >> 1;
+    }
+    /** Converts the piece from a non-colored enum to White. */
+    inline unsigned char recolor(unsigned char piece) {
+        // just add LSB of zero.
+        return piece << 1;
+    }
+
 
     //forward declaration so I can put ugly switch statement at the bottom of file
     unsigned char getCharFromEnum(unsigned char enumValue, unsigned char empty='.', unsigned char invalid='x'); 

@@ -33,26 +33,27 @@ namespace MoveRepresentation {
     // As normal, range is [start, end) (not including end index)
         //castle: 0: no castle, 1: queen side, 2: king side
     enum : unsigned char {startPosIndex /*7 bits*/, endPosIndex /*7 bits*/, 
-    castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/, // FIXME: 3 bits is not enough to fit piece type/color (board::enum), do we need another enum? Probably we should just increase to 4
+    castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/,
     promoteIndex /*3 bits*/, pieceThatMovedIndex /*3 bits*/};
     constexpr const static unsigned short ranges[7][2] = {{32u-7u, 32u}, {32u-14u, 32u-7u}, 
     {32u-16u, 32u-14u}, {16u-4u, 16u}, {16u-7u, 16u-4u}, 
     {16u-10u, 16u-7u}, {16u-13u, 16u-10u}};
 
     // TODO: Maybe we could have promoted be just one bit, if piece represents what the piece is at the end of the move?
+    // TODO: Maybe we should store a bit for whose turn it is? This could be used to color the pieces, rather than having to re-read them from the board.
     /**
      * Creates a new move given the parameters.
      * Required parameters: 
      *   <start/end>Position: 120-index of the moving piece (castling is done by a king move)
-     *   piece: what type/color of piece is making move
+     *   piece: uncolored piece that is making move
      * Optional parameters:
-     *   capturedPiece: what type/color of piece is at the endPosition before move is made
+     *   capturedPiece: the uncolored piece at the endPosition before move is made. Note that if we do 4 bits, we can include the color too.
      *   castle: 0 for none, 1 for short, 2 for long
-     *   enPassant: TODO: ????
-     *   promotedPiece: what type of piece a pawn is promoting to; INVALID if none or N/A
+     *   enPassant: TODO: ???? what are those 4 bits used for??
+     *   promotedPiece: uncolored piece a pawn is promoting to; EMPTY if none or N/A
      */
     Move encodeMove(short startPosition, short endPosition, short piece, 
-    short capturedPiece=board::EMPTY, short castle=0u, short enPassant=0u, short promotedPiece=board::INVALID) {
+    short capturedPiece=utility::uncolor(board::EMPTY), short castle=0u, short enPassant=0u, short promotedPiece=utility::uncolor(board::EMPTY)) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
 
@@ -89,16 +90,16 @@ namespace MoveRepresentation {
         /*----- set END of move ------*/
         // TODO: assumes promoteIndex stores piece type being promoted to, EMPTY otherwise
         
-        //FIXME: piece enum is not able to fit in 3 bits, trucated and fails equality.
-        std::cout << "decoded: " << decodeMove(move, promoteIndex) << " invalid: " << board::INVALID << std::endl;
-        
-        if (decodeMove(move, promoteIndex) == board::INVALID) {
+        if (decodeMove(move, promoteIndex) == utility::uncolor(board::INVALID)) {
             // normal move
             board->chessboard[endPos] = board->chessboard[startPos];
         } else {
             // promotion
             std::cout << "Promotion." << std::endl;
-            board->chessboard[endPos] = decodeMove(move, promoteIndex);
+            if (utility::isWhite(board->chessboard[endPos])) // TODO: eww can we just store whose turn it is?
+                board->chessboard[endPos] = utility::recolor(decodeMove(move, promoteIndex));
+            else
+                board->chessboard[endPos] = utility::toBlack(utility::recolor(decodeMove(move, promoteIndex)));
         }
 
         /*----- castling ------*/
