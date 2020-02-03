@@ -90,7 +90,7 @@ namespace MoveRepresentation {
             // normal move
             board->chessboard[endPos] = board->chessboard[startPos];
         } else {
-            // promotion //TODO: test this code
+            // promotion
             if (utility::isWhite(board->chessboard[startPos])) // TODO: eww can we just store whose turn it is?
                 board->chessboard[endPos] = utility::recolor(decodeMove(move, promoteIndex));
             else
@@ -134,6 +134,59 @@ namespace MoveRepresentation {
         return true;
     }
 
+    bool undoMove(board::Board *board, Move move) {
+        // store endpos since we will use it multiple times, and it does not make sense to repeatedly recalculate it
+        UL endPos = decodeMove(move, endPosIndex);
+        UL startPos = decodeMove(move, startPosIndex);
+
+        /*----- reset START of move ------*/
+        // assumes promoteIndex stores piece type being promoted to, EMPTY/INVALID otherwise
+        if (decodeMove(move, promoteIndex) == utility::uncolor(board::INVALID)) {
+            board->chessboard[startPos] = board->chessboard[endPos];
+        } else {
+            // promotion can only come from a pawn of its color
+            board->chessboard[startPos] = utility::isWhite(board->chessboard[endPos]) ? board::WP : board::BP;
+        }
+        // from this point on, we can be sure the piece that made the move is the one at start position
+
+        /*----- set END of move ------*/
+        // replace the piece that was captured,
+        board->chessboard[endPos] = utility::recolor(decodeMove(move, captureIndex));
+        // and recolor it if needed
+        if (utility::isBlack(board->chessboard[startPos])) utility::toBlack(board->chessboard[endPos]);
+
+        /*----- en passant ------*/
+        // assumes 0 means not en passant, anything else means en passant
+        if (decodeMove(move, enPassantIndex)) {
+            // assumes 12x10 board, where 10 in a row. 
+            // row of start and column of end
+            board->chessboard[startPos/10*10 + endPos%10] = utility::isWhite(board->chessboard[startPos]) ? board::WP : board::BP;
+        }
+
+        /*----- castling ------*/
+        // set rook for short castle
+        if (decodeMove(move, castleIndex) == SHORT_CASTLE) {
+            // is this on black or white's side?
+            if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
+                board->chessboard[ROOK_B_SHORT_CORNER] = board::BR;
+                board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::EMPTY;
+            } else {
+                board->chessboard[ROOK_W_SHORT_CORNER] = board::WR;
+                board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::EMPTY;
+            }
+        // set rook for long castle
+        } else if (decodeMove(move, castleIndex) == LONG_CASTLE) {
+            // is this on black or white's side?
+            if (endPos > 32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
+                board->chessboard[ROOK_B_LONG_CORNER] = board::BR;
+                board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::EMPTY;
+            } else {
+                board->chessboard[ROOK_W_LONG_CORNER] = board::WR;
+                board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::EMPTY;
+            }
+        }
+        return true;
+    }
 
 //    // Decodes a string representation longo an array of its parts
 //    static UL* decodeMove(UL toDecode){
