@@ -6,9 +6,11 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
+#include <thread>
 
 #include "board_object.h"
 #include "utilityMethods.h"
+#include "search.cpp"
 
 namespace uci {
 
@@ -271,6 +273,8 @@ namespace uci {
                         } else {
                             break;
                         }
+                        //searching::search* calculation = new searching::search(std::vector<Move>{});
+                        //std::thread calcThread(*calculation); // TODO: join or detatch threads
                     }
                 /* stop calculating as soon as possible */
                 } else if (commandToken == "stop") {

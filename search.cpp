@@ -1,4 +1,3 @@
-//FIXME: this code is practically abandoned and needs updating
 #include <string>
 #include <thread>
 #include <vector>
@@ -7,15 +6,28 @@
 #include "utilityMethods.h"
 #include "move_representation.h"
 
+namespace searching {
+
+
+/* results/statistics returned by search */
+struct searchResults {
+    Move bestMove;
+    //TODO: add other stuff too
+};
+
 class search {
     private:
         searchResults* results;
         bool isAlive;
     public:
         /** Initialize search */
-        search(std::vector<MoveRepresentation::Move> searchMoves) {
-            results = new searchResults{MoveRepresentation::Move(0,0,0,0,0,0,0)}; // placeholder
+        search(std::vector<Move> searchMoves) {
+            
+        }
+
+        void operator()() {
             //TODO:
+            std::cout << "called from another thread" << std::endl;
         }
 
         /** Start search */
@@ -31,8 +43,4 @@ class search {
             return *results;
         }
 };
-
-/* results/statistics returned by search */
-struct searchResults {
-    MoveRepresentation::Move bestMove;
-};
+}
