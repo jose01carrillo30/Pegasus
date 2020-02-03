@@ -91,13 +91,21 @@ namespace MoveRepresentation {
             board->chessboard[endPos] = board->chessboard[startPos];
         } else {
             // promotion //TODO: test this code
-            if (utility::isWhite(board->chessboard[endPos])) // TODO: eww can we just store whose turn it is?
+            if (utility::isWhite(board->chessboard[startPos])) // TODO: eww can we just store whose turn it is?
                 board->chessboard[endPos] = utility::recolor(decodeMove(move, promoteIndex));
             else
                 board->chessboard[endPos] = utility::toBlack(utility::recolor(decodeMove(move, promoteIndex)));
         }
 
-        /*----- castling ------*/ //TODO: test this code
+        /*----- en passant ------*/
+        // assumes 0 means not en passant, anything else means en passant
+        if (decodeMove(move, enPassantIndex)) {
+            // assumes 12x10 board, where 10 in a row. 
+            // row of start and column of end
+            board->chessboard[startPos/10*10 + endPos%10] = board::EMPTY;
+        }
+
+        /*----- castling ------*/
         // set rook for short castle
         if (decodeMove(move, castleIndex) == SHORT_CASTLE) {
             // is this on black or white's side?
