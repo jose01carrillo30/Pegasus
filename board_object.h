@@ -2,13 +2,23 @@
 #define PEGASUS_STUFF_BOARD_OBJECT_H
 
 #include <cstdint>
+#include <map>
 
 namespace board {
     // White is even, black is odd, and all pieces are less than EMPTY
     // For example, WP means White Pawn, BN mean Black kNight
     enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
 
-    //
+    // mapping 120 indexes to 64
+    std::map<int, int> index120to64 = {
+             {91, 56}, {92, 57}, {93, 58}, {94, 59}, {95, 60}, {96, 61}, {97, 62}, {98, 63}
+            ,{81, 48}, {82, 49}, {83, 50}, {84, 51}, {85, 52}, {86, 53}, {87, 54}, {88, 55}
+            ,{71, 40}, {72, 41}, {73, 42}, {74, 43}, {75, 44}, {76, 45}, {77, 46}, {78, 47}
+            ,{61, 32}, {62, 33}, {63, 34}, {64, 35}, {65, 36}, {66, 37}, {67, 38}, {68, 39}
+            ,{51, 24}, {52, 25}, {53, 26}, {54, 27}, {55, 28}, {56, 29}, {57, 30}, {58, 31}
+            ,{41, 16}, {42, 17}, {43, 18}, {44, 19}, {45, 20}, {46, 21}, {47, 22}, {48, 23}
+            ,{31, 8},  {32, 9},  {33, 10}, {34, 11}, {35, 12}, {36, 13}, {37, 14}, {38, 15}
+            ,{21, 0},  {22, 1},  {23, 2},  {24, 3},  {25, 4},  {26, 5},  {27, 6},  {28, 7} };
 
     class Board {
         public:
