@@ -8,6 +8,8 @@ namespace board {
     // For example, WP means White Pawn, BN mean Black kNight
     enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
 
+    //
+
     class Board {
         public:
             // independent fields, provide necessary information about board

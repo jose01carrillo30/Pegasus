@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <cstdint>
+#include <array>
 
 #include "board_object.h"
 
@@ -23,45 +24,68 @@ typedef uint32_t Move;
 #define ROOK_W_SHORT_CASTLE_TO 26 // f1
 #define ROOK_W_LONG_CASTLE_TO 24 // d1
 
-//FIXME: this is a awful and long namespace, any reccomendations for something shorter?
+//FIXME: this is a awful and long namespace, any recomendations for something shorter?
 namespace MoveRepresentation {
-    enum : unsigned char {NO_CASTLE, LONG_CASTLE, SHORT_CASTLE};
+//    enum : unsigned char {NO_CASTLE, LONG_CASTLE, SHORT_CASTLE};
 
     // Array to store the ranges of bits each value takes up, index the UL long like an array (first bit from left is index 0)
+    // Start/endpos are out of 64
     // As normal, range is [start, end) (not including end index)
-    enum : unsigned char {startPosIndex /*7 bits*/, endPosIndex /*7 bits*/, 
-    castleIndex /*2 bits*/, enPassantIndex /*4 bits*/, captureIndex /*3 bits*/,
-    promoteIndex /*3 bits*/, pieceThatMovedIndex /*3 bits*/};
-    constexpr const static unsigned short ranges[7][2] = {{32u-7u, 32u}, {32u-14u, 32u-7u}, 
-    {32u-16u, 32u-14u}, {16u-4u, 16u}, {16u-7u, 16u-4u}, 
-    {16u-10u, 16u-7u}, {16u-13u, 16u-10u}};
+    // castle: 0: no castle, 1: queen side, 2: king side
+    // EnPassant: 0 is none, 1 is there
+    // Promote: which piece promote to
+        // TODO: make new enum for promote
+    //TODO: Increase ranges to accomadate the 120 possible spots?
+    enum : unsigned char {startPosIndex /*6 bits*/, endPosIndex /*6 bits*/,
+    castleIndex /*2 bits*/, enPassantIndex /*1 bits*/, captureIndex /*4 bits*/,
+    promoteIndex /*1 bits*/, pieceThatMovedIndex /*4 bits*/};
+    // Redid this so its easier to work with lol
+    constexpr const static unsigned short widths[7] = {6, 6,
+                                                       2, 1, 4,
+                                                       1, 4};
+    // Automatically calculated for speed
+    static unsigned short prefixRanges[sizeof(widths)/ sizeof(widths[0])];
 
-    // TODO: Maybe we could have promoted be just one bit, if piece represents what the piece is at the end of the move?
-    // TODO: Maybe we should store a bit for whose turn it is? This could be used to color the pieces, rather than having to re-read them from the board.
+//    constexpr const static unsigned short ranges[7][2] = {{32u-6u, 32u}, {32u-12u, 32u-6u},
+//    {32u-14u, 32u-12u}, {32u-15u, 32u-14u}, {32u-18u, 32u-15u},
+//    {32u-19u, 32u-18u}, {32u-22u, 32u-19u}};
+
+    // Changelog: changed piece that moved and capture to 4 bits so it can use the piece enum found in board.h for compatibility/speed and since there is extra space anyways
+    //            changed ranges so that it looks nicer an is easier to work with lol
+    //            finalized the rules of each bit and what they each stand for:     v v v v v SEE BELOW v v v v v
+
     /**
      * Creates a new move given the parameters.
      * Required parameters: 
-     *   <start/end>Position: 120-index of the moving piece (castling is done by a king move)
-     *   piece: uncolored piece that is making move
+     *   <start/end>Position: 64-index of the moving piece (castling is done by a king move)
+     *   pieceThatMoved: colored piece that is making the move
      * Optional parameters:
-     *   capturedPiece: the uncolored piece at the endPosition before move is made. Note that if we do 4 bits, we can include the color too.
-     *   castle: takes castle enum
-     *   enPassant: TODO: ???? what are those 4 bits used for??
-     *   promotedPiece: uncolored piece a pawn is promoting to; EMPTY if none or N/A
+     *   castle: 0 = no castle, 1 = castle, can determine which side by start/end position
+     *   enPassant: 0 = no enPassant, 1 = enPassant(either the capture or the initial forward 2 jump), can determine btw them by checking whether capture is empty or not, since the jump forward 2 cannot capture
+     *   capture: the colored piece that was captured during this move
+     *   promote: 0 = no promote, 1 = promote. If 1, pieceThatMoved will contain what it promoted to, can be assumed it WAS a pawn cuz only pawns promote
      */
     Move encodeMove(short startPosition, short endPosition, short piece, 
-    short capturedPiece=utility::uncolor(board::EMPTY), short castle=NO_CASTLE, short enPassant=0u, short promotedPiece=utility::uncolor(board::EMPTY)) {
+    short capturedPiece=board::EMPTY, short castle=0u, short enPassant=0u, short promotedPiece=board::EMPTY) {
         Move code = 0;
         UL numBits = sizeof(UL) * 8;
 
+        // calculate prefixRanges, should run only once
+        if (prefixRanges == nullptr){
+            prefixRanges[0] = widths[0];
+            for(int i = 0; i < sizeof(widths)/ sizeof(widths[0]); i++){
+                prefixRanges[i] = prefixRanges[i-1] + widths[i];
+            }
+        }
+
         // Get result by bit-shifting the inputs into place then or'ing the results
-        code |= (startPosition << (numBits - ranges[startPosIndex][1]));
-        code |= (endPosition << (numBits - ranges[endPosIndex][1]));
-        code |= (castle << (numBits - ranges[castleIndex][1]));
-        code |= (enPassant << (numBits - ranges[enPassantIndex][1]));
-        code |= (capturedPiece << (numBits - ranges[captureIndex][1]));
-        code |= (promotedPiece << (numBits - ranges[promoteIndex][1]));
-        code |= (piece << (numBits - ranges[pieceThatMovedIndex][1]));
+        code |= (startPosition << (numBits - prefixRanges[startPosIndex]));
+        code |= (endPosition << (numBits - prefixRanges[endPosIndex]));
+        code |= (castle << (numBits - prefixRanges[castleIndex]));
+        code |= (enPassant << (numBits - prefixRanges[enPassantIndex]));
+        code |= (capturedPiece << (numBits - prefixRanges[captureIndex]));
+        code |= (promotedPiece << (numBits - prefixRanges[promoteIndex]));
+        code |= (piece << (numBits - prefixRanges[pieceThatMovedIndex]));
 
         return code;
     }
@@ -72,9 +96,10 @@ namespace MoveRepresentation {
         UL numBits = sizeof(UL) * 8;
         // Use bit operations to extract "len" bits starting from right-most bit "right"
         // Bit mask generated by shifting 1 to the left, then subtracting 1, then shifting: ex: 0000 0001 -> 0001 0000 -> 0000 1111 -> 0111 1000
-        return ((1u << (ranges[target][1] - ranges[target][0])) - 1u) & (code >> (numBits - ranges[target][1]));
+        return ((1u << (prefixRanges[target] - ((target == 0) ? 0 : prefixRanges[target-1])) ) - 1u) & (code >> (numBits - prefixRanges[target]));
     }
 
+    // TODO: should applyMove and undoMove be placed here? I feel like it'd be better to put it elsewhere
     /** 
      * Returns true if it was able to apply move to the board, 
      * Assumes move is valid.

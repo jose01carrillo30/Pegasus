@@ -10,6 +10,9 @@
 #include "utilityMethods.h"
 #include "move_representation.h"
 
+//TODO TODO TODO: Convert from 120 to 64
+//TODO: bottom left is 0
+
 namespace kingMoveGeneration{
     //width of board is 10
     const short adjacents[] = {-11, -10, -9, -1, 1, 9, 10, 11};
