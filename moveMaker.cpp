@@ -3,6 +3,8 @@
 //
 
 #include "move_representation.h"
+#include "utilityMethods.h"
+#include "board_object.h"
 
 // Castling constants
 #define ROOK_B_SHORT_CASTLE_TO 96 // f8
@@ -18,8 +20,12 @@ namespace moveMaker {
      */
     bool applyMove(board::Board *board, Move move) {
         // store values since we will use it multiple times, and it does not make sense to repeatedly recalculate it
-        UL endPos = board::index64to120(MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex));
-        UL startPos = board::index64to120(MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex));
+        // FIXME: trying to call a std::map like a function doesn't work and won't compile, so i've commented it out and added back the old code below it temporaril
+        // UL endPos = board::index64to120(MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex));
+        // UL startPos = board::index64to120(MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex));
+        UL endPos = MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex);
+        UL startPos = MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex);
+
         UL piece = MoveRepresentation::decodeMove(move, MoveRepresentation::pieceThatMovedIndex);
 
 //        // assumes promoteIndex stores piece type being promoted to, EMPTY/INVALID otherwise
@@ -174,22 +180,22 @@ namespace moveMaker {
             // black left side (top left)
             if(endPos == 93){
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::EMPTY;
-                board->chessboard[91] = BR;
+                board->chessboard[91] = board::BR;
             }
             // black right side (top right)
             else if(endPos == 97){
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::EMPTY;
-                board->chessboard[98] = BR;
+                board->chessboard[98] = board::BR;
             }
             // white left side (bottom left)
             else if(endPos == 23){
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::EMPTY;
-                board->chessboard[21] = WR;
+                board->chessboard[21] = board::WR;
             }
             // white right side (bottom right)
             else{
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::EMPTY;
-                board->chessboard[28] = @R;
+                board->chessboard[28] = board::WR;
             }
         }
 

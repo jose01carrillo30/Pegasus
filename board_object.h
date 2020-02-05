@@ -23,7 +23,7 @@ namespace board {
     std::map<int, int> reverseMap(std::map<int, int> input){
         std::map<int, int> newMap;
         for(std::map<int, int>::iterator it = input.begin(); it != input.end(); it++){
-            newMap.insert(it->second, it->first);
+            newMap.insert({it->second, it->first});
         }
         return newMap;
     }

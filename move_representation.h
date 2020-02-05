@@ -57,7 +57,7 @@ namespace MoveRepresentation {
         // calculate prefixRanges, should run only once
         if (prefixRanges == nullptr){
             prefixRanges[0] = widths[0];
-            for(int i = 0; i < sizeof(widths)/ sizeof(widths[0]); i++){
+            for (unsigned int i = 0; i < sizeof(widths)/ sizeof(widths[0]); i++){
                 prefixRanges[i] = prefixRanges[i-1] + widths[i];
             }
         }

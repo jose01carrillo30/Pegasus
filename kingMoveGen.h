@@ -51,13 +51,13 @@ namespace kingMoveGeneration{
             // TODO: magic numbers (btw we are using 120 index)
             if(gameBoard.CWQ && gameBoard.chessboard[92] == board::EMPTY && gameBoard.chessboard[93] == board::EMPTY && gameBoard.chessboard[94] == board::EMPTY){
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 93, board::WK, board::EMPTY, MoveRepresentation::LONG_CASTLE);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 93, board::WK, board::EMPTY, 1u);
                 index++;
             }
             //right (king/short) side castle
             if(gameBoard.CWK && gameBoard.chessboard[96] == board::EMPTY && gameBoard.chessboard[97] == board::EMPTY){
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 97, board::WK, board::EMPTY, MoveRepresentation::SHORT_CASTLE);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 97, board::WK, board::EMPTY, 1u);
 //                index++;
             }
         }
@@ -66,13 +66,13 @@ namespace kingMoveGeneration{
             //left (queen/long) side castle
             if(gameBoard.CBQ && gameBoard.chessboard[22] == board::EMPTY && gameBoard.chessboard[23] == board::EMPTY && gameBoard.chessboard[24] == board::EMPTY){
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 23, board::BK, board::EMPTY, MoveRepresentation::LONG_CASTLE);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 23, board::BK, board::EMPTY, 1u);
                 index++;
             }
             //right (king/short) side castle
             if(gameBoard.CBK && gameBoard.chessboard[26] == board::EMPTY && gameBoard.chessboard[27] == board::EMPTY){
                 //TODO: check enPassant and promote number
-                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 27, board::BK, board::EMPTY, MoveRepresentation::SHORT_CASTLE);
+                toPutMoves[index] = MoveRepresentation::encodeMove(kingPos, 27, board::BK, board::EMPTY, 1u);
 //                index++;
             }
         }
