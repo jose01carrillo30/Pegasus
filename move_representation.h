@@ -50,9 +50,9 @@ namespace MoveRepresentation {
      *   promote: 0 = no promote, 1 = promote. If 1, pieceThatMoved will contain what it promoted to, can be assumed it WAS a pawn cuz only pawns promote
      * board::EMPTY is used for no capture/promote and stuff
      */
-    Move encodeMove(short startPosition, short endPosition, short piece, 
+    UL encodeMove(short startPosition, short endPosition, short piece,
     short capturedPiece=board::EMPTY, short castle=0u, short enPassant=0u, short promotedPiece=board::EMPTY) {
-        Move code = 0;
+        UL code = 0;
 
         // calculate prefixRanges, should run only once
         if (prefixRanges == nullptr){
