@@ -10,9 +10,6 @@
 #include "utilityMethods.h"
 #include "move_representation.h"
 
-//TODO TODO TODO: Convert from 120 to 64
-//TODO: bottom left is 0
-
 namespace kingMoveGeneration{
     //width of board is 10
     const short adjacents[] = {-11, -10, -9, -1, 1, 9, 10, 11};
@@ -46,7 +43,6 @@ namespace kingMoveGeneration{
         // White
         if(isWhite){
             //left (queen/long) side castle
-            // TODO: magic numbers (btw we are using 120 index)
             if(gameBoard.CWQ && gameBoard.chessboard[22] == board::EMPTY && gameBoard.chessboard[23] == board::EMPTY && gameBoard.chessboard[24] == board::EMPTY){
                 toPutMoves[index] = MoveRepresentation::encodeMove(board::index120to64[kingPos], 23, board::WK, board::EMPTY, 1u);
                 index++;
