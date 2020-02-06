@@ -13,26 +13,38 @@ typedef uint32_t Move;
 
 //---------- Position constants ---------//
 // Corners of the board
-//#define ROOK_B_SHORT_CORNER 98 // h8
-//#define ROOK_B_LONG_CORNER 91 // a8
-//#define ROOK_W_SHORT_CORNER 28 // h1
-//#define ROOK_W_LONG_CORNER 21 // a1
+#define ROOK_B_SHORT_CORNER 98 // h8
+#define ROOK_B_LONG_CORNER 91 // a8
+#define ROOK_W_SHORT_CORNER 28 // h1
+#define ROOK_W_LONG_CORNER 21 // a1
 
 //FIXME: this is a awful and long namespace, any recomendations for something shorter?
 namespace MoveRepresentation {
 
-    enum : unsigned char {startPosIndex /*6 bits*/, endPosIndex /*6 bits*/,
-    castleIndex /*1 bits*/, enPassantIndex /*1 bits*/, captureIndex /*4 bits*/,
-    promoteIndex /*1 bits*/, pieceThatMovedIndex /*4 bits*/};
+    #define NUM_MOVE_INDICES 7
+    enum : unsigned char {
+        startPosIndex /*6 bits*/, endPosIndex /*6 bits*/,
+        castleIndex /*1 bits*/, enPassantIndex /*1 bits*/, captureIndex /*4 bits*/,
+        promoteIndex /*1 bits*/, pieceThatMovedIndex /*4 bits*/};
+
     const UL numBits = sizeof(UL) * 8;
     // Redid this so its easier to work with lol
-    constexpr const static unsigned short widths[7] = {6, 6,
-                                                       1, 1, 4,
-                                                       1, 4};
-    // Automatically calculated for speed
-    static unsigned short prefixRanges[sizeof(widths)/ sizeof(widths[0])];
+    constexpr const static unsigned short widths[NUM_MOVE_INDICES] = {
+        6, 6,
+        1, 1, 4,
+        1, 4 };
+    // Automatically calculated from widths for speed and maintainability.
+    static unsigned short prefixRanges[NUM_MOVE_INDICES];
 
-
+    /** All initialization of data required in this namespace */
+    void init() {
+        // calculate prefixRanges
+        prefixRanges[0] = widths[0];
+        for (unsigned char i = 1; i < NUM_MOVE_INDICES; i++) {
+            prefixRanges[i] = prefixRanges[i-1] + widths[i];
+            std::cout << "prefix " << i << " : " << prefixRanges[i] << std::endl;
+        }
+    }
 
     // Changelog: changed piece that moved and capture to 4 bits so it can use the piece enum found in board.h for compatibility/speed and since there is extra space anyways
     //            changed ranges so that it looks nicer an is easier to work with lol
@@ -51,17 +63,8 @@ namespace MoveRepresentation {
      * board::EMPTY is used for no capture/promote and stuff
      */
     UL encodeMove(short startPosition, short endPosition, short piece,
-    short capturedPiece=board::EMPTY, short castle=0u, short enPassant=0u, short promotedPiece=board::EMPTY) {
+    short capturedPiece=board::EMPTY, short castle=false, short enPassant=false, short promotedPiece=false) {
         UL code = 0;
-
-        // calculate prefixRanges, should run only once
-        if (prefixRanges == nullptr){
-            prefixRanges[0] = widths[0];
-            for (unsigned int i = 0; i < sizeof(widths)/ sizeof(widths[0]); i++){
-                prefixRanges[i] = prefixRanges[i-1] + widths[i];
-            }
-        }
-
         // Get result by bit-shifting the inputs into place then or'ing the results
         code |= (startPosition << (numBits - prefixRanges[startPosIndex]));
         code |= (endPosition << (numBits - prefixRanges[endPosIndex]));

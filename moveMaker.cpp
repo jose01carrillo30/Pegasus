@@ -1,7 +1,3 @@
-//
-// Created by troyl on 2/4/2020.
-//
-
 #include "move_representation.h"
 #include "utilityMethods.h"
 #include "board_object.h"
@@ -20,116 +16,78 @@ namespace moveMaker {
      */
     bool applyMove(board::Board *board, Move move) {
         // store values since we will use it multiple times, and it does not make sense to repeatedly recalculate it
-        // FIXME: trying to call a std::map like a function doesn't work and won't compile, so i've commented it out and added back the old code below it temporaril
-        // UL endPos = board::index64to120(MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex));
-        // UL startPos = board::index64to120(MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex));
-        UL endPos = MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex);
-        UL startPos = MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex);
+        UL endPos = board::index64to120[MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex)];
+        UL startPos = board::index64to120[MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex)];
 
         UL piece = MoveRepresentation::decodeMove(move, MoveRepresentation::pieceThatMovedIndex);
 
-//        // assumes promoteIndex stores piece type being promoted to, EMPTY/INVALID otherwise
-//        if (MoveRepresentation::decodeMove(move, MoveRepresentation::promoteIndex)) {
-//            // promotion
-//            if (utility::isWhite(board->chessboard[startPos])) // TODO: eww can we just store whose turn it is?
-//                board->chessboard[endPos] = utility::recolor(MoveRepresentation::decodeMove(move, MoveRepresentation::promoteIndex));
-//            else
-//                board->chessboard[endPos] = utility::toBlack(utility::recolor(MoveRepresentation::decodeMove(move, MoveRepresentation::promoteIndex)));
-//        } else {
-//            // normal move
-//            board->chessboard[endPos] = piece;
-//        }
-
+        board->EP = -1; // we no longer care if the previous turn was a double jump, so reset it since this turn probably won't be.
 
         /*----- set END of move ------*/
         // Should take care of both normal moves and promotion at the same time
         board->chessboard[endPos] = piece;
 
-//        // assumes 0 means not en passant, anything else means en passant
-//        if (MoveRepresentation::decodeMove(move, MoveRepresentation::enPassantIndex)) {
-//            // assumes 12x10 board, where 10 in a row.
-//            // row of start and column of end
-//            board->chessboard[startPos / 10 * 10 + endPos % 10] = board::EMPTY;
-//        }
-
 
         /*----- en passant ------*/
         if(MoveRepresentation::decodeMove(move, MoveRepresentation::enPassantIndex)){
-            // capture
+            // capture and enPassant means that this is the execution of the enPassant
             UL captured = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
             if(captured != board::EMPTY) {
                 // white capture black
                 if (captured == board::BP) {
-                    board->chessboard[endPos+10] = board::EMPTY;
+                    board->chessboard[endPos-10] = board::EMPTY;
                 }
                 // black capture white
                 else{
-                    board->chessboard[endPos-10] = board::EMPTY;
+                    board->chessboard[endPos+10] = board::EMPTY;
                 }
             }
-            // "double jump", allowing an enPassant to happen next turn
+            // otherwise, this is a "double jump" that allows enPassant to happen next turn
             else{
-                // TODO: allow the pawn move generation to make the move next turn
+                // set board to describe a double jump just occur in this column (column A corresponds to zero, etc.).
+                board->EP = board::index120to64[endPos] & 7; //TODO: unless some other info needs to be stored here.
             }
         }
 
 
-        /*----- castling ------*/
+        /*----- move rook in castling ------*/
         if(MoveRepresentation::decodeMove(move, MoveRepresentation::castleIndex)){
             // black left side (top left)
-            if(endPos == 93){
+            if(endPos == 93){ //FIXME: magic numbers
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::BR;
+                board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;
             }
             // black right side (top right)
             else if(endPos == 97){
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::BR;
+                board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
             }
             // white left side (bottom left)
             else if(endPos == 23){
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::WR;
+                board->chessboard[ROOK_W_LONG_CORNER] = board::EMPTY;
             }
             // white right side (bottom right)
             else{
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::WR;
+                board->chessboard[ROOK_W_SHORT_CORNER] = board::EMPTY;
             }
         }
-//        UL castle = MoveRepresentation::decodeMove(move, MoveRepresentation::castleIndex)
-//        // set rook for short castle
-//        if (castle == SHORT_CASTLE) {
-//            // is this on black or white's side?
-//            if (endPos >
-//                32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
-//                board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
-//                board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::BR;
-//            } else {
-//                board->chessboard[ROOK_W_SHORT_CORNER] = board::EMPTY;
-//                board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::WR;
-//            }
-//            // set rook for long castle
-//        } else if (castle == LONG_CASTLE) {
-//            // is this on black or white's side?
-//            if (endPos >
-//                32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
-//                board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;
-//                board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::BR;
-//            } else {
-//                board->chessboard[ROOK_W_LONG_CORNER] = board::EMPTY;
-//                board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::WR;
-//            }
-//        }
 
         /*----- set START of move ------*/
         // move from will always leave an empty space (except chess960 castling, which is handled in castling section)
         board->chessboard[startPos] = board::EMPTY;
+
+        /*----- final things that need to be reset -------*/
+        board->turnWhite = ! board->turnWhite; // switch turns
         return true;
     }
 
     bool undoMove(board::Board *board, Move move) {
         // store endpos since we will use it multiple times, and it does not make sense to repeatedly recalculate it
-        UL endPos = MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex);
-        UL startPos = MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex);
+        UL endPos = board::index64to120[MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex)];
+        UL startPos = board::index64to120[MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex)];
         UL piece = MoveRepresentation::decodeMove(move, MoveRepresentation::pieceThatMovedIndex);
-
 
         /*----- reset START of move ------*/
         // there was a promotion, must be pawn
@@ -142,88 +100,60 @@ namespace moveMaker {
         }
         // from this point on, we can be sure the piece that made the move is the one at start position
 
-
-        /*----- set END of move ------*/
-        // takes care of color and just empty spaces
-        board->chessboard[endPos] = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
-
-//        // replace the piece that was captured,
-//        board->chessboard[endPos] = utility::recolor(MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex));
-//        // and recolor it if needed
-//        if (utility::isBlack(board->chessboard[startPos])) utility::toBlack(board->chessboard[endPos]);
-
-
-        /*----- en passant ------*/
-        // assumes 0 means not en passant, anything else means en passant
+        /*----- set END of move / en passant ------*/
         if (MoveRepresentation::decodeMove(move, MoveRepresentation::enPassantIndex)) {
-            // capture
             UL captured = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
+            // en passant was executed so a pawn was captured
             if(captured != board::EMPTY) {
+                std::cout << "undo capture en passant" << std::endl;
                 // white did capture black
                 if (captured == board::BP) {
-                    board->chessboard[endPos+10] = board::BP;
+                    board->chessboard[endPos-10] = board::BP;
                 }
                 // black did capture white
                 else{
-                    board->chessboard[endPos-10] = board::WP;
+                    board->chessboard[endPos+10] = board::WP;
                 }
+                // No other piece can be captured during an en passant, so pawn must have moved onto empty square.
+                board->chessboard[endPos] = board::EMPTY;
             }
-            // "double jump", allowing an enPassant to happen next turn
+            // otherwise, must have been a "double jump"
             else{
-                // Nothing happens here :D
+                std::cout << "undo double jump" << std::endl; //FIXME: when do en passant rights get restored? Move does not store enough info to figure this out
+                // reset endPos just like a regular move
+                board->chessboard[endPos] = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
             }
+        } else {
+            // No en passant, just a regular move or capture
+            // if there was no capture, then 'captured' will be set to empty which is what we wanted to set the spot to anyways
+            board->chessboard[endPos] = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
         }
-
 
         /*----- castling ------*/
         if(MoveRepresentation::decodeMove(move, MoveRepresentation::castleIndex)){
             // black left side (top left)
-            if(endPos == 93){
+            if(endPos == 93){ //FIXME: magic numbers
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::EMPTY;
-                board->chessboard[91] = board::BR;
+                board->chessboard[ROOK_B_LONG_CORNER] = board::BR;
             }
             // black right side (top right)
             else if(endPos == 97){
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::EMPTY;
-                board->chessboard[98] = board::BR;
+                board->chessboard[ROOK_B_SHORT_CORNER] = board::BR;
             }
             // white left side (bottom left)
             else if(endPos == 23){
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::EMPTY;
-                board->chessboard[21] = board::WR;
+                board->chessboard[ROOK_W_LONG_CORNER] = board::WR;
             }
             // white right side (bottom right)
             else{
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::EMPTY;
-                board->chessboard[28] = board::WR;
+                board->chessboard[ROOK_B_SHORT_CORNER] = board::WR;
             }
         }
-
-//        /*----- castling ------*/
-//        UL castle = MoveRepresentation::decodeMove(move, MoveRepresentation::castleIndex)
-//        // set rook for short castle
-//        if (castle == SHORT_CASTLE) {
-//            // is this on black or white's side?
-//            if (endPos >
-//                32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
-//                board->chessboard[ROOK_B_SHORT_CORNER] = board::BR;
-//                board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::EMPTY;
-//            } else {
-//                board->chessboard[ROOK_W_SHORT_CORNER] = board::WR;
-//                board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::EMPTY;
-//            }
-//            // set rook for long castle
-//        } else if (castle == LONG_CASTLE) {
-//            // is this on black or white's side?
-//            if (endPos >
-//                32) { // Regardless if we use 120 or 64 position numbering, 32 will be between ranks [2,7] inclusive. Could be any other number that fits this criteria.
-//                board->chessboard[ROOK_B_LONG_CORNER] = board::BR;
-//                board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::EMPTY;
-//            } else {
-//                board->chessboard[ROOK_W_LONG_CORNER] = board::WR;
-//                board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::EMPTY;
-//            }
-//        }
+        
+        board->turnWhite = ! board->turnWhite; // switch turns
         return true;
     }
 }
