@@ -1,7 +1,3 @@
-//
-// Created by troyl on 2/6/2020.
-//
-
 #ifndef PEGASUS_STUFF_MOVEMAKER_H
 #define PEGASUS_STUFF_MOVEMAKER_H
 
@@ -60,22 +56,22 @@ namespace moveMaker {
         /*----- move rook in castling ------*/
         if(MoveRepresentation::decodeMove(move, MoveRepresentation::castleIndex)){
             // black left side (top left)
-            if(endPos == 93){ //FIXME: magic numbers
+            if(endPos == ROOK_B_LONG_CASTLE_TO - 1){ // king end is 'left' of rook end on long (queenside) castle, so -1
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::BR;
                 board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;
             }
                 // black right side (top right)
-            else if(endPos == 97){
+            else if(endPos == ROOK_B_SHORT_CASTLE_TO + 1){ // king end is 'right' of rook end on short (kingside) castle, so +1
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::BR;
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
             }
                 // white left side (bottom left)
-            else if(endPos == 23){
+            else if(endPos == ROOK_W_LONG_CASTLE_TO - 1){  // king end is 'left' of rook end on long castle, so -1
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::WR;
                 board->chessboard[ROOK_W_LONG_CORNER] = board::EMPTY;
             }
                 // white right side (bottom right)
-            else{
+            else {
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::WR;
                 board->chessboard[ROOK_W_SHORT_CORNER] = board::EMPTY;
             }
@@ -139,24 +135,24 @@ namespace moveMaker {
         /*----- castling ------*/
         if(MoveRepresentation::decodeMove(move, MoveRepresentation::castleIndex)){
             // black left side (top left)
-            if(endPos == 93){ //FIXME: magic numbers
+            if (endPos == ROOK_B_LONG_CASTLE_TO - 1) { // king end is 'left' of rook end on long (queenside) castle, so -1
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_B_LONG_CORNER] = board::BR;
             }
                 // black right side (top right)
-            else if(endPos == 97){
+            else if (endPos == ROOK_B_SHORT_CASTLE_TO + 1) { // king end is 'right' of rook end on short (kingside) castle, so +1
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::BR;
             }
                 // white left side (bottom left)
-            else if(endPos == 23){
+            else if (endPos == ROOK_W_LONG_CASTLE_TO - 1) {  // king end is 'left' of rook end on long castle, so -1
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_W_LONG_CORNER] = board::WR;
             }
                 // white right side (bottom right)
-            else{
+            else {
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::EMPTY;
-                board->chessboard[ROOK_B_SHORT_CORNER] = board::WR;
+                board->chessboard[ROOK_W_SHORT_CORNER] = board::WR;
             }
         }
 
