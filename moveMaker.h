@@ -1,3 +1,10 @@
+//
+// Created by troyl on 2/6/2020.
+//
+
+#ifndef PEGASUS_STUFF_MOVEMAKER_H
+#define PEGASUS_STUFF_MOVEMAKER_H
+
 #include "move_representation.h"
 #include "utilityMethods.h"
 #include "board_object.h"
@@ -37,12 +44,12 @@ namespace moveMaker {
                 if (captured == board::BP) {
                     board->chessboard[endPos-10] = board::EMPTY;
                 }
-                // black capture white
+                    // black capture white
                 else{
                     board->chessboard[endPos+10] = board::EMPTY;
                 }
             }
-            // otherwise, this is a "double jump" that allows enPassant to happen next turn
+                // otherwise, this is a "double jump" that allows enPassant to happen next turn
             else{
                 // set board to describe a double jump just occur in this column (column A corresponds to zero, etc.).
                 board->EP = board::index120to64[endPos] & 7; //TODO: unless some other info needs to be stored here.
@@ -57,17 +64,17 @@ namespace moveMaker {
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::BR;
                 board->chessboard[ROOK_B_LONG_CORNER] = board::EMPTY;
             }
-            // black right side (top right)
+                // black right side (top right)
             else if(endPos == 97){
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::BR;
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::EMPTY;
             }
-            // white left side (bottom left)
+                // white left side (bottom left)
             else if(endPos == 23){
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::WR;
                 board->chessboard[ROOK_W_LONG_CORNER] = board::EMPTY;
             }
-            // white right side (bottom right)
+                // white right side (bottom right)
             else{
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::WR;
                 board->chessboard[ROOK_W_SHORT_CORNER] = board::EMPTY;
@@ -94,7 +101,7 @@ namespace moveMaker {
         if (MoveRepresentation::decodeMove(move, MoveRepresentation::promoteIndex)) {
             board->chessboard[startPos] = utility::isWhite(board->chessboard[endPos]) ? board::WP : board::BP;
         }
-        // otherwise keep piece the same
+            // otherwise keep piece the same
         else {
             board->chessboard[startPos] = piece;
         }
@@ -110,14 +117,14 @@ namespace moveMaker {
                 if (captured == board::BP) {
                     board->chessboard[endPos-10] = board::BP;
                 }
-                // black did capture white
+                    // black did capture white
                 else{
                     board->chessboard[endPos+10] = board::WP;
                 }
                 // No other piece can be captured during an en passant, so pawn must have moved onto empty square.
                 board->chessboard[endPos] = board::EMPTY;
             }
-            // otherwise, must have been a "double jump"
+                // otherwise, must have been a "double jump"
             else{
                 std::cout << "undo double jump" << std::endl; //FIXME: when do en passant rights get restored? Move does not store enough info to figure this out
                 // reset endPos just like a regular move
@@ -136,24 +143,26 @@ namespace moveMaker {
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_B_LONG_CORNER] = board::BR;
             }
-            // black right side (top right)
+                // black right side (top right)
             else if(endPos == 97){
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::BR;
             }
-            // white left side (bottom left)
+                // white left side (bottom left)
             else if(endPos == 23){
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_W_LONG_CORNER] = board::WR;
             }
-            // white right side (bottom right)
+                // white right side (bottom right)
             else{
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = board::EMPTY;
                 board->chessboard[ROOK_B_SHORT_CORNER] = board::WR;
             }
         }
-        
+
         board->turnWhite = ! board->turnWhite; // switch turns
         return true;
     }
 }
+
+#endif //PEGASUS_STUFF_MOVEMAKER_H

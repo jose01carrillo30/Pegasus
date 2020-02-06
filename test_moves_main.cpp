@@ -3,7 +3,7 @@
 #include "move_representation.h"
 #include "board_object.h"
 #include "utilityMethods.h"
-#include "moveMaker.cpp"
+#include "moveMaker.h"
 
 namespace test_moves_main_namespace{
 
