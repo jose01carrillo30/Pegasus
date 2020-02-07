@@ -93,7 +93,7 @@ namespace board {
                         chessboard[i] = startChessboard[i];
                     }
                     CWK = true; CWQ = true; CBK = true; CBQ = true;
-                    EP = 0; //TODO: is this an appropriate value for no enpasant?
+                    EP = -1; // No en passant / double jump
                     materialBlack = 0; //TODO: what is an appropriate value?
                     materialWhite = materialBlack;
                     movesSinceLastCapture = 0;
