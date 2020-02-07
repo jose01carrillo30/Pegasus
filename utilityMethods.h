@@ -191,11 +191,10 @@ namespace utility{
 
 
     //forward declaration so I can put ugly switch statement at the bottom of file
-    unsigned char getCharFromEnum(unsigned char enumValue, unsigned char empty='.', unsigned char invalid='x'); 
+    unsigned char getCharFromEnum(unsigned char enumValue, char empty='.', char invalid='x'); 
 
     void printInfo(board::Board* board, int lineNum) {
-        switch (lineNum)
-        {
+        switch (lineNum) {
         case 0:
             std::cout << "hash code: " << toCommaString(board->hashCode);
             break;
@@ -209,13 +208,13 @@ namespace utility{
             std::cout << "Moves since last capture: " << board->movesSinceLastCapture;
             break;
         case 4:
-            std::cout << "En Passant: " << board->EP;
+            std::cout << "En Passant: " << (int)board->EP;
             break;
         case 5:
             std::cout << "Material: {White: " << board->materialWhite << " Black: " << board->materialBlack << "}";
             break;
         case 6:
-            std::cout << "Space 21 isWhite(): " << isWhite(board->chessboard[21]) <<  " Space 21 isPiece(): " << isPiece(board->chessboard[21]);
+            std::cout << "Move history stack size: " << board->moveHistory.size();
             break;
         default:
             break;
@@ -271,7 +270,7 @@ namespace utility{
      * OPTIONALLY set empty to desired character representation of EMPTY, 
      * OPTIONALLY set invalid to desired character representation of INVALID, 
      */
-    unsigned char getCharFromEnum(unsigned char enumValue, unsigned char empty, unsigned char invalid) {
+    unsigned char getCharFromEnum(unsigned char enumValue, char empty, char invalid) {
         switch (enumValue) {
         case board::EMPTY:
             return empty;

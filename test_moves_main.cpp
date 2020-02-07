@@ -57,7 +57,7 @@ namespace test_moves_main_namespace{
         /*---------- Test undo move ---------*/
         std::cout << "\n\n------------------------\nTESING UNDO MOVES\n------------------------\n" << std::endl;
         for (auto moveIter = testMoves.rbegin(); moveIter != testMoves.rend(); moveIter++) { 
-            moveMaker::undoMove(&testBoard, *moveIter);
+            moveMaker::undoMove(&testBoard);
             utility::printBoard(&testBoard, false, true);
         }
         return 0;

@@ -82,7 +82,7 @@ namespace moveMaker {
         return true;
     }
 
-    void undoMove(board::Board *board, Move err) { //FIXME: move is now unneeded.
+    void undoMove(board::Board *board) {
         Move move = board->moveHistory.top();
         board->moveHistory.pop();
 
