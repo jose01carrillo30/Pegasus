@@ -122,7 +122,7 @@ namespace moveMaker {
             }
                 // otherwise, must have been a "double jump"
             else{
-                std::cout << "undo double jump" << std::endl; //FIXME: when do en passant rights get restored? Move does not store enough info to figure this out
+                std::cout << "undo double jump" << std::endl; //TODO: peak previous move from board's move stack, and figure out double jumping
                 // reset endPos just like a regular move
                 board->chessboard[endPos] = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
             }
