@@ -1,15 +1,10 @@
 #ifndef PEGASUS_STUFF_MOVEMAKER_H
 #define PEGASUS_STUFF_MOVEMAKER_H
 
+#include "constants.h"
 #include "move_representation.h"
 #include "utilityMethods.h"
 #include "board_object.h"
-
-// Castling constants
-#define ROOK_B_SHORT_CASTLE_TO 96 // f8
-#define ROOK_B_LONG_CASTLE_TO 94 // d8
-#define ROOK_W_SHORT_CASTLE_TO 26 // f1
-#define ROOK_W_LONG_CASTLE_TO 24 // d1
 
 
 namespace moveMaker {
@@ -83,10 +78,14 @@ namespace moveMaker {
 
         /*----- final things that need to be reset -------*/
         board->turnWhite = ! board->turnWhite; // switch turns
+        board->moveHistory.push(move);
         return true;
     }
 
-    bool undoMove(board::Board *board, Move move) {
+    void undoMove(board::Board *board, Move err) { //FIXME: move is now unneeded.
+        Move move = board->moveHistory.top();
+        board->moveHistory.pop();
+
         // store endpos since we will use it multiple times, and it does not make sense to repeatedly recalculate it
         UL endPos = board::index64to120[MoveRepresentation::decodeMove(move, MoveRepresentation::endPosIndex)];
         UL startPos = board::index64to120[MoveRepresentation::decodeMove(move, MoveRepresentation::startPosIndex)];
@@ -157,7 +156,6 @@ namespace moveMaker {
         }
 
         board->turnWhite = ! board->turnWhite; // switch turns
-        return true;
     }
 }
 

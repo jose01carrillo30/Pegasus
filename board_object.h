@@ -1,33 +1,14 @@
 #ifndef PEGASUS_STUFF_BOARD_OBJECT_H
 #define PEGASUS_STUFF_BOARD_OBJECT_H
 
+#include "constants.h"
 #include <cstdint>
-#include <map>
+#include <stack>
 
 namespace board {
     // White is even, black is odd, and all pieces are less than EMPTY
     // For example, WP means White Pawn, BN mean Black kNight
     enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
-
-    // // mapping 120 indexes to 64
-    // const std::map<int, int> index120to64 = {
-    //          {91, 56}, {92, 57}, {93, 58}, {94, 59}, {95, 60}, {96, 61}, {97, 62}, {98, 63}
-    //         ,{81, 48}, {82, 49}, {83, 50}, {84, 51}, {85, 52}, {86, 53}, {87, 54}, {88, 55}
-    //         ,{71, 40}, {72, 41}, {73, 42}, {74, 43}, {75, 44}, {76, 45}, {77, 46}, {78, 47}
-    //         ,{61, 32}, {62, 33}, {63, 34}, {64, 35}, {65, 36}, {66, 37}, {67, 38}, {68, 39}
-    //         ,{51, 24}, {52, 25}, {53, 26}, {54, 27}, {55, 28}, {56, 29}, {57, 30}, {58, 31}
-    //         ,{41, 16}, {42, 17}, {43, 18}, {44, 19}, {45, 20}, {46, 21}, {47, 22}, {48, 23}
-    //         ,{31, 8},  {32, 9},  {33, 10}, {34, 11}, {35, 12}, {36, 13}, {37, 14}, {38, 15}
-    //         ,{21, 0},  {22, 1},  {23, 2},  {24, 3},  {25, 4},  {26, 5},  {27, 6},  {28, 7} };
-    // // and vice versa
-    // std::map<int, int> reverseMap(std::map<int, int> input){
-    //     std::map<int, int> newMap;
-    //     for(std::map<int, int>::iterator it = input.begin(); it != input.end(); it++){
-    //         newMap.insert({it->second, it->first});
-    //     }
-    //     return newMap;
-    // }
-    // const std::map<int, int> index64to120 = reverseMap(index120to64);
 
     const char index120to64[] = {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
@@ -62,6 +43,8 @@ namespace board {
             char EP; // en passant rights: what column did a double jump just occur? -1 if no double jump. 
             short movesSinceLastCapture; // 50 move rule
             bool turnWhite; // whose turn it is
+            std::stack<Move> moveHistory; // list of moves applied to starting FEN.
+
             // dependent fields, store information about board that is derived from independent fields
             short materialWhite, materialBlack; // material scores for white and black
             uint64_t hashCode;
@@ -94,7 +77,7 @@ namespace board {
                     }
                     CWK = true; CWQ = true; CBK = true; CBQ = true;
                     EP = -1; // No en passant / double jump
-                    materialBlack = 0; //TODO: what is an appropriate value?
+                    materialBlack = STARTING_MATERIAL;
                     materialWhite = materialBlack;
                     movesSinceLastCapture = 0;
                     turnWhite = true;

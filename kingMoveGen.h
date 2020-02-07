@@ -6,6 +6,8 @@
 #define PEGASUS_STUFF_KINGMOVEGEN_H
 
 #include <string>
+
+#include "constants.h"
 #include "board_object.h"
 #include "utilityMethods.h"
 #include "move_representation.h"

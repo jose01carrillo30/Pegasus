@@ -1,4 +1,6 @@
 #include <iostream>
+
+#include "constants.h"
 #include "move_representation.h"
 #include "kingMoveGen.h"
 

@@ -1,13 +1,11 @@
-//
-// Created by troyl on 11/13/2019.
-//
-
 #ifndef PEGASUS_STUFF_UTILITYMETHODS_H
 #define PEGASUS_STUFF_UTILITYMETHODS_H
 
-#include "board_object.h"
 #include <iostream>
 #include <bitset>
+
+#include "constants.h"
+#include "board_object.h"
 
 namespace utility{
 

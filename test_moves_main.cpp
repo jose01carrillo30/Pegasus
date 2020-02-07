@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+
+#include "constants.h"
 #include "move_representation.h"
 #include "board_object.h"
 #include "utilityMethods.h"

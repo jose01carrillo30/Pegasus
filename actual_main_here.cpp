@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 
+#include "constants.h"
 #include "hash_test_main.cpp"
 #include "tL_test_main.cpp"
 #include "uci_main.cpp"

@@ -3,20 +3,10 @@
 
 #include <stdlib.h>
 #include <iostream>
-#include <cstdint>
 #include <array>
 
+#include "constants.h"
 #include "board_object.h"
-
-typedef uint32_t UL;
-typedef uint32_t Move;
-
-//---------- Position constants ---------//
-// Corners of the board
-#define ROOK_B_SHORT_CORNER 98 // h8
-#define ROOK_B_LONG_CORNER 91 // a8
-#define ROOK_W_SHORT_CORNER 28 // h1
-#define ROOK_W_LONG_CORNER 21 // a1
 
 //FIXME: this is a awful and long namespace, any recomendations for something shorter?
 namespace MoveRepresentation {

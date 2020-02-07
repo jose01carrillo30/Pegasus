@@ -5,6 +5,7 @@
 #ifndef PEGASUS_STUFF_KNIGHTMOVEGEN_H
 #define PEGASUS_STUFF_KNIGHTMOVEGEN_H
 
+#include "constants.h"
 #include <string>
 #include "board_object.h"
 #include "utilityMethods.h"

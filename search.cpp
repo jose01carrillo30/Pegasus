@@ -2,6 +2,7 @@
 #include <thread>
 #include <vector>
 
+#include "constants.h"
 #include "board_object.h"
 #include "utilityMethods.h"
 #include "move_representation.h"
