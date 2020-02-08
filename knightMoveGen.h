@@ -30,13 +30,13 @@ namespace knightMoveGeneration{
                 //white, check for ally piece, can't move onto them
                 if(isWhite && (targetVal < board::WP || targetVal > board::WK)){
                     // Assumes no capture is represented by capturedPiece=EMPTY
-                    toPutMoves[index] = MoveRepresentation::encodeMove(board::index120to64[knightPos], board::index120to64[knightPos + adjacent], board::WK, targetVal);
+                    toPutMoves[index] = move_rep::encodeMove(board::index120to64[knightPos], board::index120to64[knightPos + adjacent], board::WK, targetVal);
                     index++;
                 }
                 //black, check for ally piece, can't move onto them
                 else if(!isWhite && targetVal < board::BP){
                     // Assumes no capture is represented by capturedPiece=EMPTY
-                    toPutMoves[index] = MoveRepresentation::encodeMove(board::index120to64[knightPos], board::index120to64[knightPos + adjacent], board::BK, targetVal);
+                    toPutMoves[index] = move_rep::encodeMove(board::index120to64[knightPos], board::index120to64[knightPos + adjacent], board::BK, targetVal);
                     index++;
                 }
             }

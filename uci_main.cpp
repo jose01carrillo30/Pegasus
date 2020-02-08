@@ -11,7 +11,7 @@
 namespace uci_main_namespace{
 
     int main() {
-        MoveRepresentation::init();
+        move_rep::init();
         uci::init();
         uci::loop();
         return 0;

@@ -27,19 +27,19 @@ namespace tL_test_main_namespace{
     //    test::hello(999);
 
     //    cout << "Beginning test\n";
-    //    unsigned long num1 = MoveRepresentation::encodeMove(0, 0, 0, 0, 0, 0, 0);
+    //    unsigned long num1 = move_rep::encodeMove(0, 0, 0, 0, 0, 0, 0);
     //    std::bitset<32> x(num1);
     //    cout << "Num:\n" << x << "\n";
     //
-    //    unsigned long num2 = MoveRepresentation::encodeMove(4, 0, 0, 0, 0, 0, 0);
+    //    unsigned long num2 = move_rep::encodeMove(4, 0, 0, 0, 0, 0, 0);
     //    std::bitset<32> x2(num2);
     //    cout << "Num2:\n" << x2 << "\n";
     //
-    //    unsigned long num3 = MoveRepresentation::encodeMove(0, 1, 2, 3, 4, 5, 6);
+    //    unsigned long num3 = move_rep::encodeMove(0, 1, 2, 3, 4, 5, 6);
     //    std::bitset<32> x3(num3);
     //    cout << "Num3:\n" << x3 << "\n";
-    //    for(int i = 0; i < sizeof(MoveRepresentation::ranges) / sizeof(MoveRepresentation::ranges[0]); i++){
-    //        cout << MoveRepresentation::decodeItem(num3, i) << ", ";
+    //    for(int i = 0; i < sizeof(move_rep::ranges) / sizeof(move_rep::ranges[0]); i++){
+    //        cout << move_rep::decodeItem(num3, i) << ", ";
     //    }
 
         std::cout << "\n\nHIIIIhjh\n\n";
