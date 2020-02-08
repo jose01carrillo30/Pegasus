@@ -37,7 +37,7 @@ namespace board {
 
     class Board {
         public:
-            // independent fields, provide necessary information about board
+            /* ------- independent fields, provide necessary information about board ------- */
             unsigned char chessboard[120];
             bool CWK, CWQ, CBK, CBQ; // castle rights
             char EP; // en passant rights: what column did a double jump just occur? -1 if no double jump. 
@@ -45,9 +45,11 @@ namespace board {
             bool turnWhite; // whose turn it is
             std::stack<Move> moveHistory; // list of moves applied to starting FEN.
 
-            // dependent fields, store information about board that is derived from independent fields
+            /* ------- dependent fields, store information about board that is derived from independent fields -------- */
             short materialWhite, materialBlack; // material scores for white and black
             uint64_t hashCode;
+            unsigned char whitePieceLocations[16]; // TODO: I am not willing to initialize these by hand, so I will wait until the FEN importer can before I implement code for this in moveMaker
+            unsigned char blackPieceLocations[16];
 
             /** 
              * Creates a new board. Set startingPosition to true to initialize Board to the starting position (all members initialized)
@@ -103,7 +105,11 @@ namespace board {
                 }
             }
 
-            /** Boards are equal if all independent fields are equal */
+            /** 
+             * Boards are equal if all independent fields except moveHistory are equal. 
+             * Note that comparing the hashes is MUCH faster that this, and should be used to compare boards
+             * for most practical purposes. Really, this is just here to test if the hash function is working.
+             */
             bool operator==(const Board& other) const {
                 if (CBK != other.CBK || 
                     CBQ != other.CBQ || 

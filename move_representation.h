@@ -8,7 +8,6 @@
 #include "constants.h"
 #include "board_object.h"
 
-//FIXME: this is a awful and long namespace, any recomendations for something shorter?
 namespace move_rep {
 
     #define NUM_MOVE_INDICES 7
@@ -35,10 +34,6 @@ namespace move_rep {
             std::cout << "prefix " << i << " : " << prefixRanges[i] << std::endl;
         }
     }
-
-    // Changelog: changed piece that moved and capture to 4 bits so it can use the piece enum found in board.h for compatibility/speed and since there is extra space anyways
-    //            changed ranges so that it looks nicer an is easier to work with lol
-    //            finalized the rules of each bit and what they each stand for:     v v v v v SEE BELOW v v v v v
 
     /**
      * Creates a new move given the parameters.
