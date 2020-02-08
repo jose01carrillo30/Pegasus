@@ -4,6 +4,7 @@
 #include <functional>
 #include <iostream>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "constants.h"
 #include "board_object.h"
@@ -32,7 +33,6 @@ namespace hash_test_main_namespace {
         return distribution(generator); // random 64-bit number
     }
 
-    //TODO: I'm hoping the built in hashing will have more effecacy and efficiency than what I can come up with
     std::hash<uint64_t> uint_64_hasher; // hashes uint64_t into size_t
     std::hash<size_t> size_hasher; // hashes size_t into size_t
 
@@ -67,7 +67,7 @@ namespace hash_test_main_namespace {
 
             /* heart of the hash function here */
 
-            // // Try to mix up the bits more? // No noticeable affect on collision rates
+            // // I Tried to mix up the bits more, but no noticeable affect on collision rates
             // uint64_t mixed_section = 0;
             // char offset = 8*i;
             // mixed_section |= section << offset;
@@ -79,7 +79,7 @@ namespace hash_test_main_namespace {
             //hash ^= section; // still 7% collisions at 10 million random boards?
 
             // Okay, lets try something different
-            hash += uint_64_hasher(section) + (hash << 32); // This is STILL 7% ?!
+            hash += uint_64_hasher(section);// + (hash << 32); // FIXME: This is STILL 7% ?!
         }
         return hash;
     }
@@ -93,13 +93,10 @@ namespace hash_test_main_namespace {
      * param customHash is function pointer to method used to hash boards
      */
     board_queue createSomeBoards(uint64_t (*customHash)(board::Board*)) {
-    //void createSomeBoards() {
-        //board::Board** boards = new board::Board*[num_test_boards];
         board_queue boards;
 
-        for(uint64_t boardNum = 0; boardNum < num_test_boards; boardNum++)
-        {
-            board::Board* nextBoard = new board::Board(false, true); //TODO: stop leak
+        for (uint64_t boardNum = 0; boardNum < num_test_boards; boardNum++) {
+            board::Board* nextBoard = new board::Board(false, true);
             // Generate random board
             const size_t pieces_length = 32; //size of array
             const unsigned char pieces[pieces_length] = { //first ones have lower priority since they will be overwritten
@@ -133,7 +130,7 @@ namespace hash_test_main_namespace {
         /* User selects which hash method to use */
         uint64_t (*hashFunction)(board::Board*) = nullptr; // 
         bool just_compare_boards = false; //option 3
-        while (hashFunction == nullptr)  {
+        while (hashFunction == nullptr) {
             std::cout << "Hash method? (type number of choice)" << std::endl
             << "1) randomHash()" << std::endl
             << "2) createHash()" << std::endl
@@ -141,8 +138,7 @@ namespace hash_test_main_namespace {
             << ">";
             short response;
             std::cin >> response;
-            switch (response)
-            {
+            switch (response) {
             case 1:
                 hashFunction = &randomHash;
                 break;
@@ -176,25 +172,22 @@ namespace hash_test_main_namespace {
             sample_step = num_test_boards / print_sample_size;
         }
 
-        //TODO: would be nice if collision counting was more efficient
         std::cout << "Counting collisions..." << std::endl;
         int collisions = 0;
         board::Board* prev = nullptr;
         for(int i=0; !testBoards.empty(); i++) {
             if (print_sample_size > 0 && i % sample_step == 0) { // only show boards from sample
-                std::cout << "board #" << i << ":" ;
-                //utility::printBoardArray(testBoards.top());
-                std::cout << testBoards.top()->hashCode / uint64_t(1000000000000000000); // print first two digits of decimal expansion
-                std::cout << std::endl;
+                // utility::printBoardArray(testBoards.top()); // TODO: comment out to not print boards in the sample, just their info summary
+                printf("board #%9d: %16lx | %9d collisions so far\n", i, testBoards.top()->hashCode, collisions); // print info summary about sample
             }
 
             // Condition to be considered collision
             if (prev) { // only compare if prev != nullptr
-                if (just_compare_boards) {
+                if (just_compare_boards) { // count duplicate boards
                     if (prev == testBoards.top()) { 
                         collisions++;
                     }
-                } else { // if compare hashes
+                } else { // count duplicate hashes
                     if (prev->hashCode == testBoards.top()->hashCode) {
                         collisions++;
                     }
@@ -205,7 +198,6 @@ namespace hash_test_main_namespace {
             testBoards.pop();
         }
         std::cout << "Collisions/Boards: " << collisions << " / " << num_test_boards << " ≈ " << collisions / (float) num_test_boards;
-        //utility::printBoard(testBoards.pop());
         std::cout << std::endl;
 
         return 0;
