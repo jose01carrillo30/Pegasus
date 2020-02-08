@@ -67,7 +67,6 @@ namespace MoveRepresentation {
         return code;
     }
 
-    // TODO: optimization? change UL return type to short or int or something
     // Generic decoder function, decodes "target" from "toDecode"
     // Meant to use MoveRepresentation::"enum" as "target"
     short decodeMove(Move code, unsigned short target){

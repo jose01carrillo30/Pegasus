@@ -43,7 +43,7 @@ namespace moveMaker {
                 // otherwise, this is a "double jump" that allows enPassant to happen next turn
             else{
                 // set board to describe a double jump just occur in this column (column A corresponds to zero, etc.).
-                board->EP = board::index120to64[endPos] & 7; //TODO: unless some other info needs to be stored here.
+                board->EP = board::index120to64[endPos] & 7;
             }
         }
 
@@ -103,32 +103,32 @@ namespace moveMaker {
         // from this point on, we can be sure the piece that made the move is the one at start position
 
         /*----- set END of move / en passant ------*/
-        if (MoveRepresentation::decodeMove(move, MoveRepresentation::enPassantIndex)) {
+        board->EP = -1; // this default assumes we are not undoing to a board where a pawn has just double jumped; this will change if we are.
+
+        // if en passant (not including double jump)
+        if (MoveRepresentation::decodeMove(move, MoveRepresentation::enPassantIndex) && MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex) != board::EMPTY) {
             UL captured = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
-            // en passant was executed so a pawn was captured
-            if(captured != board::EMPTY) {
-                std::cout << "undo capture en passant" << std::endl;
-                // white did capture black
-                if (captured == board::BP) {
-                    board->chessboard[endPos-10] = board::BP;
-                }
-                    // black did capture white
-                else{
-                    board->chessboard[endPos+10] = board::WP;
-                }
-                // No other piece can be captured during an en passant, so pawn must have moved onto empty square.
-                board->chessboard[endPos] = board::EMPTY;
+            // white did capture black
+            if (captured == board::BP) {
+                board->chessboard[endPos-10] = board::BP;
+
+            // black did capture white
+            } else {
+                board->chessboard[endPos+10] = board::WP;
             }
-                // otherwise, must have been a "double jump"
-            else{
-                std::cout << "undo double jump" << std::endl; //TODO: peak previous move from board's move stack, and figure out double jumping
-                // reset endPos just like a regular move
-                board->chessboard[endPos] = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
-            }
+            // No other piece can be captured during an en passant, so pawn must have moved onto empty square.
+            board->chessboard[endPos] = board::EMPTY;
+            // The previous move must have been a double jump in the column the attacking piece ended in, so store this column number
+            board->EP = board::index120to64[endPos] & 7;
+        // No en passant (either regular move or double jump)
         } else {
-            // No en passant, just a regular move or capture
             // if there was no capture, then 'captured' will be set to empty which is what we wanted to set the spot to anyways
             board->chessboard[endPos] = MoveRepresentation::decodeMove(move, MoveRepresentation::captureIndex);
+            // check if the previous move was a double jump
+            if (!!MoveRepresentation::decodeMove(board->moveHistory.top(), MoveRepresentation::enPassantIndex) && MoveRepresentation::decodeMove(board->moveHistory.top(), MoveRepresentation::captureIndex) == board::EMPTY) {
+                // store column of previous move's double jump
+                board->EP = MoveRepresentation::decodeMove(board->moveHistory.top(), MoveRepresentation::endPosIndex) & 7;
+            }
         }
 
         /*----- castling ------*/
