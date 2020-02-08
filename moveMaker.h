@@ -7,7 +7,7 @@
 #include "board_object.h"
 
 
-namespace moveMaker {
+namespace move_rep {
     /**
      * Returns true if it was able to apply move to the board,
      * Assumes move is valid.
