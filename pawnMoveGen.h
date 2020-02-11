@@ -81,7 +81,6 @@ namespace pawnMoveGeneration{
             }
         }
 
-        // TODO: enPassant
         // enPassant
         if(gameBoard->EP > -1){
             int column = utility::getColumn120(pawnPos);
