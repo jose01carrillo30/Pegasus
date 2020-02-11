@@ -166,7 +166,7 @@ namespace utility{
     }
     /** Assuming a valid nonempty piece enum, is the piece white or black? */
     inline bool isWhite(unsigned char piece) {
-        return !isBlack(piece); //Assumes white pieces are even enums
+        return !(piece % 2); //Assumes white pieces are even enums
     }
     /** Converts the piece to white, if not already. Note this also converts INVALID to EMPTY. */
     inline unsigned char toWhite(unsigned char piece) {
@@ -262,6 +262,18 @@ namespace utility{
             std::cout << "    h g f e d c b a  " << std::endl;
         else
             std::cout << "    a b c d e f g h  " << std::endl;
+    }
+
+    // gives the column given a 120 index
+    // A is 0, B is 1, ..., H is 7
+    unsigned int getColumn120(unsigned int index){
+        return (index % 10) - 1;
+    }
+
+    // gives the row given a 120 index
+    // 1 is 1, ..., 8 is 8
+    unsigned int getRow120(unsigned int index){
+        return (index / 10) - 1;
     }
 
     // is there a better way to do this than just a big switch?

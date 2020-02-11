@@ -4,6 +4,8 @@
 Makefile
 .vscode/
 
+*.gch
+
 # CMake
 cmake-build-*/
 CMakeLists.txt
