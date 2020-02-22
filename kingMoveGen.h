@@ -29,39 +29,39 @@ namespace kingMoveGeneration{
             unsigned short targetVal = gameBoard->chessboard[kingPos + adjacent];
 
             //ignore invalid spaces
-            if(targetVal != board::INVALID){
+            if(targetVal != INVALID){
                 //white, check for ally piece, can't move onto them
                 if(isWhite && utility::isBlack(targetVal)){
                     // Assumes no capture is represented by capturedPiece=EMPTY
-                    toPutMoves.push_back(move_rep::encodeMove(board::index120to64[kingPos], board::index120to64[kingPos + adjacent], board::WK, targetVal));
+                    toPutMoves.push_back(move_rep::encodeMove(index120to64[kingPos], index120to64[kingPos + adjacent], WK, targetVal));
                 }
                 //black, check for ally piece, can't move onto them
                 else if(!isWhite && utility::isWhite(targetVal)){
                     // Assumes no capture is represented by capturedPiece=EMPTY
-                    toPutMoves.push_back(move_rep::encodeMove(board::index120to64[kingPos], board::index120to64[kingPos + adjacent], board::BK, targetVal));
+                    toPutMoves.push_back(move_rep::encodeMove(index120to64[kingPos], index120to64[kingPos + adjacent], BK, targetVal));
                 }
             }
         }
         // White
         if(isWhite){
             //left (queen/long) side castle
-            if(gameBoard->CWQ && gameBoard->chessboard[22] == board::EMPTY && gameBoard->chessboard[23] == board::EMPTY && gameBoard->chessboard[24] == board::EMPTY){
-                toPutMoves.push_back(move_rep::encodeMove(board::index120to64[kingPos], 23, board::WK, board::EMPTY, 1u));
+            if(gameBoard->CWQ && gameBoard->chessboard[22] == EMPTY && gameBoard->chessboard[23] == EMPTY && gameBoard->chessboard[24] == EMPTY){
+                toPutMoves.push_back(move_rep::encodeMove(index120to64[kingPos], 23, WK, EMPTY, 1u));
             }
             //right (king/short) side castle
-            if(gameBoard->CWK && gameBoard->chessboard[26] == board::EMPTY && gameBoard->chessboard[27] == board::EMPTY){
-                toPutMoves.push_back(move_rep::encodeMove(kingPos, 27, board::WK, board::EMPTY, 1u));
+            if(gameBoard->CWK && gameBoard->chessboard[26] == EMPTY && gameBoard->chessboard[27] == EMPTY){
+                toPutMoves.push_back(move_rep::encodeMove(kingPos, 27, WK, EMPTY, 1u));
             }
         }
         // Black
         else{
             //left (queen/long) side castle
-            if(gameBoard->CBQ && gameBoard->chessboard[92] == board::EMPTY && gameBoard->chessboard[93] == board::EMPTY && gameBoard->chessboard[94] == board::EMPTY){
-                toPutMoves.push_back(move_rep::encodeMove(kingPos, 93, board::BK, board::EMPTY, 1u));
+            if(gameBoard->CBQ && gameBoard->chessboard[92] == EMPTY && gameBoard->chessboard[93] == EMPTY && gameBoard->chessboard[94] == EMPTY){
+                toPutMoves.push_back(move_rep::encodeMove(kingPos, 93, BK, EMPTY, 1u));
             }
             //right (king/short) side castle
-            if(gameBoard->CBK && gameBoard->chessboard[96] == board::EMPTY && gameBoard->chessboard[97] == board::EMPTY){
-                toPutMoves.push_back(move_rep::encodeMove(kingPos, 97, board::BK, board::EMPTY, 1u));
+            if(gameBoard->CBK && gameBoard->chessboard[96] == EMPTY && gameBoard->chessboard[97] == EMPTY){
+                toPutMoves.push_back(move_rep::encodeMove(kingPos, 97, BK, EMPTY, 1u));
             }
         }
         return toPutMoves;

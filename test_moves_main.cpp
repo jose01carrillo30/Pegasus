@@ -23,31 +23,33 @@ namespace test_moves_main_namespace{
         board::Board testBoard = board::Board(true);
         utility::printBoardArray(&testBoard);
 
-        Move move2 = move_rep::encodeMove(board::index120to64[27], board::index120to64[46], board::WN);
+        Move move2 = move_rep::encodeMove(index120to64[27], index120to64[46], WN);
         move_rep::applyMove(&testBoard, move2);
         utility::printBoardArray(&testBoard);
 
-        Move move3 = move_rep::encodeMove(board::index120to64[83], board::index120to64[63], board::BP, board::EMPTY, false, true /*double jump*/);
+        Move move3 = move_rep::encodeMove(index120to64[83], index120to64[63], BP, EMPTY, false, true /*double jump*/);
         move_rep::applyMove(&testBoard, move3);
         utility::printBoard(&testBoard, true);
 
         std::vector<Move> testMoves {
-            move_rep::encodeMove(board::index120to64[37], board::index120to64[47], board::WP),
-            move_rep::encodeMove(board::index120to64[84], board::index120to64[74], board::BP),
-            move_rep::encodeMove(board::index120to64[26], board::index120to64[48], board::WB),
-            move_rep::encodeMove(board::index120to64[92], board::index120to64[71], board::BN),
-            move_rep::encodeMove(board::index120to64[25], board::index120to64[27], board::WK, board::EMPTY, true /*castle*/),
-            move_rep::encodeMove(board::index120to64[93], board::index120to64[48], board::BB, board::WB /*capture*/),
-            move_rep::encodeMove(board::index120to64[34], board::index120to64[54], board::WP, board::EMPTY, false, true /*double jump*/),
-            move_rep::encodeMove(board::index120to64[94], board::index120to64[61], board::BQ),
-            move_rep::encodeMove(board::index120to64[46], board::index120to64[34], board::WN),
-            move_rep::encodeMove(board::index120to64[63], board::index120to64[53], board::BP),
-            move_rep::encodeMove(board::index120to64[32], board::index120to64[52], board::WP, board::EMPTY, false, true /*double jump*/),
-            move_rep::encodeMove(board::index120to64[53], board::index120to64[42], board::BP, board::WP, false, true /*en passant*/),
-            move_rep::encodeMove(board::index120to64[34], board::index120to64[55], board::WN),
-            move_rep::encodeMove(board::index120to64[42], board::index120to64[31], board::BP, board::WP),
-            move_rep::encodeMove(board::index120to64[55], board::index120to64[74], board::WN, board::BP),
-            move_rep::encodeMove(board::index120to64[31], board::index120to64[22], board::BQ, board::WN /*capture*/, false, false, true /*promote*/),
+            move_rep::encodeMove(index120to64[37], index120to64[47], WP),
+            move_rep::encodeMove(index120to64[84], index120to64[74], BP),
+            move_rep::encodeMove(index120to64[26], index120to64[48], WB),
+            move_rep::encodeMove(index120to64[92], index120to64[71], BN),
+            move_rep::encodeMove(index120to64[25], index120to64[27], WK, EMPTY, true /*castle*/),
+            move_rep::encodeMove(index120to64[93], index120to64[48], BB, WB /*capture*/),
+            move_rep::encodeMove(index120to64[34], index120to64[54], WP, EMPTY, false, true /*double jump*/),
+            move_rep::encodeMove(index120to64[94], index120to64[61], BQ),
+            move_rep::encodeMove(index120to64[46], index120to64[34], WN),
+            move_rep::encodeMove(index120to64[63], index120to64[53], BP),
+            move_rep::encodeMove(index120to64[32], index120to64[52], WP, EMPTY, false, true /*double jump*/),
+            move_rep::encodeMove(index120to64[53], index120to64[42], BP, WP, false, true /*en passant*/),
+            move_rep::encodeMove(index120to64[34], index120to64[55], WN),
+            move_rep::encodeMove(index120to64[42], index120to64[31], BP, WP),
+            move_rep::encodeMove(index120to64[55], index120to64[74], WN, BP),
+            move_rep::encodeMove(index120to64[31], index120to64[22], BQ, WN /*capture*/, false, false, true /*promote*/),
+            move_rep::encodeMove(index120to64[55], index120to64[74], WN, BP),
+            move_rep::encodeMove(index120to64[31], index120to64[22], BQ, WN /*capture*/, false, false, true /*promote*/),
         }; 
         for (auto moveIter = testMoves.begin(); moveIter != testMoves.end(); moveIter++) { 
             move_rep::applyMove(&testBoard, *moveIter);

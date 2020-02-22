@@ -1,6 +1,16 @@
+#ifndef FEN_H
+#define FEN_H
+
+#include <iostream>
+#include "board_object.h"
+#include "constants.h"
+
+using namespace board;
+
 bool parseFEN(char* FEN, Board* board) {
   if (FEN == nullptr || board == nullptr) return false;
 
+  board->material = 0;
   int rank = 7, file = 0;
 
   // resetBoard(board); // TODO: create a function that resets the board
@@ -55,6 +65,7 @@ bool parseFEN(char* FEN, Board* board) {
       int square_120_index = index64to120[square_64_index]; // defined in board namespace
       if (piece != EMPTY) {
         board->chessboard[square_120_index] = piece;
+        board->material += PIECEVALUES[piece];
       }
       file++;
     }
@@ -108,3 +119,4 @@ bool parseFEN(char* FEN, Board* board) {
 
   return true;
 }
+#endif
