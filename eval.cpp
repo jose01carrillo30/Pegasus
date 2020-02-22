@@ -47,7 +47,7 @@ namespace eval {
     }
 
     int main() {
-        Board b(false, true);
+        Board b = Board();
         parseFEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", &b);
         utility::printBoard(&b);
 

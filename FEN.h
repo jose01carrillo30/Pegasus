@@ -7,7 +7,7 @@
 
 using namespace board;
 
-bool parseFEN(char* FEN, Board* board) {
+bool parseFEN(const char* FEN, Board* board) {
   if (FEN == nullptr || board == nullptr) return false;
 
   board->material = 0;

@@ -6,6 +6,7 @@
 #include "board_object.h"
 #include "utilityMethods.h"
 #include "moveMaker.h"
+#include "FEN.h"
 
 namespace test_moves_main_namespace{
 
@@ -20,7 +21,8 @@ namespace test_moves_main_namespace{
         }
 
         /*---------- Test print/apply move ---------*/
-        board::Board testBoard = board::Board(true);
+        board::Board testBoard = board::Board();
+        parseFEN(STARTING_BOARD_FEN, &testBoard);
         utility::printBoardArray(&testBoard);
 
         Move move2 = move_rep::encodeMove(index120to64[27], index120to64[46], WN);

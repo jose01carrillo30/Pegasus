@@ -25,64 +25,14 @@ namespace board {
             unsigned char pieceNumbers[12]; // for example, piceNumbers[BP] = number of black pawns in the pieceLocations list
 
             /** 
-             * Creates a new board. Set startingPosition to true to initialize Board to the starting position (all members initialized)
-             * Set empty to true to initialize Board as empty (chessboard[] only initialized) 
+             * Creates a new board with array set to INVALID. Usually you should call parseFen after creating a new board. 
              */
-            Board(char* FEN) { //FIXME: this param is not being used, should be merged with other constructor
-                // set up the chessboard with all INVALID, then calls the FEN importer
+            Board() {
+                // set up the chessboard with all INVALID
                 for (int i = 0; i < 120; i++) {
                     chessboard[i] = INVALID;
                 }
-
                 movesSinceLastCapture = 0;
-            }
-
-            Board(bool startingPosition=false, bool empty=false) {
-                if (startingPosition) { //TODO: just use Fenn string converter instead once that is completed
-                    const unsigned char startChessboard[] = {
-                //                  A        B        C        D        E        F        G        H
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                        INVALID, WR,      WN,      WB,      WQ,      WK,      WB,      WN,      WR,      INVALID,   // 1
-                        INVALID, WP,      WP,      WP,      WP,      WP,      WP,      WP,      WP,      INVALID,   // 2
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,   // 3
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,   // 4
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,   // 5
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,   // 6
-                        INVALID, BP,      BP,      BP,      BP,      BP,      BP,      BP,      BP,      INVALID,   // 7
-                        INVALID, BR,      BN,      BB,      BQ,      BK,      BB,      BN,      BR,      INVALID,   // 8
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                    };
-                    // idk if there is a better way to do this
-                    // initialize chessboard to startChessboard
-                    for (size_t i = 0; i < 120; i++) {
-                        chessboard[i] = startChessboard[i];
-                    }
-                    CWK = true; CWQ = true; CBK = true; CBQ = true;
-                    EP = -1; // No en passant / double jump
-                    movesSinceLastCapture = 0;
-                    turnWhite = true;
-                    // hashCode = this->hash(); //TODO: 
-                } else if (empty) {
-                    const unsigned char startChessboard[] = { //TODO: replace this mess with FEN imports
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   EMPTY,   INVALID,
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                        INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID, INVALID,
-                    };
-                    for (size_t i = 0; i < 120; i++) {
-                        chessboard[i] = startChessboard[i];
-                    }
-                }
             }
 
             /** 

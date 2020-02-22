@@ -60,4 +60,8 @@ const char index64to120[] = {
 // used as follows: PIECEVALUES[WP], for example
 const short PIECEVALUES[] = {100, -100, 500, -500, 300, -300, 300, -300, 900, -900, 10000, -10000, 0};
 
+const char* EMPTY_BOARD_FEN = "8/8/8/8/8/8/8/8 w - - 0 1";
+
+const char* STARTING_BOARD_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
 #endif
