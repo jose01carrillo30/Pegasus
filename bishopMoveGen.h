@@ -28,7 +28,7 @@ namespace bishopMoveGeneration{
             // for each step, loop infinitely until find an invalid or blocking piece
             unsigned short stepNum = 1;
             unsigned short targetVal = gameBoard->chessboard[bishopPos + steps[step]];
-            while(targetVal == board::EMPTY){
+            while(targetVal == EMPTY){
                 // can move to any position along the ray
                 toPutMoves.push_back(move_rep::encodeMove(bishopPos, bishopPos + (steps[step] * stepNum), myPiece));
 
@@ -39,7 +39,7 @@ namespace bishopMoveGeneration{
 
             // upon exit from while loop targetVal should be either INVALID or a piece
             // take out cases where the edge of the board is reached and/or an ally piece is blocking the way
-            if(targetVal == board::INVALID || utility::isWhite(targetVal) == isWhite){
+            if(targetVal == INVALID || utility::isWhite(targetVal) == isWhite){
                 continue;
             }
             // enemy piece blocking the way
