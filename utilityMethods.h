@@ -9,133 +9,6 @@
 
 namespace utility{
 
-    // FIXME:
-    board::Board* createFromFenn(std::string fenn) {
-        /** TODO: enpassant and move clocks */
-        board::Board* fennBoard = new board::Board(false, true);
-        bool isSpace = false;
-        fennBoard->CWK = false;
-        fennBoard->CBK = false;
-        fennBoard->CWQ = false;
-        fennBoard->CBQ = false;
-        
-        int boardIndex = 0;
-
-        // FIXME: if Davis isn't here to support this code, might not be a bad idea to just re-do it.
-        for (char c : fenn){
-            while (fennBoard->chessboard[boardIndex] == board::INVALID) {
-                boardIndex++;
-            }
-            switch(c) {
-                case 'P':
-                    fennBoard->chessboard[boardIndex] = board::WP;
-                    boardIndex++;
-                    break;
-                case 'p':
-                    fennBoard->chessboard[boardIndex] = board::BP;
-                    boardIndex++;
-                    break;
-                case 'R':
-                    fennBoard->chessboard[boardIndex] = board::WR;
-                    boardIndex++;
-                    break;
-                case 'r':
-                    fennBoard->chessboard[boardIndex] = board::BR;
-                    boardIndex++;
-                    break;
-                case 'N':
-                    fennBoard->chessboard[boardIndex] = board::WN;
-                    boardIndex++;
-                    break;
-                case 'n':
-                    fennBoard->chessboard[boardIndex] = board::BN;
-                    boardIndex++;
-                    break;
-                case 'B':
-                    fennBoard->chessboard[boardIndex] = board::WB;
-                    boardIndex++;
-                    break;
-                case 'b':
-                    if (isSpace) {
-                        fennBoard->turnWhite = false;
-                    } else {
-                        fennBoard->chessboard[boardIndex] = board::BB;
-                        boardIndex++;
-                    }
-                    break;
-                case 'Q':
-                    if (isSpace)
-                        fennBoard->CWQ = true;
-                    else {
-                        fennBoard->chessboard[boardIndex] = board::WQ;
-                        boardIndex++;
-                    }
-                    break;
-
-                case 'q':
-                    if (isSpace) {
-                        fennBoard->CBQ = true;
-                    } else {
-                        fennBoard->chessboard[boardIndex] = board::BQ;
-                        boardIndex++;
-                    }
-                    break;
-                case 'K':
-                    if (isSpace) {
-                        fennBoard->CWK = true;
-                    } else {
-                        fennBoard->chessboard[boardIndex] = board::WK;
-                        boardIndex++;
-                    }
-                    break;
-                case 'k':
-                    if (isSpace) {
-                        fennBoard->CBK = true;
-                    } else {
-                        fennBoard->chessboard[boardIndex] = board::BK;
-                        boardIndex++;
-                    }
-                    break;
-                case '/':
-                    boardIndex++;
-                    break;
-                case '1':
-                    boardIndex++;
-                    break;
-                case '2':
-                    boardIndex += 2;
-                    break;
-                case '3':
-                    boardIndex += 3;
-                    break;
-                case '4':
-                    boardIndex += 4;
-                    break;
-                case '5':
-                    boardIndex += 5;
-                    break;
-                case '6':
-                    boardIndex += 6;
-                    break;
-                case '7':
-                    boardIndex += 7;
-                    break;
-                case '8':
-                    boardIndex += 8;
-                    break;
-                case ' ':
-                    isSpace = true;
-                    break;
-                case 'w':
-                    fennBoard->turnWhite = true;
-                    break;
-                default:
-                    std::cout << "Invalid character in FEN string" << std::endl;
-            }
-        }
-        return fennBoard;
-    }
-
     /** Prints binary representation of 64 bit number to cout */
     void printBinary(uint64_t val) {
         std::bitset<64> b(val);
@@ -158,7 +31,7 @@ namespace utility{
 
     /** Is this a valid nonempty piece enum? */
     inline bool isPiece(unsigned char spaceEnum) {
-        return spaceEnum < board::EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
+        return spaceEnum < EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
     }
     /** Assuming a valid nonempty piece enum, is the piece white or black? */
     inline bool isBlack(unsigned char piece) {
@@ -211,7 +84,7 @@ namespace utility{
             std::cout << "En Passant: " << (int)board->EP;
             break;
         case 5:
-            std::cout << "Material: {White: " << board->materialWhite << " Black: " << board->materialBlack << "}";
+            std::cout << "Material: " << board->material;
             break;
         case 6:
             std::cout << "Move history stack size: " << board->moveHistory.size();
@@ -246,22 +119,26 @@ namespace utility{
             // ranks top to bottom go 8->1 normally, reversed when flipped
             std::cout << (flipped? r+1 : 8-r) << " | ";
             for (size_t c = 0; c < 8; c++) { 
-                if (flipped) 
+                if (flipped) {
                     // 21 is starting tile. +10*r means white at top. (7-c) means reverse columns
                     std::cout << getCharFromEnum(board->chessboard[21 + 10*r + (7-c)]) << " ";
-                else
+                } else {
                     std::cout << getCharFromEnum(board->chessboard[91 - 10*r + c]) << " ";
+                }
             }
+
             std::cout << "|  ";
             if (info) printInfo(board, r);
             std::cout << std::endl;
         }
         std::cout << "  +-----------------+" << std::endl;
-        if (flipped)
+        if (flipped) {
             // columns were reversed so their enumeration needs to be too
             std::cout << "    h g f e d c b a  " << std::endl;
-        else
+        }
+        else {
             std::cout << "    a b c d e f g h  " << std::endl;
+        }
     }
 
     // gives the column given a 120 index
@@ -284,46 +161,46 @@ namespace utility{
      */
     unsigned char getCharFromEnum(unsigned char enumValue, char empty, char invalid) {
         switch (enumValue) {
-        case board::EMPTY:
+        case EMPTY:
             return empty;
             break;
-        case board::INVALID:
+        case INVALID:
             return invalid;
             break;
-        case board::WP:
+        case WP:
             return 'P';
             break;
-        case board::BP:
+        case BP:
             return 'p';
             break;
-        case board::WR:
+        case WR:
             return 'R';
             break;
-        case board::BR:
+        case BR:
             return 'r';
             break;
-        case board::WN:
+        case WN:
             return 'N';
             break;
-        case board::BN:
+        case BN:
             return 'n';
             break;
-        case board::WB:
+        case WB:
             return 'B';
             break;
-        case board::BB:
+        case BB:
             return 'b';
             break;
-        case board::WQ:
+        case WQ:
             return 'Q';
             break;
-        case board::BQ:
+        case BQ:
             return 'q';
             break;
-        case board::WK:
+        case WK:
             return 'K';
             break;
-        case board::BK:
+        case BK:
             return 'k';
             break;
         default:

@@ -1,14 +1,16 @@
-// NOTE: if we're calling our board object something other than 'board', we gotta change
-// it in this little snippet
-// TODO:
-// - write idx64to120() 'function' (well, a table) and vice versa
-// SquareConvert macro: #define SquareConvert(file, rank) ((21 + file) + (10 * rank));
+#ifndef FEN_H
+#define FEN_H
 
 #include <iostream>
+#include "board_object.h"
+#include "constants.h"
 
-bool parseFEN(char* FEN, board* board) {
+using namespace board;
+
+bool parseFEN(const char* FEN, Board* board) {
   if (FEN == nullptr || board == nullptr) return false;
 
+  board->material = 0;
   int rank = 7, file = 0;
 
   // resetBoard(board); // TODO: create a function that resets the board
@@ -55,43 +57,52 @@ bool parseFEN(char* FEN, board* board) {
 
       // Otherwise, there's an error:
       default:
-        std::cout << "Error while parsing FEN string.\n";
         return false;
     }
 
-    for (int i = 0; i < ct; i++) {
-      int sq64 = (rank * 8) + file;
-      int sq120 = idx64to120(sq64);
+    for (unsigned int i = 0; i < ct; i++) {
+      int square_64_index = (rank * 8) + file;
+      int square_120_index = index64to120[square_64_index]; // defined in board namespace
       if (piece != EMPTY) {
-        board->pieces[sq120] = piece;
+        board->chessboard[square_120_index] = piece;
+        board->material += PIECEVALUES[piece];
       }
       file++;
     }
 
-    // Now, we move to the next character in the FEN:
+    // Move the FEN pointer forward:
     FEN++;
   }
 
   // Now, we're done parsing the board section of the FEN
   // Parse the current turn:
-  board->side = (*FEN == 'w') ? WHITE : BLACK;
+  // NOTE: might be easier to do something like 'const bool WHITE = true' and
+  // 'const bool BLACK = false' and use those for turn, that way we could write
+  // 'turn = WHITE' which is a lot nicer and easier to understand than 'turnWhite = true'
+  board->turnWhite = (*FEN == 'w') ? true : false;
   FEN += 2;
 
   // Parse the castling rights:
+  // set them all to false at first (only done here instead of as an else-if for easier readability):
+  board->CWK = false;
+  board->CWQ = false;
+  board->CBK = false;
+  board->CBQ = false;
+
   if (*FEN == 'K') {
-    board->castleRights += CWK;
+    board->CWK = true;
     FEN++;
   }
   if (*FEN == 'Q') {
-    board->castleRights += CWQ;
+    board->CWQ += true;
     FEN++;
   }
   if (*FEN == 'k') {
-    board->castleRights += CBK;
+    board->CBK += true;
     FEN++;
   }
   if (*FEN == 'q') {
-    board->castleRights += CBQ;
+    board->CBQ += true;
     FEN++;
   }
 
@@ -101,18 +112,11 @@ bool parseFEN(char* FEN, board* board) {
   if (*FEN == ' ') FEN++;
 
   // Parse possible en passant square:
-  if (*FEN != '-') {
-    file = FEN[0] - 'a'; // get file number
-    rank = FEN[1] - '1'; // get rank number
-    board->enpassant = SquareConvert(file, rank);
-
-    std::cout << "DEBUG: enpassant " << std::endl;
-    std::cout << FEN[0] << std::endl;
-    std::cout << FEN[1] << std::endl;
-  }
+  board->EP = (*FEN == '-') ? -1 : (*FEN - 'a');
 
   // Update piece lists:
   // board->updatePieceLists(); // TODO: WRITE THIS FUNCTION!
 
   return true;
 }
+#endif

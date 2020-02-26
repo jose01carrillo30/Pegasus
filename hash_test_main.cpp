@@ -9,6 +9,7 @@
 #include "constants.h"
 #include "board_object.h"
 #include "utilityMethods.h"
+#include "FEN.h"
 
 namespace hash_test_main_namespace {
 
@@ -80,6 +81,7 @@ namespace hash_test_main_namespace {
 
             // Okay, lets try something different
             hash += uint_64_hasher(section);// + (hash << 32); // FIXME: This is STILL 7% ?!
+            hash *= 3617;
         }
         return hash;
     }
@@ -96,15 +98,16 @@ namespace hash_test_main_namespace {
         board_queue boards;
 
         for (uint64_t boardNum = 0; boardNum < num_test_boards; boardNum++) {
-            board::Board* nextBoard = new board::Board(false, true);
+            board::Board* nextBoard = new board::Board();
+            parseFEN(EMPTY_BOARD_FEN, nextBoard);
             // Generate random board
             const size_t pieces_length = 32; //size of array
             const unsigned char pieces[pieces_length] = { //first ones have lower priority since they will be overwritten
-                board::BP,board::WP,board::BP,board::WP,board::BP,board::WP,board::BP,board::WP, // 4 pawns each 
-                board::WN,board::BN,board::WN,board::BN, board::BB,board::WB,board::BB,board::WB, // Knights and bishops
-                board::WR,board::BR,board::WR,board::BR, //Rooks
-                board::BP,board::WP,board::BP,board::WP,board::BP,board::WP,board::BP,board::WP, // remaining 4 pawns
-                board::BQ,board::WQ,board::WK,board::BK //queens and kings
+                BP,WP,BP,WP,BP,WP,BP,WP, // 4 pawns each 
+                WN,BN,WN,BN, BB,WB,BB,WB, // Knights and bishops
+                WR,BR,WR,BR, //Rooks
+                BP,WP,BP,WP,BP,WP,BP,WP, // remaining 4 pawns
+                BQ,WQ,WK,BK //queens and kings
             };
             for (size_t i = 0; i < pieces_length; i++)
                 nextBoard->chessboard[randomPosition()] = pieces[i];

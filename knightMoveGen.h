@@ -29,17 +29,17 @@ namespace knightMoveGeneration{
             unsigned short targetVal = gameBoard->chessboard[knightPos + adjacent];
 
             //ignore invalid spaces
-            if(targetVal != board::INVALID){
+            if(targetVal != INVALID){
                 //white, check for ally piece, can't move onto them
                 if(isWhite && utility::isBlack(targetVal)){
                     // Assumes no capture is represented by capturedPiece=EMPTY
-                    toPutMoves.push_back(move_rep::encodeMove(board::index120to64[knightPos], board::index120to64[knightPos + adjacent], board::WK, targetVal));
+                    toPutMoves.push_back(move_rep::encodeMove(index120to64[knightPos], index120to64[knightPos + adjacent], WK, targetVal));
 //                    startIndex++;
                 }
                 //black, check for ally piece, can't move onto them
                 else if(!isWhite && utility::isWhite(targetVal)){
                     // Assumes no capture is represented by capturedPiece=EMPTY
-                    toPutMoves.push_back(move_rep::encodeMove(board::index120to64[knightPos], board::index120to64[knightPos + adjacent], board::BK, targetVal));
+                    toPutMoves.push_back(move_rep::encodeMove(index120to64[knightPos], index120to64[knightPos + adjacent], BK, targetVal));
 //                    startIndex++;
                 }
             }

@@ -45,10 +45,10 @@ namespace move_rep {
      *   enPassant: 0 = no enPassant, 1 = enPassant(either the capture or the initial forward 2 jump), can determine btw them by checking whether capture is empty or not, since the jump forward 2 cannot capture
      *   capture: the colored piece that was captured during this move
      *   promote: 0 = no promote, 1 = promote. If 1, pieceThatMoved will contain what it promoted to, can be assumed it WAS a pawn cuz only pawns promote
-     * board::EMPTY is used for no capture/promote and stuff
+     * EMPTY is used for no capture/promote and stuff
      */
     Move encodeMove(short startPosition, short endPosition, short piece,
-    short capturedPiece=board::EMPTY, bool castle=false, bool enPassant=false, bool promoted=false) {
+    short capturedPiece=EMPTY, bool castle=false, bool enPassant=false, bool promoted=false) {
         UL code = 0;
         // Get result by bit-shifting the inputs into place then or'ing the results
         code |= (startPosition << (numBits - prefixRanges[startPosIndex]));
