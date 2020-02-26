@@ -14,10 +14,11 @@
 #include "move_representation.h"
 
 namespace kingMoveGeneration{
-    //width of board is 10
+    // width of board is 10
+    // clockwise from positive x axis
     const short adjacents[] = {-11, -10, -9, -1, 1, 9, 10, 11};
 
-    // adds a UL representation of every possible move generated to Move* toPutMoves and returns the length added
+    // adds a UL representation of every possible move generated to an new vector and returns the vector
     // kingPos is in 120
     static std::vector<UL> generateKingMoves(int8_t kingPos, board::Board* gameBoard){
         bool isWhite = utility::isWhite(gameBoard->chessboard[kingPos]);

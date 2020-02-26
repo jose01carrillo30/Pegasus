@@ -13,10 +13,11 @@
 #include <vector>
 
 namespace knightMoveGeneration{
-    //width of board is 10
-    const short adjacents[] = {-21, -19, -12, -8, 8, 12, 19, 21};
+    // width of board is 10
+    // clockwise from positive x axis
+    const short adjacents[] = {-12, -21, -19, -8, 8, 19, 12, 21};
 
-    // adds a UL representation of every possible move generated to Move* toPutMoves and returns the length added
+    // adds a UL representation of every possible move generated to an new vector and returns the vector
     // knightPos in 120
     static std::vector<UL> generateKnightMoves(int8_t knightPos, board::Board* gameBoard){
         bool isWhite = utility::isWhite(gameBoard->chessboard[knightPos]);

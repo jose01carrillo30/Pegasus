@@ -14,7 +14,7 @@
 
 namespace pawnMoveGeneration{
 
-    // adds a UL representation of every possible move generated to Move* toPutMoves and returns the length added
+    // adds a UL representation of every possible move generated to an new vector and returns the vector
     static std::vector<UL> generatePawnMoves(int8_t pawnPos, board::Board* gameBoard) {
         bool isWhite = utility::isWhite(gameBoard->chessboard[pawnPos]);
         std::vector<UL> toPutMoves;

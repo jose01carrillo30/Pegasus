@@ -72,6 +72,8 @@ namespace move_rep {
             }
         }
 
+        // TODO: castling rights take away
+
         /*----- set START of move ------*/
         // move from will always leave an empty space (except chess960 castling, which is handled in castling section)
         board->chessboard[startPos] = board::EMPTY;
@@ -125,7 +127,7 @@ namespace move_rep {
             // if there was no capture, then 'captured' will be set to empty which is what we wanted to set the spot to anyways
             board->chessboard[endPos] = move_rep::decodeMove(move, move_rep::captureIndex);
             // check if the previous move was a double jump
-            if (!!move_rep::decodeMove(board->moveHistory.top(), move_rep::enPassantIndex) && move_rep::decodeMove(board->moveHistory.top(), move_rep::captureIndex) == board::EMPTY) {
+            if (move_rep::decodeMove(board->moveHistory.top(), move_rep::enPassantIndex) && move_rep::decodeMove(board->moveHistory.top(), move_rep::captureIndex) == board::EMPTY) {
                 // store column of previous move's double jump
                 board->EP = move_rep::decodeMove(board->moveHistory.top(), move_rep::endPosIndex) & 7;
             }
