@@ -14,7 +14,9 @@ namespace move_rep {
      */
     bool applyMove(board::Board *board, Move move) {
         // TODO: castling
+        //  ??? i think castling is done? - Troy
         // TODO: pieceLocations
+        //  ??? wut?
         // store values since we will use it multiple times, and it does not make sense to repeatedly recalculate it
         UL endPos = index64to120[move_rep::decodeMove(move, move_rep::endPosIndex)];
         UL startPos = index64to120[move_rep::decodeMove(move, move_rep::startPosIndex)];
@@ -71,6 +73,44 @@ namespace move_rep {
             else {
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = WR;
                 board->chessboard[ROOK_W_SHORT_CORNER] = EMPTY;
+            }
+        }
+
+        // TODO: castling rights
+        // Castling rights: organized in branches such that the least calculations are needed, pls don't change it for now
+        // Black
+        // King moves, lose all castle rights
+        if(piece == BK && (board->CBK || board->CBQ)){
+            board->CBK = false;
+            board->CBQ = false;
+        }
+        // Rook moves
+        else if(piece == BR && (board->CBK || board->CBQ)){
+            // top left of board
+            if(board->CBQ && board->chessboard[91] != BR){
+                board->CBQ = false;
+            }
+            // top right of board
+            else if(board->CBK && board->chessboard[98] != BR){
+                board->CBK = false;
+            }
+        }
+
+        // White
+        // King moves, lose all castle rights
+        if(piece == WK && (board->CWK || board->CWQ)){
+            board->CWK = false;
+            board->CWQ = false;
+        }
+        // Rook moves
+        else if(piece == WR && (board->CWK || board->CWQ)){
+            // top left of board
+            if(board->CWQ && board->chessboard[21] != WR){
+                board->CWQ = false;
+            }
+            // top right of board
+            else if(board->CWK && board->chessboard[28] != WR){
+                board->CWK = false;
             }
         }
 
@@ -140,17 +180,17 @@ namespace move_rep {
                 board->chessboard[ROOK_B_LONG_CASTLE_TO] = EMPTY;
                 board->chessboard[ROOK_B_LONG_CORNER] = BR;
             }
-                // black right side (top right)
+            // black right side (top right)
             else if (endPos == ROOK_B_SHORT_CASTLE_TO + 1) { // king end is 'right' of rook end on short (kingside) castle, so +1
                 board->chessboard[ROOK_B_SHORT_CASTLE_TO] = EMPTY;
                 board->chessboard[ROOK_B_SHORT_CORNER] = BR;
             }
-                // white left side (bottom left)
+            // white left side (bottom left)
             else if (endPos == ROOK_W_LONG_CASTLE_TO - 1) {  // king end is 'left' of rook end on long castle, so -1
                 board->chessboard[ROOK_W_LONG_CASTLE_TO] = EMPTY;
                 board->chessboard[ROOK_W_LONG_CORNER] = WR;
             }
-                // white right side (bottom right)
+            // white right side (bottom right)
             else {
                 board->chessboard[ROOK_W_SHORT_CASTLE_TO] = EMPTY;
                 board->chessboard[ROOK_W_SHORT_CORNER] = WR;
