@@ -8,7 +8,7 @@
 #include "constants.hh"
 #include <string>
 #include "board_object.hh"
-#include "utilityMethods.hpp"
+#include "utilityMethods.hh"
 #include "move_representation.hpp"
 #include <vector>
 

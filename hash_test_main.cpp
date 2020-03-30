@@ -8,8 +8,10 @@
 
 #include "constants.hh"
 #include "board_object.hh"
-#include "utilityMethods.hpp"
+#include "utilityMethods.hh"
 #include "FEN.hpp"
+
+#include "hash_test_main.hh"
 
 namespace hash_test_main_namespace {
 

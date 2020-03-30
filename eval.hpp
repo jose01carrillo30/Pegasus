@@ -1,3 +1,6 @@
+#ifndef EVAL_HPP
+#define EVAL_HPP
+
 // /* NOTE: this is my current implementation for the static evaluation function.
 //  * for some reason, the project doesn't compile for me so i'm writing this separately,
 //  * but designing it so that it could be directly plugged into pegasus :)
@@ -87,3 +90,5 @@ int main() {
 //     printf("static evaluation returned %d\n", evaluate(&b));
 }
 }
+
+#endif

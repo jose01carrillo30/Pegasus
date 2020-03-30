@@ -10,29 +10,29 @@
 
 #include "constants.hh"
 #include "board_object.hh"
-#include "utilityMethods.hpp"
-#include "search.hpp"
+#include "utilityMethods.hh"
+#include "search.hh"
+
+#include "uci.hh"
 
 namespace uci {
 
-    const std::string NAME = "Pegasus";
-    const std::string VERSION = "0.0";
-
     // only use colors if linux, doesn't print color codes properly for windows
     #ifdef __unix__
-    const std::string TITLE = 
+    static const std::string TITLE = 
         "\033[0;7;36m                                            \033[0m\n" // top border
         "\033[0;1;36m" // set colors of ascii art
         "  ____  ____  ___   __   ____  _  _  ____\n (  _ \\(  __)/ __) / _\\ / ___)/ )( \\/ ___) \n"
         "  ) __/ ) _)( (_ \\/    \\\\___ \\) \\/ (\\___ \\\n (__)  (____)\\___/\\_/\\_/(____/\\____/(____/\n\n"
         "\033[0;7;36m                Chess Engine                \033[0m\n\n"; // bottom border
     #else
-    const std::string TITLE = 
+    static const std::string TITLE = 
         "============================================\n" // top border
         "  ____  ____  ___   __   ____  _  _  ____\n (  _ \\(  __)/ __) / _\\ / ___)/ )( \\/ ___) \n"
         "  ) __/ ) _)( (_ \\/    \\\\___ \\) \\/ (\\___ \\\n (__)  (____)\\___/\\_/\\_/(____/\\____/(____/\n\n"
         "=============== Chess Engine ===============\n\n"; // bottom border
     #endif
+
     enum : char {UCI_MODE, CLI_MODE}; // possible interaction modes
     char interfaceMode; // which interaction mode is being used
     bool uciDebug = false; // debug must be off by default 

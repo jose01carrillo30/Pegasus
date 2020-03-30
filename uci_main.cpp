@@ -1,12 +1,10 @@
-/** 
- * The main main method, called by the actual main method
- */
-
 #include <string>
 #include <iostream>
 
 #include "constants.hh"
-#include "uci.hpp"
+#include "uci.hh"
+
+#include "uci_main.hh"
 
 namespace uci_main_namespace{
 

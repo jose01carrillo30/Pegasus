@@ -1,10 +1,13 @@
+#ifndef TEST_MOVES_MAIN_HPP
+#define TEST_MOVES_MAIN_HPP
+
 #include <iostream>
 #include <vector>
 
 #include "constants.hh"
 #include "move_representation.hpp"
 #include "board_object.hh"
-#include "utilityMethods.hpp"
+#include "utilityMethods.hh"
 #include "moveMaker.hpp"
 #include "FEN.hpp"
 
@@ -67,3 +70,5 @@ namespace test_moves_main_namespace{
         return 0;
     }
 }
+
+#endif

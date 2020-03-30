@@ -3,7 +3,7 @@
 
 #include "constants.hh"
 #include "move_representation.hpp"
-#include "utilityMethods.hpp"
+#include "utilityMethods.hh"
 #include "board_object.hh"
 
 

@@ -10,7 +10,7 @@
 
 #include "constants.hh"
 #include "board_object.hh"
-#include "utilityMethods.hpp"
+#include "utilityMethods.hh"
 #include "move_representation.hpp"
 
 namespace kingMoveGeneration{

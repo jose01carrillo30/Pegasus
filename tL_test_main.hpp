@@ -1,3 +1,6 @@
+#ifndef TL_TEST_MAIN_HPP
+#define TL_TEST_MAIN_HPP
+
 #include <iostream>
 
 #include "constants.hh"
@@ -51,3 +54,5 @@ namespace tL_test_main_namespace{
         return 0;
     }
 }
+
+#endif

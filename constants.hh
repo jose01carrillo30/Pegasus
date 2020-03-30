@@ -14,10 +14,10 @@ typedef unsigned int uint; // for convenience
 // For example, WP means White Pawn, BN mean Black kNight
 enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
 
-const unsigned char blackPieces[6] = {BP, BR, BN, BB, BQ, BK};
-const unsigned char whitePieces[6] = {WP, WR, WN, WB, WQ, WK};
+static const unsigned char blackPieces[6] = {BP, BR, BN, BB, BQ, BK};
+static const unsigned char whitePieces[6] = {WP, WR, WN, WB, WQ, WK};
 
-const char index120to64[] = {
+static const char index120to64[] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1,  0,  1,  2,  3,  4,  5,  6,  7, -1,
@@ -31,7 +31,7 @@ const char index120to64[] = {
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
 };
-const char index64to120[] = {
+static const char index64to120[] = {
     21, 22, 23, 24, 25, 26, 27, 28,
     31, 32, 33, 34, 35, 36, 37, 38,
     41, 42, 43, 44, 45, 46, 47, 48,
@@ -60,8 +60,8 @@ const char index64to120[] = {
 // used as follows: PIECEVALUES[WP], for example
 const short PIECEVALUES[] = {100, -100, 500, -500, 300, -300, 300, -300, 900, -900, 10000, -10000, 0};
 
-const char* EMPTY_BOARD_FEN = "8/8/8/8/8/8/8/8 w - - 0 1";
+static const char* EMPTY_BOARD_FEN = "8/8/8/8/8/8/8/8 w - - 0 1";
 
-const char* STARTING_BOARD_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+static const char* STARTING_BOARD_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 #endif

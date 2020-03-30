@@ -2,9 +2,9 @@
 #include <iostream>
 
 #include "constants.hh"
-#include "hash_test_main.hpp"
+#include "hash_test_main.hh"
 #include "tL_test_main.hpp"
-#include "uci_main.hpp"
+#include "uci_main.hh"
 #include "test_moves_main.hpp"
 #include "eval.hpp"
 
@@ -29,7 +29,7 @@ void print_seperator(std::string txt){
 }
 
 int main(int argc, char *argv[]) {
-    std::string USAGE_ERROR = "Usage: " + std::string(argv[0]) + " [main_method_name.cpp]";
+    std::string USAGE_ERROR = "Usage: " + std::string(argv[0]) + " <file containing main()>";
 
     bool zero_arg; // remember if no arguements given
     std::string input_main = ""; // which main is the user calling
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     // GIANT main method so that the project would actually compile and run lol - Troy
 
     //------------------------------------------------------------------------------------------------------------------
-    if (input_main == "hash_test_main.hpp") {
+    if (input_main == "hash_test_main.cpp") {
         print_seperator("Code from hash_test_main.cpp main() here");
         hash_test_main_namespace::main();
         has_run = true;
