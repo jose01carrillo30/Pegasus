@@ -63,8 +63,8 @@ bool parseFEN(const char* FEN, Board* board) {
     for (unsigned int i = 0; i < ct; i++) {
       int square_64_index = (rank * 8) + file;
       int square_120_index = index64to120[square_64_index]; // defined in board namespace
+      board->chessboard[square_120_index] = piece;
       if (piece != EMPTY) {
-        board->chessboard[square_120_index] = piece;
         board->material += PIECEVALUES[piece];
       }
       file++;

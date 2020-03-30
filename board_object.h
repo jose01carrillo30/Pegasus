@@ -21,7 +21,7 @@ namespace board {
             short material; // changed material score to just be material for both
             uint64_t hashCode;
             
-            unsigned char pieceLocations[12][10];
+            unsigned char pieceLocations[12][10]; // store pieces as 64 bit indexed pieces
             unsigned char pieceNumbers[12]; // for example, piceNumbers[BP] = number of black pawns in the pieceLocations list
 
             /** 
