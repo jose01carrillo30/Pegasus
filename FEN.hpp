@@ -2,8 +2,8 @@
 #define FEN_H
 
 #include <iostream>
-#include "board_object.h"
-#include "constants.h"
+#include "board_object.hh"
+#include "constants.hh"
 
 using namespace board;
 

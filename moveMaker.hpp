@@ -1,10 +1,10 @@
 #ifndef PEGASUS_STUFF_MOVEMAKER_H
 #define PEGASUS_STUFF_MOVEMAKER_H
 
-#include "constants.h"
-#include "move_representation.h"
-#include "utilityMethods.h"
-#include "board_object.h"
+#include "constants.hh"
+#include "move_representation.hpp"
+#include "utilityMethods.hpp"
+#include "board_object.hh"
 
 
 namespace move_rep {

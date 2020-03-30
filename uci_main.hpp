@@ -5,8 +5,8 @@
 #include <string>
 #include <iostream>
 
-#include "constants.h"
-#include "uci.cpp"
+#include "constants.hh"
+#include "uci.hpp"
 
 namespace uci_main_namespace{
 

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <bitset>
 
-#include "constants.h"
-#include "board_object.h"
+#include "constants.hh"
+#include "board_object.hh"
 
 namespace utility{
 

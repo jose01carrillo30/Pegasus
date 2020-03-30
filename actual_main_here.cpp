@@ -1,12 +1,12 @@
 #include <string>
 #include <iostream>
 
-#include "constants.h"
-#include "hash_test_main.cpp"
-#include "tL_test_main.cpp"
-#include "uci_main.cpp"
-#include "test_moves_main.cpp"
-#include "eval.cpp"
+#include "constants.hh"
+#include "hash_test_main.hpp"
+#include "tL_test_main.hpp"
+#include "uci_main.hpp"
+#include "test_moves_main.hpp"
+#include "eval.hpp"
 
 void print_seperator(std::string txt){
     int length_text = txt.length();
@@ -51,32 +51,32 @@ int main(int argc, char *argv[]) {
     // GIANT main method so that the project would actually compile and run lol - Troy
 
     //------------------------------------------------------------------------------------------------------------------
-    if (input_main == "hash_test_main.cpp") {
+    if (input_main == "hash_test_main.hpp") {
         print_seperator("Code from hash_test_main.cpp main() here");
         hash_test_main_namespace::main();
         has_run = true;
     }
     //------------------------------------------------------------------------------------------------------------------
-    if (input_main == "tL_test_main.cpp") {
+    if (input_main == "tL_test_main.hpp") {
         print_seperator("Code from tL_test_main.cpp main() here");
         tL_test_main_namespace::main();
         has_run = true;
     }
     //------------------------------------------------------------------------------------------------------------------
     // uci_main is the main method that needs to be called by GUI/user, so it should be the default to run if no are is given. 
-    if (zero_arg || input_main == "uci_main.cpp") {
+    if (zero_arg || input_main == "uci_main.hpp") {
         if (!zero_arg) print_seperator("Code from uci_main.cpp main() here");
         uci_main_namespace::main();
         has_run = true;
     }
     //------------------------------------------------------------------------------------------------------------------
-    if (input_main == "test_moves_main.cpp") {
+    if (input_main == "test_moves_main.hpp") {
         if (!zero_arg) print_seperator("Code from test_moves_main.cpp main() here");
         test_moves_main_namespace::main();
         has_run = true;
     }
     //------------------------------------------------------------------------------------------------------------------
-    if (input_main == "eval.cpp") {
+    if (input_main == "eval.hpp") {
         if (!zero_arg) print_seperator("Code from eval.cpp main() here");
         eval::main();
         has_run = true;

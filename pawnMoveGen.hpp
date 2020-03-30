@@ -6,9 +6,9 @@
 #define PEGASUS_STUFF_PAWNMOVEGEN_H
 
 #include <string>
-#include "board_object.h"
-#include "utilityMethods.h"
-#include "move_representation.h"
+#include "board_object.hh"
+#include "utilityMethods.hpp"
+#include "move_representation.hpp"
 
 #include <vector>
 

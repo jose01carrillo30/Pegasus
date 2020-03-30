@@ -6,10 +6,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "constants.h"
-#include "board_object.h"
-#include "utilityMethods.h"
-#include "FEN.h"
+#include "constants.hh"
+#include "board_object.hh"
+#include "utilityMethods.hpp"
+#include "FEN.hpp"
 
 namespace hash_test_main_namespace {
 

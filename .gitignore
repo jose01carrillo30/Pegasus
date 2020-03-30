@@ -1,7 +1,6 @@
 *.exe
 *.o
 *.stackdump
-Makefile
 .vscode/
 
 *.gch

@@ -5,11 +5,11 @@
 #ifndef PEGASUS_STUFF_KNIGHTMOVEGEN_H
 #define PEGASUS_STUFF_KNIGHTMOVEGEN_H
 
-#include "constants.h"
+#include "constants.hh"
 #include <string>
-#include "board_object.h"
-#include "utilityMethods.h"
-#include "move_representation.h"
+#include "board_object.hh"
+#include "utilityMethods.hpp"
+#include "move_representation.hpp"
 #include <vector>
 
 namespace knightMoveGeneration{

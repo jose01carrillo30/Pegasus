@@ -5,8 +5,8 @@
 #include <iostream>
 #include <array>
 
-#include "constants.h"
-#include "board_object.h"
+#include "constants.hh"
+#include "board_object.hh"
 
 namespace move_rep {
 

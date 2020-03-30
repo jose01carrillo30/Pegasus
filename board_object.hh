@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <stack>
 
-#include "constants.h"
+#include "constants.hh"
 
 namespace board {
     class Board {

@@ -8,10 +8,10 @@
 #include <stdlib.h>
 #include <thread>
 
-#include "constants.h"
-#include "board_object.h"
-#include "utilityMethods.h"
-#include "search.cpp"
+#include "constants.hh"
+#include "board_object.hh"
+#include "utilityMethods.hpp"
+#include "search.hpp"
 
 namespace uci {
 

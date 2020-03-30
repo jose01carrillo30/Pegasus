@@ -1,12 +1,12 @@
 #include <iostream>
 #include <vector>
 
-#include "constants.h"
-#include "move_representation.h"
-#include "board_object.h"
-#include "utilityMethods.h"
-#include "moveMaker.h"
-#include "FEN.h"
+#include "constants.hh"
+#include "move_representation.hpp"
+#include "board_object.hh"
+#include "utilityMethods.hpp"
+#include "moveMaker.hpp"
+#include "FEN.hpp"
 
 namespace test_moves_main_namespace{
 

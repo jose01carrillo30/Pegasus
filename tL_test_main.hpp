@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "constants.h"
-#include "move_representation.h"
-#include "kingMoveGen.h"
+#include "constants.hh"
+#include "move_representation.hpp"
+#include "kingMoveGen.hpp"
 
 namespace tL_test_main_namespace{
 

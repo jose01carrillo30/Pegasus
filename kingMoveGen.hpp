@@ -8,10 +8,10 @@
 #include <string>
 #include <vector>
 
-#include "constants.h"
-#include "board_object.h"
-#include "utilityMethods.h"
-#include "move_representation.h"
+#include "constants.hh"
+#include "board_object.hh"
+#include "utilityMethods.hpp"
+#include "move_representation.hpp"
 
 namespace kingMoveGeneration{
     // width of board is 10
