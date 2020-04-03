@@ -43,11 +43,11 @@ namespace board {
         return true;
     }
 
-    void Board::addPieceToPL(pieceEnum piece, pos64 location) {
+    void Board::addPieceToPL(PieceEnum piece, pos64 location) {
         pieceLocations[piece][pieceNumbers[piece]++] = location;
     }
 
-    bool Board::updatePieceInPL(pieceEnum piece, pos64 oldLocation, pos64 newLocation) {
+    bool Board::updatePieceInPL(PieceEnum piece, pos64 oldLocation, pos64 newLocation) {
         for (int i = 0; i < pieceNumbers[piece]; i++) { // loop for all pieces of type
             if (pieceLocations[piece][i] == oldLocation) { // find the match
                 pieceLocations[piece][i] = newLocation;
@@ -57,7 +57,7 @@ namespace board {
         return false;
     }
 
-    bool Board::removePieceFromPL(pieceEnum piece, pos64 location) {
+    bool Board::removePieceFromPL(PieceEnum piece, pos64 location) {
         for (int i = 0; i < pieceNumbers[piece]; i++) { // loop for all pieces of type
             if (pieceLocations[piece][i] == location) { // find the match
                 // override current position with last element in this row of PL

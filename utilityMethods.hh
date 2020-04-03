@@ -23,37 +23,37 @@ namespace utility{
      * OPTIONALLY set empty to desired character representation of EMPTY, 
      * OPTIONALLY set invalid to desired character representation of INVALID, 
      */
-    unsigned char getCharFromEnum(unsigned char enumValue, char empty='.', char invalid='x');
+    char getCharFromEnum(PieceEnum enumValue, char empty='.', char invalid='x');
 
     /** Is this a valid nonempty piece enum? */
-    inline bool isPiece(unsigned char spaceEnum) {
+    inline bool isPiece(PieceEnum spaceEnum) {
         return spaceEnum < EMPTY; // Assumes piece enums are immediately followed by EMPTY enum
     }
     /** Assuming a valid nonempty piece enum, is the piece white or black? */
-    inline bool isBlack(unsigned char piece) {
+    inline bool isBlack(PieceEnum piece) {
         return piece % 2; // Assumes black pieces are odd enums
     }
     /** Assuming a valid nonempty piece enum, is the piece white or black? */
-    inline bool isWhite(unsigned char piece) {
+    inline bool isWhite(PieceEnum piece) {
         return !(piece % 2); //Assumes white pieces are even enums
     }
     /** Converts the piece to white, if not already. Note this also converts INVALID to EMPTY. */
-    inline unsigned char toWhite(unsigned char piece) {
+    inline PieceEnum toWhite(PieceEnum piece) {
         // just overwrite LSB.
         return piece & !1u; //Assumes white pieces are even enums
     }
     /** Converts the piece to black, if not already. Note this also converts EMPTY to INVALID. */
-    inline unsigned char toBlack(unsigned char piece) {
+    inline PieceEnum toBlack(PieceEnum piece) {
         // just overwrite LSB.
         return piece | 1u; //Assumes balck pieces are odd enums
     }
     /** Converts the piece to non-colored enum, as used by Move. */
-    inline unsigned char uncolor(unsigned char piece) {
+    inline unsigned char uncolor(PieceEnum piece) {
         // just strip LSB.
         return piece >> 1;
     }
     /** Converts the piece from a non-colored enum to White. */
-    inline unsigned char recolor(unsigned char piece) {
+    inline PieceEnum recolor(unsigned char piece) {
         // just add LSB of zero.
         return piece << 1;
     }

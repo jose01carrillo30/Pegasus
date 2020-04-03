@@ -104,7 +104,7 @@ namespace hash_test_main_namespace {
             parseFEN(EMPTY_BOARD_FEN, nextBoard);
             // Generate random board
             const size_t pieces_length = 32; //size of array
-            const unsigned char pieces[pieces_length] = { //first ones have lower priority since they will be overwritten
+            const PieceEnum pieces[pieces_length] = { //first ones have lower priority since they will be overwritten
                 BP,WP,BP,WP,BP,WP,BP,WP, // 4 pawns each 
                 WN,BN,WN,BN, BB,WB,BB,WB, // Knights and bishops
                 WR,BR,WR,BR, //Rooks

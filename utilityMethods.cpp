@@ -113,7 +113,7 @@ namespace utility{
     }
 
     // is there a better way to do this than just a big switch?
-    unsigned char getCharFromEnum(unsigned char enumValue, char empty, char invalid) {
+    char getCharFromEnum(PieceEnum enumValue, char empty, char invalid) {
         switch (enumValue) {
         case EMPTY:
             return empty;

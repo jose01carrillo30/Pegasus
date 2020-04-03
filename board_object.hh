@@ -10,7 +10,7 @@ namespace board {
     class Board {
         public:
             /* ------- independent fields, provide necessary information about board ------- */
-            pieceEnum chessboard[120];
+            PieceEnum chessboard[120];
             bool CWK, CWQ, CBK, CBQ; // castle rights
             char EP; // en passant rights: what column did a double jump just occur? -1 if no double jump. 
             short movesSinceLastCapture; // 50 move rule
@@ -39,19 +39,19 @@ namespace board {
             bool operator==(const Board& other) const;
 
             /***/
-            void addPieceToPL(pieceEnum piece, pos64 location);
+            void addPieceToPL(PieceEnum piece, pos64 location);
 
             /** 
              * Update the position oldLocation to be newLocation for type piece.
              * Returns false if it does not find such a piece to update.
              */
-            bool updatePieceInPL(pieceEnum piece, pos64 oldLocation, pos64 newLocation);
+            bool updatePieceInPL(PieceEnum piece, pos64 oldLocation, pos64 newLocation);
 
             /** 
              * Remove the piece at location for type piece.
              * Returns false if it does not find such a piece to remove.
              */
-            bool removePieceFromPL(pieceEnum piece, pos64 location);
+            bool removePieceFromPL(PieceEnum piece, pos64 location);
     };
 }
 

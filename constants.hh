@@ -6,8 +6,10 @@
 // For readability
 /** Stores information about which piece moved on a turn */
 typedef uint32_t Move;
-/** Board position, as a 64-bit index */
+/** Board position, as a 64 position index */
 typedef unsigned char pos64;
+/** Board position, as a 120 position index */
+typedef unsigned char pos120;
 
 // For convenience
 typedef unsigned char UC;
@@ -16,17 +18,17 @@ typedef uint32_t UL;
 
 #define STARTING_MATERIAL 0 //TODO: what is an appropriate value?
 
+typedef unsigned char PieceEnum;
 /**
  * White is even, black is odd, and all pieces are less than EMPTY
  * We also use this so that this enum can be directly used as an array index for pieces
  * For example, WP means White Pawn, BN mean Black kNight
  * INVALID is a tile that appears outside the 8x8 square but within the 120-index array.
 */
-enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
-typedef unsigned char pieceEnum;
+enum : PieceEnum {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
 
-static const pieceEnum blackPieces[6] = {BP, BR, BN, BB, BQ, BK};
-static const pieceEnum whitePieces[6] = {WP, WR, WN, WB, WQ, WK};
+static const PieceEnum blackPieces[6] = {BP, BR, BN, BB, BQ, BK};
+static const PieceEnum whitePieces[6] = {WP, WR, WN, WB, WQ, WK};
 
 static const pos64 index120to64[] = {
     127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
@@ -42,7 +44,7 @@ static const pos64 index120to64[] = {
     127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
     127, 127, 127, 127, 127, 127, 127, 127, 127, 127
 };
-static const char index64to120[] = {
+static const pos120 index64to120[] = {
     21, 22, 23, 24, 25, 26, 27, 28,
     31, 32, 33, 34, 35, 36, 37, 38,
     41, 42, 43, 44, 45, 46, 47, 48,

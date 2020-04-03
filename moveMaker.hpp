@@ -192,7 +192,7 @@ namespace move_rep {
         // No en passant (either regular move or double jump)
         } else {
             // if there was no capture, then 'captured' will be set to empty which is what we wanted to set the spot to anyways
-            pieceEnum capturedPiece = move_rep::decodeMove(move, move_rep::captureIndex);
+            PieceEnum capturedPiece = move_rep::decodeMove(move, move_rep::captureIndex);
             board->chessboard[endPos] = capturedPiece;
 
             if (capturedPiece != EMPTY) {
