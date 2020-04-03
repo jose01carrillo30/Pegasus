@@ -15,6 +15,9 @@ namespace board {
             chessboard[i] = INVALID;
         }
         movesSinceLastCapture = 0;
+        for (int i = 0; i < 12; i++) {
+            pieceNumbers[i] = 0;
+        }
     }
 
     /** 
@@ -39,4 +42,32 @@ namespace board {
         }
         return true;
     }
+
+    void Board::addPieceToPL(pieceEnum piece, pos64 location) {
+        pieceLocations[piece][pieceNumbers[piece]++] = location;
+    }
+
+    bool Board::updatePieceInPL(pieceEnum piece, pos64 oldLocation, pos64 newLocation) {
+        for (int i = 0; i < pieceNumbers[piece]; i++) { // loop for all pieces of type
+            if (pieceLocations[piece][i] == oldLocation) { // find the match
+                pieceLocations[piece][i] = newLocation;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool Board::removePieceFromPL(pieceEnum piece, pos64 location) {
+        for (int i = 0; i < pieceNumbers[piece]; i++) { // loop for all pieces of type
+            if (pieceLocations[piece][i] == location) { // find the match
+                // override current position with last element in this row of PL
+                pieceLocations[piece][i] = pieceLocations[piece][pieceNumbers[piece] - 1];
+                // delete last element in this row of PL
+                pieceNumbers[piece]--;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

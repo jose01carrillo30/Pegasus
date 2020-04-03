@@ -53,19 +53,23 @@ namespace test_moves_main_namespace{
             move_rep::encodeMove(index120to64[42], index120to64[31], BP, WP),
             move_rep::encodeMove(index120to64[55], index120to64[74], WN, BP),
             move_rep::encodeMove(index120to64[31], index120to64[22], BQ, WN /*capture*/, false, false, true /*promote*/),
-            move_rep::encodeMove(index120to64[55], index120to64[74], WN, BP),
-            move_rep::encodeMove(index120to64[31], index120to64[22], BQ, WN /*capture*/, false, false, true /*promote*/),
         }; 
         for (auto moveIter = testMoves.begin(); moveIter != testMoves.end(); moveIter++) { 
             move_rep::applyMove(&testBoard, *moveIter);
             utility::printBoard(&testBoard, false, true);
+            utility::printBoardPieceLocations(&testBoard);
+            board::Board temp = utility::boardFromPieceLocations(&testBoard);
+            utility::printBoard(&temp, false, true);
         }
 
         /*---------- Test undo move ---------*/
-        std::cout << "\n\n------------------------\nTESING UNDO MOVES\n------------------------\n" << std::endl;
+        std::cout << "\n\n\n\n------------------------\nTESING UNDO MOVES\n------------------------\n\n\n" << std::endl;
         for (auto moveIter = testMoves.rbegin(); moveIter != testMoves.rend(); moveIter++) { 
             move_rep::undoMove(&testBoard);
             utility::printBoard(&testBoard, false, true);
+            utility::printBoardPieceLocations(&testBoard);
+            board::Board temp = utility::boardFromPieceLocations(&testBoard);
+            utility::printBoard(&temp, false, true);
         }
         return 0;
     }

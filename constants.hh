@@ -3,33 +3,44 @@
 
 #include <cstdint>
 
-typedef uint32_t UL;
+// For readability
+/** Stores information about which piece moved on a turn */
 typedef uint32_t Move;
-typedef unsigned char UC; // for convenience
-typedef unsigned int uint; // for convenience
+/** Board position, as a 64-bit index */
+typedef unsigned char pos64;
+
+// For convenience
+typedef unsigned char UC;
+typedef unsigned int uint;
+typedef uint32_t UL;
 
 #define STARTING_MATERIAL 0 //TODO: what is an appropriate value?
 
-// White is even, black is odd, and all pieces are less than EMPTY
-// For example, WP means White Pawn, BN mean Black kNight
+/**
+ * White is even, black is odd, and all pieces are less than EMPTY
+ * We also use this so that this enum can be directly used as an array index for pieces
+ * For example, WP means White Pawn, BN mean Black kNight
+ * INVALID is a tile that appears outside the 8x8 square but within the 120-index array.
+*/
 enum : unsigned char {WP, BP, WR, BR, WN, BN, WB, BB, WQ, BQ, WK, BK, EMPTY, INVALID};
+typedef unsigned char pieceEnum;
 
-static const unsigned char blackPieces[6] = {BP, BR, BN, BB, BQ, BK};
-static const unsigned char whitePieces[6] = {WP, WR, WN, WB, WQ, WK};
+static const pieceEnum blackPieces[6] = {BP, BR, BN, BB, BQ, BK};
+static const pieceEnum whitePieces[6] = {WP, WR, WN, WB, WQ, WK};
 
-static const char index120to64[] = {
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1,  0,  1,  2,  3,  4,  5,  6,  7, -1,
-    -1,  8,  9, 10, 11, 12, 13, 14, 15, -1,
-    -1, 16, 17, 18, 19, 20, 21, 22, 23, -1,
-    -1, 24, 25, 26, 27, 28, 29, 30, 31, -1,
-    -1, 32, 33, 34, 35, 36, 37, 38, 39, -1,
-    -1, 40, 41, 42, 43, 44, 45, 46, 47, -1,
-    -1, 48, 49, 50, 51, 52, 53, 54, 55, -1,
-    -1, 56, 57, 58, 59, 60, 61, 62, 63, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
+static const pos64 index120to64[] = {
+    127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
+    127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
+    127,  0,  1,  2,  3,  4,  5,  6,  7, 127,
+    127,  8,  9, 10, 11, 12, 13, 14, 15, 127,
+    127, 16, 17, 18, 19, 20, 21, 22, 23, 127,
+    127, 24, 25, 26, 27, 28, 29, 30, 31, 127,
+    127, 32, 33, 34, 35, 36, 37, 38, 39, 127,
+    127, 40, 41, 42, 43, 44, 45, 46, 47, 127,
+    127, 48, 49, 50, 51, 52, 53, 54, 55, 127,
+    127, 56, 57, 58, 59, 60, 61, 62, 63, 127,
+    127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
+    127, 127, 127, 127, 127, 127, 127, 127, 127, 127
 };
 static const char index64to120[] = {
     21, 22, 23, 24, 25, 26, 27, 28,

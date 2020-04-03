@@ -58,7 +58,16 @@ namespace utility{
         return piece << 1;
     }
 
-    void printInfo(board::Board* board, int lineNum);
+    //TODO: all of these print board, getColumn, etc. should be moved to board class
+    /** 
+     * Prints the pieceLocation array in a format to help with debugging.
+     */
+    void printBoardPieceLocations(board::Board* board);
+    /** 
+     * Generates a board (setting the chessboard[] array only) using the pieceLocation array of another board.
+     * For debugging only.
+     */
+    board::Board boardFromPieceLocations(board::Board* board);
 
     /** 
      * Prints the entire Board's array, including invalid spaces

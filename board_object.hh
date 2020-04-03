@@ -10,7 +10,7 @@ namespace board {
     class Board {
         public:
             /* ------- independent fields, provide necessary information about board ------- */
-            unsigned char chessboard[120];
+            pieceEnum chessboard[120];
             bool CWK, CWQ, CBK, CBQ; // castle rights
             char EP; // en passant rights: what column did a double jump just occur? -1 if no double jump. 
             short movesSinceLastCapture; // 50 move rule
@@ -21,11 +21,13 @@ namespace board {
             short material; // changed material score to just be material for both
             uint64_t hashCode;
             
-            unsigned char pieceLocations[12][10]; // store pieces as 64 bit indexed pieces
-            unsigned char pieceNumbers[12]; // for example, piceNumbers[BP] = number of black pawns in the pieceLocations list
+            /** store pieces as 64 bit indexed pieces */
+            pos64 pieceLocations[12][10]; 
+            /** parallel to pieceLocations, stores how many pieces we have locations for */
+            unsigned char pieceNumbers[12];
 
             /** 
-             * Creates a new board with array set to INVALID. Usually you should call parseFen after creating a new board. 
+             * Creates a new board with all values set to INVALID. Usually you should call parseFen after creating a new board. 
              */
             Board();
 
@@ -36,6 +38,20 @@ namespace board {
              */
             bool operator==(const Board& other) const;
 
+            /***/
+            void addPieceToPL(pieceEnum piece, pos64 location);
+
+            /** 
+             * Update the position oldLocation to be newLocation for type piece.
+             * Returns false if it does not find such a piece to update.
+             */
+            bool updatePieceInPL(pieceEnum piece, pos64 oldLocation, pos64 newLocation);
+
+            /** 
+             * Remove the piece at location for type piece.
+             * Returns false if it does not find such a piece to remove.
+             */
+            bool removePieceFromPL(pieceEnum piece, pos64 location);
     };
 }
 

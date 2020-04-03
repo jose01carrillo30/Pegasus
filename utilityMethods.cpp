@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bitset>
+#include <assert.h>
 
 #include "constants.hh"
 #include "board_object.hh"
@@ -49,6 +50,28 @@ namespace utility{
         default:
             break;
         }
+    }
+
+    void printBoardPieceLocations(board::Board* board) {
+        std::cout << "~~~~~~~~~~~~~~" << std::endl;
+        for (int pieceIndex = 0; pieceIndex < 12; pieceIndex++) { // for all types of pieces
+            std::cout << getCharFromEnum(pieceIndex) << " (" << (int)board->pieceNumbers[pieceIndex] << ")| ";
+            for (int i = 0; i < board->pieceNumbers[pieceIndex]; i++) { // for all of those pieces
+                std::cout << (int) board->pieceLocations[pieceIndex][i] << " ";
+            }
+            std::cout << "\n";
+        }
+        std::cout << "~~~~~~~~~~~~~~" << std::endl;
+    }
+    board::Board boardFromPieceLocations(board::Board* board) {
+        board::Board genBoard = board::Board();
+        for (int pieceIndex = 0; pieceIndex < 12; pieceIndex++) { // for all types of pieces
+            for (int i = 0; i < board->pieceNumbers[pieceIndex]; i++) { // for all of those pieces
+                assert(genBoard.chessboard[index64to120[board->pieceLocations[pieceIndex][i]]] == INVALID);
+                genBoard.chessboard[index64to120[board->pieceLocations[pieceIndex][i]]] = pieceIndex;
+            }
+        }
+        return genBoard;
     }
 
     void printBoardArray(board::Board* board, bool info) {

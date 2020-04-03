@@ -66,6 +66,7 @@ static bool parseFEN(const char* FEN, Board* board) {
       board->chessboard[square_120_index] = piece;
       if (piece != EMPTY) {
         board->material += PIECEVALUES[piece];
+        board->pieceLocations[piece][board->pieceNumbers[piece]++] = square_64_index;
       }
       file++;
     }
