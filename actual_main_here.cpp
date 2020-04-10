@@ -6,6 +6,7 @@
 #include "tL_test_main.hpp"
 #include "uci_main.hh"
 #include "test_moves_main.hpp"
+#include "another_test_main.hpp"
 #include "eval.hpp"
 
 void print_seperator(std::string txt){
@@ -71,7 +72,7 @@ int main(int argc, char *argv[]) {
     }
     //------------------------------------------------------------------------------------------------------------------
     if (input_main == "test_moves_main.hpp") {
-        if (!zero_arg) print_seperator("Code from test_moves_main.cpp main() here");
+        if (!zero_arg) print_seperator("Code from test_moves_main.hpp main() here");
         test_moves_main_namespace::main();
         has_run = true;
     }
@@ -79,6 +80,12 @@ int main(int argc, char *argv[]) {
     if (input_main == "eval.hpp") {
         if (!zero_arg) print_seperator("Code from eval.cpp main() here");
         eval::main();
+        has_run = true;
+    }
+    //------------------------------------------------------------------------------------------------------------------
+    if (input_main == "another_test_main.hpp") {
+        if (!zero_arg) print_seperator("Code from another_test_main.hpp main() here");
+        another_test_main_namespace::main();
         has_run = true;
     }
     if (! has_run) { // input_main did not match any known main()

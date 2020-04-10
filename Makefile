@@ -2,7 +2,7 @@ CXX = g++
 CPPFLAGS = -Wall -Wno-unused-function -std=c++11
 OBJECTS = hash_test_main.o uci_main.o uci.o board_object.o utilityMethods.o
 
-all : clean actual_main_here #FIXME: doing clean like this until enough is taken out of hpp dependencies
+all : clean actual_main_here #FIXME: doing clean like this until I figure out how have make handle .hpp
 
 actual_main_here: actual_main_here.o $(OBJECTS)
 	$(CXX) $(CPPFLAGS) $^ -o Pegasus.exe
